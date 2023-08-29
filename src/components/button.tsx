@@ -1,6 +1,7 @@
-import type { ButtonHTMLAttributes } from "react";
+import Link from "next/link";
+import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
 
-export default function Button(props: ButtonHTMLAttributes<HTMLButtonElement>) {
+export function Button(props: ButtonHTMLAttributes<HTMLButtonElement>) {
   const { className, ...rest } = props;
 
   return (
@@ -13,5 +14,25 @@ export default function Button(props: ButtonHTMLAttributes<HTMLButtonElement>) {
     >
       {props.children}
     </button>
+  );
+}
+
+export function LinkButton(
+  props: AnchorHTMLAttributes<HTMLAnchorElement> & {
+    href: string;
+  }
+) {
+  const { className, ...rest } = props;
+
+  return (
+    <Link
+      className={
+        "bg-gradient text-white px-4 py-2 rounded-md w-fit min-w-[20rem] block " +
+        (className || "")
+      }
+      {...rest}
+    >
+      {props.children}
+    </Link>
   );
 }

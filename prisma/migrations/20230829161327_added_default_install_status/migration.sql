@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Server" ALTER COLUMN "status" SET DEFAULT 'STARTED';
