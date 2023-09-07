@@ -1,11 +1,14 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import Image from "next/image";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+config.autoAddCss = false;
+
+const font = Space_Grotesk({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Atheria Panel",
@@ -32,19 +35,10 @@ export default function RootLayout({
       <html lang="en">
         <body
           className={
-            inter.className +
+            font.className +
             " bg-background text-white flex min-h-screen flex-col items-center"
           }
         >
-          <Image
-            src="/blur.svg"
-            alt="blur"
-            className="absolute top-0 left-0 w-full h-full -z-10"
-            draggable={false}
-            width={100}
-            height={100}
-            placeholder="empty"
-          />
           {children}
         </body>
       </html>
