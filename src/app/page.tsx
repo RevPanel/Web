@@ -7,11 +7,11 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="flex flex-col w-full md:p-6 gap-10">
+    <main className="flex w-full flex-col gap-10 md:p-6">
       <Navbar />
-      <div className="relative flex flex-col w-full p-2 md:p-6 gap-10">
+      <div className="relative flex w-full flex-col gap-10 p-2 md:p-6">
         <Image
-          className="absolute top-14 left-52 xl:left-[25rem] -z-10 hidden md:block"
+          className="absolute left-52 top-14 -z-10 hidden md:block xl:left-[25rem]"
           src="/frame1.svg"
           alt="frame"
           width="160"
@@ -24,7 +24,7 @@ export default function Home() {
               "linear-gradient(0deg, #C082FF 0%, #7967FF 54.17%, #C3BBFF 100%)",
             filter: "blur(150px)",
           }}
-          className="absolute top-14 right-0 md:right-52 xl:right-[32rem] -z-10"
+          className="absolute right-0 top-14 -z-10 md:right-52 xl:right-[32rem]"
         >
           <Image
             src="/frame2.svg"
@@ -47,7 +47,7 @@ export default function Home() {
           alt="panel"
           width="800"
           height="300"
-          className="mx-auto rounded-xl w-1/2 hidden md:block"
+          className="mx-auto hidden w-1/2 rounded-xl md:block"
         />
         <Pricing />
         <Banner />

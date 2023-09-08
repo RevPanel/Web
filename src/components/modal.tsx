@@ -16,11 +16,11 @@ export default function Modal({
   return (
     <div className={"modal-container" + (isOpen ? "" : " modal-close")}>
       <div className="modal">
-        <div className="w-full flex justify-between">
+        <div className="flex w-full justify-between">
           {title && <h1 className="text-2xl font-bold">{title}</h1>}
           <button className="modal-close-button" onClick={onClose}>
             <svg
-              className="w-6 h-6 text-white"
+              className="h-6 w-6 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

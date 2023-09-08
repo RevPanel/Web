@@ -5,8 +5,8 @@ import { LinkButton } from "../button";
 
 export default function Footer() {
   return (
-    <footer className="md:w-4/5 mx-auto flex flex-col gap-8 border-t border-t-gray-900 py-4">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
+    <footer className="mx-auto flex flex-col gap-8 border-t border-t-gray-900 py-4 md:w-4/5">
+      <div className="flex flex-col items-center justify-between gap-4 md:flex-row md:gap-0">
         <div className="flex flex-col gap-2">
           <h1 className="text-xl">VPS Panel</h1>
           <div className="flex gap-2">
@@ -18,7 +18,7 @@ export default function Footer() {
             </LinkButton>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col gap-8 md:flex-row">
           <div className="flex flex-col gap-2">
             <h2 className="text-lg text-tertiary">About</h2>
             <Link className="text-white" href="#">
@@ -69,7 +69,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="w-full text-tertiary flex flex-col md:flex-row justify-between border-t border-t-gray-900 pt-4">
+      <div className="flex w-full flex-col justify-between border-t border-t-gray-900 pt-4 text-tertiary md:flex-row">
         <p>Copyright &copy; VPS Panel - 2023</p>
         <Link className="text-tertiary" href="mailto:contact@vpspanel.com">
           contact@vpspanel.com

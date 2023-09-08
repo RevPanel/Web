@@ -8,7 +8,7 @@ export default function FormInput(
   return (
     <input
       className={
-        "bg-background border-2 border-primary text-white px-4 py-2 rounded-md w-fit min-w-[20rem] block " +
+        "block w-fit min-w-[20rem] rounded-md border-2 border-primary bg-background px-4 py-2 text-white " +
         (className || "")
       }
       {...rest}

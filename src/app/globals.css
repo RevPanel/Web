@@ -4,11 +4,11 @@
 
 @layer components {
   .modal-container {
-    @apply fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center;
+    @apply fixed left-0 top-0 flex h-full w-full items-center justify-center bg-black/50;
   }
 
   .modal {
-    @apply bg-background-secondary rounded-lg p-4 mx-auto min-w-[25rem];
+    @apply mx-auto min-w-[25rem] rounded-lg bg-background-secondary p-4;
   }
 
   .modal-close {
@@ -16,15 +16,15 @@
   }
 
   .switch {
-    @apply relative inline-block w-[60px] h-[34px];
+    @apply relative inline-block h-[34px] w-[60px];
   }
 
   .switch input {
-    @apply opacity-0 w-0 h-0;
+    @apply h-0 w-0 opacity-0;
   }
 
   .slider {
-    @apply absolute cursor-pointer bg-gradient transition-[0.4s] inset-0 before:absolute before:content-[""] before:h-[26px] before:w-[26px] before:bg-[white] before:transition-[0.4s] before:left-1 before:bottom-1;
+    @apply bg-gradient absolute inset-0 cursor-pointer transition-[0.4s] before:absolute before:bottom-1 before:left-1 before:h-[26px] before:w-[26px] before:bg-[white] before:transition-[0.4s] before:content-[""];
     -webkit-transition: 0.4s;
     -o-transition: 0.4s;
     transition: 0.4s;
@@ -61,7 +61,7 @@
   }
 
   .text-gradient {
-    @apply bg-gradient text-transparent bg-clip-text;
+    @apply bg-gradient bg-clip-text text-transparent;
   }
 }
 

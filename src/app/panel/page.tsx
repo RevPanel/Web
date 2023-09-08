@@ -15,7 +15,7 @@ export default function Page() {
   const [password, setPassword] = useState("");
 
   return (
-    <div className="w-screen h-screen flex justify-center items-center">
+    <div className="flex h-screen w-screen items-center justify-center">
       <Button role="primary" onClick={() => onOpen()} className="m-auto">
         Add server
       </Button>
@@ -30,9 +30,9 @@ export default function Page() {
               password,
             });
           }}
-          className="flex flex-col w-full gap-1"
+          className="flex w-full flex-col gap-1"
         >
-          <label className="text-white mt-4">Server name</label>
+          <label className="mt-4 text-white">Server name</label>
           <FormInput
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -49,7 +49,7 @@ export default function Page() {
             placeholder="Server IP"
           />
           <label className="text-white">Server Credentials</label>
-          <div className="flex gap-4 w-full">
+          <div className="flex w-full gap-4">
             <FormInput
               value={username}
               onChange={(e) => setUsername(e.target.value)}

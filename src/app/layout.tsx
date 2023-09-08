@@ -36,7 +36,7 @@ export default function RootLayout({
         <body
           className={
             font.className +
-            " bg-background text-white flex min-h-screen flex-col items-center"
+            " flex min-h-screen flex-col items-center bg-background text-white"
           }
         >
           {children}

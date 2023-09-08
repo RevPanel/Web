@@ -6,9 +6,9 @@ import Logo from "../logo";
 
 export default function Navbar() {
   return (
-    <div className="w-3/4 mx-auto flex justify-between items-center m-4 md:m-0 md:mx-auto">
+    <div className="m-4 mx-auto flex w-3/4 items-center justify-between md:m-0 md:mx-auto">
       <Logo />
-      <div className="hidden md:flex gap-4 items-center">
+      <div className="hidden items-center gap-4 md:flex">
         <Link className="text-tertiary" href="#">
           Enterprise
         </Link>
@@ -25,11 +25,11 @@ export default function Navbar() {
       <LinkButton
         href="/app"
         role="secondary"
-        className="uppercase hidden md:flex"
+        className="hidden uppercase md:flex"
       >
         Client Portal
       </LinkButton>
-      <FontAwesomeIcon icon={faBars} className="md:hidden text-2xl" />
+      <FontAwesomeIcon icon={faBars} className="text-2xl md:hidden" />
     </div>
   );
 }

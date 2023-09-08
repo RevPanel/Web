@@ -25,7 +25,7 @@ export function Button(
   return (
     <button
       className={
-        roleClass + " text-white px-4 py-2 rounded-md " + (className || "")
+        roleClass + " rounded-md px-4 py-2 text-white " + (className || "")
       }
       {...rest}
     >
@@ -46,7 +46,7 @@ export function LinkButton(
   return (
     <Link
       className={
-        roleClass + " text-white px-4 py-2 rounded-md " + (className || "")
+        roleClass + " rounded-md px-4 py-2 text-white " + (className || "")
       }
       {...rest}
     >

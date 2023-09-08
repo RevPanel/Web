@@ -73,17 +73,17 @@ function PriceCard(
   return (
     <div
       className={
-        "bg-background-secondary md:bg-transparent m-4 md:m-0 p-4 md:w-[25rem] xl:min-h-[35rem] rounded-xl flex flex-col gap-2 " +
+        "m-4 flex flex-col gap-2 rounded-xl bg-background-secondary p-4 md:m-0 md:w-[25rem] md:bg-transparent xl:min-h-[35rem] " +
         (price.primary ? "!bg-background-secondary" : "")
       }
     >
       <h1 className="text-3xl">{price.name}</h1>
       <p className="text-tertiary">{price.subtitle}</p>
-      <h2 className="text-3xl my-5">
+      <h2 className="my-5 text-3xl">
         €{Math.round(price.price * (price.yearly ? 0.35 : 1))}
         <span className="text-sm text-tertiary">/month</span>
       </h2>
-      <p className="text-tertiary w-full">{price.description}</p>
+      <p className="w-full text-tertiary">{price.description}</p>
       <ul className="mt-auto flex flex-col gap-4 text-lg">
         {Object.keys(price.features).map((feature, i) => (
           <li key={i}>
@@ -93,7 +93,7 @@ function PriceCard(
                 alt="tick"
                 width={20}
                 height={20}
-                className="inline-block mr-2"
+                className="mr-2 inline-block"
               />
             ) : (
               <Image
@@ -101,7 +101,7 @@ function PriceCard(
                 alt="tick"
                 width={20}
                 height={20}
-                className="inline-block mr-2"
+                className="mr-2 inline-block"
               />
             )}
             <span className={price.features[feature] ? "" : "text-tertiary"}>
@@ -110,7 +110,7 @@ function PriceCard(
           </li>
         ))}
       </ul>
-      <Button role="primary" className="mt-auto w-full !rounded-full mx-auto">
+      <Button role="primary" className="mx-auto mt-auto w-full !rounded-full">
         Get Started
       </Button>
     </div>
@@ -121,21 +121,21 @@ export default function Pricing() {
   const [toggle, setToggle] = useState(true);
 
   return (
-    <div className="md:w-4/5 mx-auto flex flex-col gap-2 text-center md:text-left">
-      <Button role="secondary" className="uppercase w-fit mx-auto md:m-0">
+    <div className="mx-auto flex flex-col gap-2 text-center md:w-4/5 md:text-left">
+      <Button role="secondary" className="mx-auto w-fit uppercase md:m-0">
         <span className="text-gradient">Prices</span>
       </Button>
-      <div className="flex flex-col md:flex-row items-center w-full justify-between">
+      <div className="flex w-full flex-col items-center justify-between md:flex-row">
         <div>
           <h1 className="text-4xl">See the plans we offer</h1>
           <p className="text-tertiary">The best plans for your company</p>
         </div>
         <div className="flex flex-col">
-          <div className="flex gap-2 items-start text-lg font-semibold">
+          <div className="flex items-start gap-2 text-lg font-semibold">
             <div className="flex flex-col gap-2">
               <p>Monthly</p>
-              <div className="h-[75px] flex justify-end items-end">
-                <div className="flex justify-center items-center text-center bg-[#E7DEFE] rounded-full text-black py-1 px-3">
+              <div className="flex h-[75px] items-end justify-end">
+                <div className="flex items-center justify-center rounded-full bg-[#E7DEFE] px-3 py-1 text-center text-black">
                   <p className="mx-auto text-center">Save 65%</p>
                 </div>
               </div>
@@ -153,7 +153,7 @@ export default function Pricing() {
         </div>
       </div>
 
-      <div className="mt-4 w-full flex flex-col md:flex-row gap-2 justify-between">
+      <div className="mt-4 flex w-full flex-col justify-between gap-2 md:flex-row">
         {prices.map((price) => (
           <PriceCard key={price.name} {...price} yearly={toggle} />
         ))}
