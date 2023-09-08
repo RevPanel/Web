@@ -1,9 +1,8 @@
 import prisma from "@/lib/prisma";
 import { error } from "@/utils/responses";
-import axios from "axios";
-import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs";
 import { randomUUID } from "crypto";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
   const { name, ip, username, password } = await req.json();

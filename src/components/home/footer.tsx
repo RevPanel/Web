@@ -5,7 +5,7 @@ import { LinkButton } from "../button";
 
 export default function Footer() {
   return (
-    <footer className="md:w-3/4 mx-auto flex flex-col gap-8 border-t border-t-gray-900 py-4">
+    <footer className="md:w-4/5 mx-auto flex flex-col gap-8 border-t border-t-gray-900 py-4">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
         <div className="flex flex-col gap-2">
           <h1 className="text-xl">VPS Panel</h1>

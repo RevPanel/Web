@@ -1,9 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { Button } from "../button";
 import Toggle from "../toggle";
-import Image from "next/image";
 
 type Price = {
   name: string;
@@ -23,10 +23,12 @@ const prices: Price[] = [
     description: "A free plan grants you access to some cool features.",
     price: 0,
     features: {
-      "Lorem ipsum dolor sit amet 1": true,
-      "Lorem ipsum dolor sit amet 2": true,
-      "Lorem ipsum dolor sit amet 3": false,
-      "Lorem ipsum dolor sit amet 4": false,
+      "Sync accross device": true,
+      "5 workspace": true,
+      "Collaborate with 5 user": true,
+      "Sharing permission": false,
+      "Admin tools": false,
+      "100+ integrations": false,
     },
     primary: false,
   },
@@ -37,10 +39,12 @@ const prices: Price[] = [
       "Only for professionals! The best plan with benefits for your company",
     price: 12,
     features: {
-      "Lorem ipsum dolor sit amet 1": true,
-      "Lorem ipsum dolor sit amet 2": true,
-      "Lorem ipsum dolor sit amet 3": true,
-      "Lorem ipsum dolor sit amet 4": false,
+      "Everything in Free Plan": true,
+      "Unlimited workspace": true,
+      "Collaborative workspace": true,
+      "Sharing permission": true,
+      "Admin tools": true,
+      "100+ integrations": true,
     },
     primary: false,
   },
@@ -51,10 +55,11 @@ const prices: Price[] = [
       "If you are looking for the best, this is the best plan for your company",
     price: 33,
     features: {
-      "Lorem ipsum dolor sit amet 1": true,
-      "Lorem ipsum dolor sit amet 2": true,
-      "Lorem ipsum dolor sit amet 3": true,
-      "Lorem ipsum dolor sit amet 4": true,
+      "Everything in Pro Plan": true,
+      "Daily performance reports": true,
+      "Artificial intelligence": true,
+      "Marketing tools & automations": true,
+      "Advanced security": true,
     },
     primary: true,
   },
@@ -68,13 +73,13 @@ function PriceCard(
   return (
     <div
       className={
-        "bg-background-secondary md:bg-transparent m-4 md:m-0 p-4 md:w-[20rem] xl:h-[28rem] rounded-xl flex flex-col gap-2 " +
+        "bg-background-secondary md:bg-transparent m-4 md:m-0 p-4 md:w-[25rem] xl:min-h-[35rem] rounded-xl flex flex-col gap-2 " +
         (price.primary ? "!bg-background-secondary" : "")
       }
     >
       <h1 className="text-3xl">{price.name}</h1>
       <p className="text-tertiary">{price.subtitle}</p>
-      <h2 className="text-3xl">
+      <h2 className="text-3xl my-5">
         €{Math.round(price.price * (price.yearly ? 0.35 : 1))}
         <span className="text-sm text-tertiary">/month</span>
       </h2>
@@ -99,7 +104,9 @@ function PriceCard(
                 className="inline-block mr-2"
               />
             )}
-            {feature}
+            <span className={price.features[feature] ? "" : "text-tertiary"}>
+              {feature}
+            </span>
           </li>
         ))}
       </ul>
@@ -114,7 +121,7 @@ export default function Pricing() {
   const [toggle, setToggle] = useState(true);
 
   return (
-    <div className="md:w-3/4 mx-auto flex flex-col gap-2 text-center md:text-left">
+    <div className="md:w-4/5 mx-auto flex flex-col gap-2 text-center md:text-left">
       <Button role="secondary" className="uppercase w-fit mx-auto md:m-0">
         <span className="text-gradient">Prices</span>
       </Button>

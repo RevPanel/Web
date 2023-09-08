@@ -16,7 +16,7 @@ export default function Page() {
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
-      <Button onClick={() => onOpen()} className="m-auto">
+      <Button role="primary" onClick={() => onOpen()} className="m-auto">
         Add server
       </Button>
       <Modal title="Add server" isOpen={isOpen} onClose={() => onClose()}>
@@ -65,7 +65,7 @@ export default function Page() {
               placeholder="Password"
             />
           </div>
-          <Button type="submit" className="mt-4">
+          <Button role="primary" type="submit" className="mt-4">
             Add server
           </Button>
         </form>
