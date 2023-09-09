@@ -3,6 +3,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Button } from "../button";
+import TickIcon from "../icons/Tick";
+import TickOffIcon from "../icons/TickOff";
 import Toggle from "../toggle";
 
 type Price = {
@@ -86,24 +88,8 @@ function PriceCard(
       <p className="w-full text-tertiary">{price.description}</p>
       <ul className="mt-auto flex flex-col gap-4 text-lg">
         {Object.keys(price.features).map((feature, i) => (
-          <li key={i}>
-            {price.features[feature] ? (
-              <Image
-                src="/tick.svg"
-                alt="tick"
-                width={20}
-                height={20}
-                className="mr-2 inline-block"
-              />
-            ) : (
-              <Image
-                src="/tick-off.svg"
-                alt="tick"
-                width={20}
-                height={20}
-                className="mr-2 inline-block"
-              />
-            )}
+          <li key={i} className="flex items-center gap-2">
+            {price.features[feature] ? <TickIcon /> : <TickOffIcon />}
             <span className={price.features[feature] ? "" : "text-tertiary"}>
               {feature}
             </span>

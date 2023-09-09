@@ -11,7 +11,7 @@ config.autoAddCss = false;
 const font = Space_Grotesk({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Atheria Panel",
+  title: "VPS Panel",
   description: "The panel everyone can use",
 };
 
@@ -29,6 +29,9 @@ export default function RootLayout({
           footerActionLink: "text-secondary",
           card: "bg-background-secondary",
           formFieldInput: "bg-background",
+          userButtonAvatarBox: "rounded-xl w-14 h-14",
+          userButtonTrigger: "rounded-xl",
+          userButtonTrigger__open: "rounded-xl",
         },
       }}
     >

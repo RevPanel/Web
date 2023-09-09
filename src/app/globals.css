@@ -53,6 +53,10 @@
   .slider.round {
     @apply rounded-[34px] before:rounded-[50%];
   }
+
+  .card {
+    @apply flex flex-col gap-4 rounded-xl bg-background-secondary p-4;
+  }
 }
 
 @layer utilities {
