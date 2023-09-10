@@ -25,7 +25,7 @@ export default function RouteTitle() {
       <div>
         <h2>{server}</h2>
         <h1 className="text-2xl font-extrabold">
-          {capitalize(pathname.split("/").slice(2).join("/"))}
+          {capitalize(pathname.split("/").slice(3).join("/"))}
         </h1>
       </div>
     );

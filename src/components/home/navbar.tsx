@@ -23,7 +23,7 @@ export default function Navbar() {
         </Link>
       </div>
       <LinkButton
-        href="/app"
+        href="/panel"
         role="secondary"
         className="hidden uppercase md:flex"
       >
