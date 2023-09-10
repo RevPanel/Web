@@ -3,13 +3,14 @@ import Footer from "@/components/home/footer";
 import Hero from "@/components/home/hero";
 import Navbar from "@/components/home/navbar";
 import Pricing from "@/components/home/pricing";
+import Promises from "@/components/home/promises";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="flex w-full flex-col gap-10 md:p-6">
+    <main className="flex w-full flex-col gap-10">
       <Navbar />
-      <div className="relative flex w-full flex-col gap-10 p-2 md:p-6">
+      <div className="relative flex w-full flex-col gap-10">
         <Image
           className="absolute left-52 top-14 -z-10 hidden md:block xl:left-[25rem]"
           src="/frame1.svg"
@@ -49,6 +50,7 @@ export default function Home() {
           height="300"
           className="mx-auto hidden w-1/2 rounded-xl md:block"
         />
+        <Promises />
         <Pricing />
         <Banner />
         <Footer />

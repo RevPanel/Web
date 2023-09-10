@@ -6,7 +6,7 @@ import Logo from "../logo";
 
 export default function Navbar() {
   return (
-    <div className="m-4 mx-auto flex w-3/4 items-center justify-between md:m-0 md:mx-auto">
+    <div className="m-4 mx-auto flex w-3/4 items-center justify-between p-4 md:m-0 md:mx-auto">
       <Logo />
       <div className="hidden items-center gap-4 md:flex">
         <Link className="text-tertiary" href="#">
