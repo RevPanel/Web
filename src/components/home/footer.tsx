@@ -25,19 +25,22 @@ export default function Footer() {
               About Us
             </Link>
             <Link className="text-white" href="#">
-              Discord
+              Terms of Service
             </Link>
             <Link className="text-white" href="#">
-              Discord
+              Privacy Policy
             </Link>
           </div>
           <div className="flex flex-col gap-2">
-            <h2 className="text-lg text-tertiary">About</h2>
-            <Link className="text-white" href="#">
-              About Us
-            </Link>
+            <h2 className="text-lg text-tertiary">Support</h2>
             <Link className="text-white" href="#">
               Discord
+            </Link>
+            <Link className="text-white" href="#">
+              Support Center
+            </Link>
+            <Link className="text-white" href="#">
+              FAQ
             </Link>
           </div>
           <div className="flex flex-col gap-2">

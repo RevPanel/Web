@@ -1,3 +1,4 @@
+import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
@@ -9,26 +10,39 @@ export default function Navbar() {
     <div className="m-4 mx-auto flex w-3/4 items-center justify-between p-4 md:m-0 md:mx-auto">
       <Logo />
       <div className="hidden items-center gap-4 md:flex">
-        <Link className="text-tertiary" href="#">
-          Enterprise
+        <Link className="text-tertiary" href="/#promises">
+          Promises
         </Link>
         <Link className="text-tertiary" href="#">
-          Plans
+          Pricing
         </Link>
         <Link className="text-tertiary" href="#">
           Discord
         </Link>
         <Link className="text-tertiary" href="#">
-          About Us
+          Support
         </Link>
       </div>
-      <LinkButton
-        href="/panel"
-        role="secondary"
-        className="hidden uppercase md:flex"
-      >
-        Client Portal
-      </LinkButton>
+      <SignedIn>
+        <LinkButton
+          href="/panel"
+          role="secondary"
+          className="hidden uppercase md:flex"
+        >
+          Panel
+        </LinkButton>
+      </SignedIn>
+      <SignedOut>
+        <SignInButton afterSignInUrl="/panel" afterSignUpUrl="/panel">
+          <LinkButton
+            href="/panel"
+            role="secondary"
+            className="hidden uppercase md:flex"
+          >
+            Login
+          </LinkButton>
+        </SignInButton>
+      </SignedOut>
       <FontAwesomeIcon icon={faBars} className="text-2xl md:hidden" />
     </div>
   );
