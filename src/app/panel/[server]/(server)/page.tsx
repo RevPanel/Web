@@ -4,7 +4,7 @@ import Image from "next/image";
 
 function ServerChart() {
   return (
-    <div className="card flex flex-col w-full lg:w-auto gap-2 p-2 lg:last:hidden xl:last:flex">
+    <div className="card flex w-full flex-col gap-2 p-2 lg:w-auto lg:last:hidden xl:last:flex">
       <div className="m-4 flex gap-2">
         <div>
           <div className="block h-20 w-20 rounded-full bg-tertiary"></div>
@@ -23,7 +23,7 @@ function ServerChart() {
 export default function ServicesHome() {
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="mb-4 flex flex-wrap lg:flex-nowrap justify-between gap-2">
+      <div className="mb-4 flex flex-wrap justify-between gap-2 lg:flex-nowrap">
         <ServerChart />
         <ServerChart />
         <ServerChart />

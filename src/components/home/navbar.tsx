@@ -43,7 +43,9 @@ export default function Navbar() {
           </LinkButton>
         </SignInButton>
       </SignedOut>
-      <FontAwesomeIcon icon={faBars} className="text-2xl md:hidden" />
+      <button className="md:hidden">
+        <FontAwesomeIcon icon={faBars} className="text-2xl" />
+      </button>
     </div>
   );
 }
