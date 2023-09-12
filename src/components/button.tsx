@@ -6,7 +6,7 @@ type ButtonRole = "primary" | "secondary" | "white";
 function genClasses(role: ButtonRole) {
   switch (role) {
     case "primary":
-      return "bg-gradient";
+      return "bg-gradient uppercase";
     case "secondary":
       return "bg-[#27272A] border border-[#3F3F46]";
     case "white":

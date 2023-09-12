@@ -6,11 +6,11 @@ export default function ServerContainer() {
   return (
     <Link
       href="/panel/server"
-      className="flex flex-col items-center justify-between rounded-xl bg-background-secondary px-6 py-4 text-white md:flex-row"
+      className="flex flex-row items-center justify-between gap-2 overflow-x-auto rounded-xl bg-background-secondary px-6 py-4 text-white"
     >
       <div className="flex items-center gap-4">
         <FontAwesomeIcon icon={faServer} className="text-4xl" />
-        <div className="flex flex-col">
+        <div className="flex flex-row items-center gap-2 md:flex-col md:items-start md:gap-0">
           <h1 className="w-fit text-xl font-bold">Server Name</h1>
           <p>Server description</p>
         </div>
