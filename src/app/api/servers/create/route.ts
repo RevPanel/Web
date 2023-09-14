@@ -5,14 +5,14 @@ import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
-  const { name, ip, username, password } = await req.json();
+  const { name, description, ip } = await req.json();
   const { userId } = auth();
 
   if (!userId) {
     return error("Not logged in", 403);
   }
 
-  if (!name || !ip || !username || !password) {
+  if (!name || !ip) {
     return error("Missing required fields", 400);
   }
 
@@ -26,17 +26,11 @@ export async function POST(req: Request, res: Response) {
     return error("Server already exists", 400);
   }
 
-  /* todo: reactivate  try {
-    await axios.get(`https://${ip}:8080/system/health`);
-    return error("Server already exists", 400);
-  } catch (e) {
-    // works
-  } */
-
   const server = await prisma.server.create({
     data: {
       ip,
       name,
+      description,
       key: randomUUID(),
       owner: userId,
     },
@@ -44,5 +38,7 @@ export async function POST(req: Request, res: Response) {
 
   return NextResponse.json({
     id: server.id,
+    key: server.key,
+    command: `echo ${server.key}`,
   });
 }

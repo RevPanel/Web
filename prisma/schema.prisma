@@ -14,11 +14,12 @@ enum InstallStatus {
 }
 
 model Server {
-  id        String        @id @default(uuid())
-  name      String
-  ip        String
-  key       String
-  owner     String
-  status    InstallStatus @default(STARTED)
-  createdAt DateTime      @default(now())
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+  ip          String
+  key         String
+  owner       String
+  status      InstallStatus @default(STARTED)
+  createdAt   DateTime      @default(now())
 }

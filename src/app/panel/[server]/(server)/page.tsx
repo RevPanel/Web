@@ -34,7 +34,7 @@ export default function ServicesHome() {
         role="primary"
         className="mb-4 ml-auto px-20 py-4 font-extrabold uppercase"
       >
-        Add new machine
+        Add new service
       </Button>
       <ServerContainer />
       <ServerContainer />
