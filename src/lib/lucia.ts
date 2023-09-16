@@ -3,10 +3,9 @@ import { nextjs_future } from "lucia/middleware";
 import { prisma } from "@lucia-auth/adapter-prisma";
 import prismadb from "@/lib/prisma";
 
-// expect error (see next section)
 export const auth = lucia({
   env: process.env.NODE_ENV === "development" ? "DEV" : "PROD",
-  middleware: nextjs_future(), // NOT nextjs()
+  middleware: nextjs_future(),
   sessionCookie: {
     expires: false,
   },
