@@ -7,6 +7,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       String @id @unique
+  name     String
+  username String
+  email    String
+
+  auth_session Session[]
+  key          Key[]
+  servers      Server[]
+}
+
+model Session {
+  id             String @id @unique
+  user_id        String
+  active_expires BigInt
+  idle_expires   BigInt
+  user           User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model Key {
+  id              String  @id @unique
+  hashed_password String?
+  user_id         String
+  user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
 enum InstallStatus {
   STARTED
   SUCCESS
@@ -19,7 +49,8 @@ model Server {
   description String?
   ip          String
   key         String
-  owner       String
+  owner       User          @relation(references: [id], fields: [ownerId], onDelete: Cascade)
+  ownerId     String
   status      InstallStatus @default(STARTED)
   createdAt   DateTime      @default(now())
 }

@@ -13,14 +13,14 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.23.2",
-    "@clerk/themes": "^1.7.5",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
-    "@prisma/client": "5.2.0",
+    "@lucia-auth/adapter-prisma": "^3.0.1",
+    "@lucia-auth/oauth": "^3.2.0",
+    "@prisma/client": "5.3.1",
     "@types/node": "20.5.7",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
@@ -28,6 +28,7 @@
     "axios": "^1.5.0",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
+    "lucia": "^2.6.0",
     "next": "13.4.19",
     "postcss": "8.4.28",
     "react": "18.2.0",
@@ -40,6 +41,6 @@
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
-    "prisma": "^5.2.0"
+    "prisma": "^5.3.1"
   }
 }

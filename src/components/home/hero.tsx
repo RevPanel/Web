@@ -1,6 +1,6 @@
-import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SignedIn, SignedOut } from "../auth";
 import { Button, LinkButton } from "../button";
 
 export default function Hero() {
@@ -27,15 +27,14 @@ export default function Hero() {
         </LinkButton>
       </SignedIn>
       <SignedOut>
-        <SignInButton afterSignInUrl="/panel" afterSignUpUrl="/panel">
-          <Button
-            className="flex items-center gap-2 !p-4 !px-8 font-medium"
-            role="primary"
-          >
-            <FontAwesomeIcon icon={faCircleUser} />
-            GET STARTED
-          </Button>
-        </SignInButton>
+        <LinkButton
+          href="/login"
+          className="flex items-center gap-2 !p-4 !px-8 font-medium"
+          role="primary"
+        >
+          <FontAwesomeIcon icon={faCircleUser} />
+          GET STARTED
+        </LinkButton>
       </SignedOut>
     </div>
   );

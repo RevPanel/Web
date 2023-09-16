@@ -1,4 +1,4 @@
-import { UserButton } from "@clerk/nextjs";
+import { UserButton } from "../auth";
 import BellIcon from "../icons/Bell";
 import RouteTitle from "./route-title";
 import SidebarWrapper from "./sidebar-wrapper";

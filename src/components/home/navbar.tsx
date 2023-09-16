@@ -1,4 +1,4 @@
-import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import { SignedIn, SignedOut } from "../auth";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
@@ -33,15 +33,13 @@ export default function Navbar() {
         </LinkButton>
       </SignedIn>
       <SignedOut>
-        <SignInButton afterSignInUrl="/panel" afterSignUpUrl="/panel">
-          <LinkButton
-            href="/panel"
-            role="secondary"
-            className="hidden uppercase md:flex"
-          >
-            Login
-          </LinkButton>
-        </SignInButton>
+        <LinkButton
+          href="/login"
+          role="secondary"
+          className="hidden uppercase md:flex"
+        >
+          Login
+        </LinkButton>
       </SignedOut>
       <button className="md:hidden">
         <FontAwesomeIcon icon={faBars} className="text-2xl" />

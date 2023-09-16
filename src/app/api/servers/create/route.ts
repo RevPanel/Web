@@ -1,14 +1,16 @@
+import { auth } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import { error } from "@/utils/responses";
-import { auth } from "@clerk/nextjs";
 import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
+import * as context from "next/headers";
 
 export async function POST(req: Request, res: Response) {
   const { name, description, ip } = await req.json();
-  const { userId } = auth();
+  const authRequest = auth.handleRequest(req.method, context);
+  const session = await authRequest.validate();
 
-  if (!userId) {
+  if (!session) {
     return error("Not logged in", 403);
   }
 
@@ -32,7 +34,7 @@ export async function POST(req: Request, res: Response) {
       name,
       description,
       key: randomUUID(),
-      owner: userId,
+      owner: session.user.id,
     },
   });
 
