@@ -50,7 +50,7 @@ export const POST = async (request: NextRequest) => {
       },
       attributes: {
         email,
-        username,
+        username: username.toLowerCase(),
         name,
       },
     });

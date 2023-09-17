@@ -1,7 +1,8 @@
+import prismadb from "@/lib/prisma";
+import { prisma } from "@lucia-auth/adapter-prisma";
+import { discord } from "@lucia-auth/oauth/providers";
 import { lucia } from "lucia";
 import { nextjs_future } from "lucia/middleware";
-import { prisma } from "@lucia-auth/adapter-prisma";
-import prismadb from "@/lib/prisma";
 
 export const auth = lucia({
   env: process.env.NODE_ENV === "development" ? "DEV" : "PROD",
@@ -17,6 +18,15 @@ export const auth = lucia({
       email: data.email,
     };
   },
+});
+
+export const discordAuth = discord(auth, {
+  clientId: process.env.DISCORD_CLIENT_ID!,
+  clientSecret: process.env.DISCORD_CLIENT_SECRET!,
+  redirectUri: `${
+    process.env.APP_URL || process.env.VERCEL_URL
+  }/api/auth/callback/discord`,
+  scope: ["email"],
 });
 
 export type Auth = typeof auth;

@@ -1,4 +1,4 @@
-import { Button } from "@/components/button";
+import { Button, LinkButton } from "@/components/button";
 import Form from "@/components/form";
 import FormInput from "@/components/input";
 import { auth } from "@/lib/lucia";
@@ -18,7 +18,7 @@ export default async function Page() {
         Insert your credentials and get back to your panel
       </p>
       <Form
-        className="mx-auto mt-4 flex flex-col gap-2 md:w-1/3 xl:w-1/5"
+        className="mx-auto mt-4 flex flex-col gap-2 md:w-1/2 lg:w-1/3 xl:w-1/5"
         action="/api/auth/login"
       >
         <FormInput
@@ -47,6 +47,20 @@ export default async function Page() {
         <Button role="primary" type="submit" className="w-full">
           Login
         </Button>
+        <div className="flex items-center gap-2">
+          <span className="h-px w-full bg-tertiary"></span>
+          <span className="w-full text-tertiary">Or login with</span>
+          <span className="h-px w-full bg-tertiary"></span>
+        </div>
+        <div className="flex gap-2">
+          <LinkButton
+            href="/api/auth/login/discord"
+            role="secondary"
+            className="w-full flex-1"
+          >
+            Discord
+          </LinkButton>
+        </div>
       </Form>
     </div>
   );

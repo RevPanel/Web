@@ -1,4 +1,4 @@
-import { Button } from "@/components/button";
+import { Button, LinkButton } from "@/components/button";
 import Form from "@/components/form";
 import FormInput from "@/components/input";
 import { auth } from "@/lib/lucia";
@@ -18,7 +18,7 @@ export default async function Page() {
         Create a new account now and start using our services
       </p>
       <Form
-        className="mx-auto mt-4 flex flex-col gap-2 md:w-1/3 xl:w-1/5"
+        className="mx-auto mt-4 flex flex-col gap-2 md:w-1/2 lg:w-1/3 xl:w-1/5"
         action="/api/auth/register"
       >
         <div className="flex w-full gap-2">
@@ -27,14 +27,14 @@ export default async function Page() {
             name="name"
             id="name"
             placeholder="Name"
-            className="!w-1/2 min-w-[0] !p-4 !pl-6"
+            className="!w-1/2 !min-w-[0] !p-4 !pl-6"
           />
           <FormInput
             required
             name="username"
             id="username"
             placeholder="Username"
-            className="!w-1/2 min-w-[0] !p-4 !pl-6"
+            className="!w-1/2 !min-w-[0] !p-4 !pl-6"
           />
         </div>
         <FormInput
@@ -69,6 +69,20 @@ export default async function Page() {
         <Button role="primary" type="submit" className="w-full">
           Register
         </Button>
+        <div className="flex items-center gap-2">
+          <span className="h-px w-full bg-tertiary"></span>
+          <span className="w-full text-tertiary">Or login with</span>
+          <span className="h-px w-full bg-tertiary"></span>
+        </div>
+        <div className="flex gap-2">
+          <LinkButton
+            href="/api/auth/login/discord"
+            role="secondary"
+            className="w-full flex-1"
+          >
+            Discord
+          </LinkButton>
+        </div>
       </Form>
     </div>
   );
