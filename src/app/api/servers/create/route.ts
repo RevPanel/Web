@@ -2,8 +2,8 @@ import { auth } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import { error } from "@/utils/responses";
 import { randomUUID } from "crypto";
-import { NextResponse } from "next/server";
 import * as context from "next/headers";
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request, res: Response) {
   const { name, description, ip } = await req.json();
@@ -34,7 +34,7 @@ export async function POST(req: Request, res: Response) {
       name,
       description,
       key: randomUUID(),
-      owner: session.user.id,
+      owner: session.user.userId,
     },
   });
 
