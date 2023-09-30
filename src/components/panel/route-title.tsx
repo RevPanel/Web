@@ -2,20 +2,30 @@
 
 import { capitalize } from "@/utils/text";
 import { useParams, usePathname } from "next/navigation";
+import { useServerName, useServiceName } from "../servers";
+import Link from "next/link";
 
 export default function RouteTitle() {
   const { server, service } = useParams();
   const pathname = usePathname();
+  const serverName = useServerName(server as string);
+  const serviceName = useServiceName(server as string, service as string);
 
   if (server) {
     if (service) {
       return (
         <div>
           <h2>
-            {server} / {service}
+            <Link className="text-white" href={`/panel/${server}`}>
+              {serverName}
+            </Link>{" "}
+            /{" "}
+            <Link className="text-white" href={`/panel/${server}/${service}`}>
+              {serviceName}
+            </Link>
           </h2>
           <h1 className="text-2xl font-extrabold">
-            {capitalize(pathname.split("/").slice(3).join("/"))}
+            {capitalize(pathname.split("/").slice(4).join("/") || "Dashboard")}
           </h1>
         </div>
       );
@@ -23,9 +33,13 @@ export default function RouteTitle() {
 
     return (
       <div>
-        <h2>{server}</h2>
+        <h2>
+          <Link className="text-white" href={`/panel/${server}`}>
+            {serverName}
+          </Link>
+        </h2>
         <h1 className="text-2xl font-extrabold">
-          {capitalize(pathname.split("/").slice(3).join("/"))}
+          {capitalize(pathname.split("/").slice(3).join("/") || "Dashboard")}
         </h1>
       </div>
     );

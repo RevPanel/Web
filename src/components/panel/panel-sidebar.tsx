@@ -14,13 +14,11 @@ export default function PanelSidebar() {
               title: "Home",
               icon: faHome,
               href: "/panel",
-              active: true,
             },
             {
               title: "Search",
               icon: faMagnifyingGlass,
               href: "/panel/#",
-              active: false,
             },
           ],
         },

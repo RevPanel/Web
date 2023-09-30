@@ -7,8 +7,13 @@ import {
   faTerminal,
 } from "@fortawesome/free-solid-svg-icons";
 import SidebarTemplate, { accountSection } from "../../sidebar-template";
+import { useParams } from "next/navigation";
 
 export default function ServiceSidebar() {
+  const { server, service } = useParams();
+
+  const baseUrl = `/panel/${server}/${service}`;
+
   return (
     <SidebarTemplate
       sections={[
@@ -18,26 +23,22 @@ export default function ServiceSidebar() {
             {
               title: "Dashboard",
               icon: faHome,
-              href: "/panel",
-              active: true,
+              href: `${baseUrl}`,
             },
             {
               title: "Console",
               icon: faTerminal,
-              href: "/panel/console",
-              active: false,
+              href: `${baseUrl}/console`,
             },
             {
               title: "File Manager",
               icon: faFile,
-              href: "/panel/files",
-              active: false,
+              href: `${baseUrl}/files`,
             },
             {
               title: "Port Manager",
               icon: faDumpsterFire,
-              href: "/panel/ports",
-              active: false,
+              href: `${baseUrl}/ports`,
             },
           ],
         },

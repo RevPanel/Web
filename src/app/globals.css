@@ -72,3 +72,11 @@
 a {
   @apply text-secondary;
 }
+
+.react-contextmenu {
+  @apply card z-50 bg-background;
+}
+
+.react-contextmenu-item {
+  @apply cursor-pointer flex gap-2 items-center;
+}

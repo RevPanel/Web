@@ -1,22 +1,52 @@
-import StartIcon from "@/components/icons/Start";
+"use client";
 
-function LogBar() {
+import RestartIcon from "@/components/icons/Restart";
+import StartIcon from "@/components/icons/Start";
+import StopIcon from "@/components/icons/Stop";
+import TickOffIcon from "@/components/icons/TickOff";
+import { useFetcher } from "@/hooks/fetcher";
+import { AuditLog, ServiceProps } from "@/types/service";
+import { capitalize } from "@/utils/text";
+import moment from "moment";
+
+function LogBar(props: AuditLog) {
+  let icon;
+
+  switch (props.action) {
+    case "START":
+      icon = <StartIcon className="h-8 w-6" />;
+      break;
+    case "STOP":
+      icon = <StopIcon className="h-8 w-6" />;
+      break;
+    case "RESTART":
+      icon = <RestartIcon className="h-8 w-6" />;
+      break;
+    default:
+      icon = <TickOffIcon className="h-8 w-6" />;
+      break;
+  }
+
   return (
     <div className="flex items-center gap-4 rounded-xl bg-background p-4">
-      <StartIcon className="h-8 w-6" />
-      <p>Server Started</p>
-      <p className="ml-auto text-tertiary">10:00</p>
+      {icon}
+      <p>{capitalize(props.action)}</p>
+      <p className="ml-auto text-tertiary">
+        {moment(props.createdAt).fromNow()}
+      </p>
     </div>
   );
 }
 
-export default function AuditLogs() {
+export default function AuditLogs(props: ServiceProps) {
+  const { data: logs } = useFetcher(
+    `/api/servers/${props.serverId}/audit/${props.id}`
+  );
+
   return (
     <div className="card lg:w-1/3">
       <h1 className="font-light uppercase">Audit Logs</h1>
-      <LogBar />
-      <LogBar />
-      <LogBar />
+      {logs?.map((log: AuditLog) => <LogBar key={log.id} {...log} />)}
     </div>
   );
 }

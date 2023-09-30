@@ -1,3 +1,8 @@
+"use client";
+
+import { useFetcher } from "@/hooks/fetcher";
+import { ServiceProps } from "@/types/service";
+
 function StatBar({
   title,
   used,
@@ -28,12 +33,14 @@ function StatBar({
   );
 }
 
-export default function Stats() {
+export default function Stats(props: ServiceProps) {
+  // todo: complete
+
   return (
     <div className="card">
       <h1 className="font-light uppercase">Stats</h1>
       <StatBar title="Memory" used={50} total={100} />
-      <StatBar title="Disk Space" used={50} total={100} />
+      <StatBar title=" SpaDiskce" used={50} total={100} />
     </div>
   );
 }

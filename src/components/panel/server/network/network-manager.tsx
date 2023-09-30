@@ -1,8 +1,14 @@
+"use client";
+
 import { Button } from "@/components/button";
 import RecentConnection from "./connection";
 import Port from "./port";
+import { useFetcher } from "@/hooks/fetcher";
 
-export default function NetworkManager() {
+export default function NetworkManager({ server }: { server: string }) {
+  const { data } = useFetcher(`/api/servers/${server}/system/network/list`);
+  // todo: check again after the api is done
+
   return (
     <div className="flex w-full flex-col gap-8">
       <div className="flex w-full flex-col gap-4">
@@ -17,9 +23,9 @@ export default function NetworkManager() {
           </Button>
         </div>
         <div className="flex flex-wrap gap-4">
+          {/* <Port className="w-1/2 flex-1 bg-background-secondary" />
           <Port className="w-1/2 flex-1 bg-background-secondary" />
-          <Port className="w-1/2 flex-1 bg-background-secondary" />
-          <Port className="w-1/2 flex-1 bg-background-secondary" />
+          <Port className="w-1/2 flex-1 bg-background-secondary" /> */}
         </div>
       </div>
 

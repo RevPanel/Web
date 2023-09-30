@@ -1,4 +1,12 @@
-export default function Port({ className }: { className?: string }) {
+export default function Port({
+  className,
+  name,
+  port,
+}: {
+  className?: string;
+  name: string;
+  port: number;
+}) {
   return (
     <div
       className={
@@ -6,8 +14,8 @@ export default function Port({ className }: { className?: string }) {
         (className || "")
       }
     >
-      <p>Minecraft</p>
-      <p>(25565)</p>
+      <p>{name}</p>
+      <p>({port})</p>
       <p className="text-gradient ml-auto">Open</p>
     </div>
   );

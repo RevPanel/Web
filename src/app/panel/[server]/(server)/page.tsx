@@ -1,5 +1,10 @@
+"use client";
+
 import { Button } from "@/components/button";
 import ServerContainer from "@/components/panel/server";
+import { useFetcher } from "@/hooks/fetcher";
+import useServer from "@/hooks/server";
+import { Describable } from "@/types/service";
 import Image from "next/image";
 
 function ServerChart() {
@@ -21,6 +26,13 @@ function ServerChart() {
 }
 
 export default function ServicesHome() {
+  const server = useServer();
+  const {
+    data: services,
+  }: {
+    data?: Describable[];
+  } = useFetcher(`/api/servers/${server}/containers/list`);
+
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="mb-4 flex flex-wrap justify-between gap-2 lg:flex-nowrap">
@@ -36,9 +48,9 @@ export default function ServicesHome() {
       >
         Add new service
       </Button>
-      <ServerContainer />
-      <ServerContainer />
-      <ServerContainer />
+      {services?.map((service) => (
+        <ServerContainer key={service.id} {...service} serverId={server} />
+      ))}
     </div>
   );
 }

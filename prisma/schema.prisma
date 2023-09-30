@@ -44,7 +44,7 @@ enum InstallStatus {
 }
 
 model Server {
-  id          String        @id @default(uuid())
+  id          String        @id @default(cuid())
   name        String
   description String?
   ip          String

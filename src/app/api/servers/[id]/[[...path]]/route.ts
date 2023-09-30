@@ -25,6 +25,7 @@ async function handler(
 
   const { id, path } = params;
   const { method } = req;
+  const query = new URL(req.url).searchParams;
 
   const server = await prisma.server.findUnique({
     where: {
@@ -41,24 +42,36 @@ async function handler(
   }
 
   try {
+    const body =
+      req.method !== "GET" && req.body !== null ? await req.json() : undefined;
+
     const res = await axios({
       method,
-      url: `http://${server.ip}:8080/${path.join("/")}`,
+      url: `http://${server.ip}:8080/${path.join("/")}${
+        query ? `?${query.toString()}` : ""
+      }`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${server.key}`,
+        "Panel-User": session.user.userId,
       },
-      data: req.body ? JSON.stringify(req.body) : undefined,
+      data: body ? JSON.stringify(body) : undefined,
     });
 
-    return new NextResponse(JSON.stringify(res.data), {
-      status: res.status,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return new NextResponse(
+      res.headers["content-type"]?.toString().includes("application/json")
+        ? JSON.stringify(res.data)
+        : res.data || "",
+      {
+        status: res.status,
+        headers: {
+          "Content-Type":
+            res.headers["content-type"]?.toString() || "Application/Json",
+          "Content-Disposition": res.headers["content-disposition"]?.toString(),
+        },
+      }
+    );
   } catch (err: any) {
-    console.log(err);
     return new NextResponse(JSON.stringify(err.response.data), {
       status: err.response.status,
       headers: {
@@ -69,6 +82,9 @@ async function handler(
 }
 
 export {
-    handler as DELETE, handler as GET, handler as PATCH, handler as POST, handler as PUT
+  handler as DELETE,
+  handler as GET,
+  handler as PATCH,
+  handler as POST,
+  handler as PUT,
 };
-
