@@ -41,7 +41,7 @@ export default function Navbar() {
           Login
         </LinkButton>
       </SignedOut>
-      <button className="md:hidden">
+      <button className="md:hidden" aria-label="Open menu">
         <FontAwesomeIcon icon={faBars} className="text-2xl" />
       </button>
     </div>

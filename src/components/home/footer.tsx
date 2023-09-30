@@ -10,10 +10,10 @@ export default function Footer() {
         <div className="flex flex-col gap-2">
           <h1 className="text-xl">VPS Panel</h1>
           <div className="flex gap-2">
-            <LinkButton role="secondary" href="/discord">
+            <LinkButton aria-label="Discord" role="secondary" href="/discord">
               <FontAwesomeIcon icon={faDiscord} />
             </LinkButton>
-            <LinkButton role="secondary" href="/github">
+            <LinkButton aria-label="GitHub" role="secondary" href="/github">
               <FontAwesomeIcon icon={faGithub} />
             </LinkButton>
           </div>

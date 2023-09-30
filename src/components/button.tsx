@@ -19,7 +19,7 @@ export function Button(
     role: ButtonRole;
   }
 ) {
-  const { className, ...rest } = props;
+  const { className, role, ...rest } = props;
   const roleClass = genClasses(props.role);
 
   return (
@@ -40,7 +40,7 @@ export function LinkButton(
     role: ButtonRole;
   }
 ) {
-  const { className, ...rest } = props;
+  const { className, role, ...rest } = props;
   const roleClass = genClasses(props.role);
 
   return (

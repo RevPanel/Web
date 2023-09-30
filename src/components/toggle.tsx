@@ -5,7 +5,7 @@ export default function Toggle(props: InputHTMLAttributes<HTMLInputElement>) {
 
   return (
     <label className="switch">
-      <input type="checkbox" {...rest} />
+      <input type="checkbox" {...rest} aria-label="Switch" />
       <span className="slider round"></span>
     </label>
   );
