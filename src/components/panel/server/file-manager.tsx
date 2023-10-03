@@ -16,7 +16,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import moment from "moment";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState, type DragEvent } from "react";
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 
 type FileInfo = {
@@ -32,19 +33,55 @@ function FileItem({
   onSelect,
   setPath,
   download,
+  move,
 }: {
   file: FileInfo;
   selected: boolean;
   onSelect: () => void;
   setPath: () => void;
   download?: () => void;
+  move: (file: string) => void;
 }) {
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
+
+  const handleDragStart = (event: DragEvent<HTMLDivElement>) => {
+    event.dataTransfer.setData("text/plain", file.name);
+  };
+
+  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDraggingOver(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDraggingOver(false);
+  };
+
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDraggingOver(false);
+    const data = event.dataTransfer.getData("text/plain");
+    if (data) {
+      move(data);
+    }
+  };
+
   return (
     <ContextMenuTrigger
       collect={() => ({ name: file.name })}
       id="file_manager_cm"
     >
-      <div className="flex items-center justify-between">
+      <div
+        draggable
+        className={
+          "flex items-center justify-between " +
+          (isDraggingOver && file.type === "directory" ? "bg-background" : "")
+        }
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
         <div className="flex items-center gap-4">
           <input
             type="checkbox"
@@ -93,6 +130,7 @@ export default function FileManager(props: {
   const [renaming, setRenaming] = useState<string>("");
   const [createType, setCreateType] = useState<"file" | "directory">("file");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const router = useRouter();
   const {
     isOpen: isRenameOpen,
     onOpen: onRenameOpen,
@@ -168,6 +206,23 @@ export default function FileManager(props: {
             type: "directory",
             modified: new Date(0),
           }}
+          move={(f: string) => {
+            axios
+              .post(
+                "/api/servers/" +
+                  props.server +
+                  `/files/${props.service || "root"}/move?file=${path}/${f}`,
+                {
+                  newName: path + "/../" + f,
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              )
+              .then(() => mutate());
+          }}
         />
 
         {files?.map((file: FileInfo) => (
@@ -184,7 +239,6 @@ export default function FileManager(props: {
             }}
             setPath={() => {
               setPath((prev: string) => {
-                console.log(prev);
                 return prev + "/" + file.name;
               });
             }}
@@ -194,6 +248,23 @@ export default function FileManager(props: {
                 props.service || "root"
               }/download?file=${path}/${file.name}`;
               window.open(url, "_blank");
+            }}
+            move={(f: string) => {
+              axios
+                .post(
+                  "/api/servers/" +
+                    props.server +
+                    `/files/${props.service || "root"}/move?file=${path}/${f}`,
+                  {
+                    newName: path + "/" + file.name + "/" + f,
+                  },
+                  {
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                  }
+                )
+                .then(() => mutate());
             }}
             key={file.name}
           />
@@ -244,13 +315,29 @@ export default function FileManager(props: {
       <ContextMenu id="file_manager_cm">
         <MenuItem
           onClick={(_, { name }: { name: string }) => {
-            // todo: launch editor
+            if (name === "..") {
+              return;
+            }
+
+            const base = props.service
+              ? `/panel/${props.server}/${props.service}/files`
+              : `/panel/${props.server}/files`;
+
+            if (files?.find((file) => file.name === name)?.type === "directory") {
+              return;
+            }
+
+            router.push(base + "/editor?file=" + path + "/" + name);
           }}
         >
           <FontAwesomeIcon icon={faEdit} /> Edit
         </MenuItem>
         <MenuItem
           onClick={(_, { name }: { name: string }) => {
+            if (name === "..") {
+              return;
+            }
+
             setRenaming(name);
             onRenameOpen();
           }}
@@ -259,6 +346,10 @@ export default function FileManager(props: {
         </MenuItem>
         <MenuItem
           onClick={(_, { name }: { name: string }) => {
+            if (name === "..") {
+              return;
+            }
+
             axios
               .delete(
                 "/api/servers/" +

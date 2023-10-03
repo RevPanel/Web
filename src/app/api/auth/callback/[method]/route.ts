@@ -1,12 +1,29 @@
-import { auth, discordAuth } from "@/lib/lucia";
+import { auth, discordAuth, validateCallback } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import { OAuthRequestError } from "@lucia-auth/oauth";
 import { cookies, headers } from "next/headers";
 
 import type { NextRequest } from "next/server";
 
-export const GET = async (request: NextRequest) => {
-  const storedState = cookies().get("discord_oauth_state")?.value;
+export const GET = async (
+  request: NextRequest,
+  {
+    params,
+  }: {
+    params: {
+      method: string;
+    };
+  }
+) => {
+  if (!["discord", "github"].includes(params.method)) {
+    return new Response(null, {
+      status: 400,
+    });
+  }
+
+  const storedState = cookies().get(
+    `${params.method.toLowerCase()}_oauth_state`
+  )?.value;
   const url = new URL(request.url);
   const state = url.searchParams.get("state");
   const code = url.searchParams.get("code");
@@ -18,16 +35,21 @@ export const GET = async (request: NextRequest) => {
   }
 
   try {
-    const { getExistingUser, discordUser, createUser } =
-      await discordAuth.validateCallback(code);
+    const res = await validateCallback(params.method, code);
+    if (!res) {
+      return new Response(null, {
+        status: 400,
+      });
+    }
 
+    const { getExistingUser, platformUser, createUser } = res;
     const getUser = async () => {
       let existingUser = await getExistingUser();
       if (existingUser) return existingUser;
 
       const prismaUser = await prisma.user.findFirst({
         where: {
-          email: discordUser.email,
+          email: platformUser.email!,
         },
       });
 
@@ -36,18 +58,29 @@ export const GET = async (request: NextRequest) => {
       if (prismaUser) {
         await auth.createKey({
           userId: prismaUser.id,
-          providerId: "discord",
-          providerUserId: discordUser.id,
+          providerId: params.method.toLowerCase(),
+          providerUserId: String(platformUser.id),
           password: null,
         });
 
         user = await auth.getUser(prismaUser.id);
       } else {
+        let username;
+        let name;
+
+        if ("global_name" in platformUser && "username" in platformUser) {
+          name = platformUser.global_name || platformUser.username;
+          username = platformUser.username.toLowerCase();
+        } else if ("login" in platformUser) {
+          name = platformUser.name;
+          username = platformUser.login.toLowerCase();
+        }
+
         user = await createUser({
           attributes: {
-            username: discordUser.username.toLowerCase(),
-            email: discordUser.email!,
-            name: discordUser.global_name || discordUser.username,
+            username: username!,
+            email: platformUser.email!,
+            name: name!,
           },
         });
       }
@@ -71,7 +104,7 @@ export const GET = async (request: NextRequest) => {
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/",
+        Location: "/panel",
       },
     });
   } catch (e) {
@@ -80,7 +113,7 @@ export const GET = async (request: NextRequest) => {
         status: 400,
       });
     }
-
+    
     return new Response(null, {
       status: 500,
     });

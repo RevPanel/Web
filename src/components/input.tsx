@@ -14,9 +14,13 @@ export default function FormInput(
         (className || "")
       }
       value={bind ? bind[0] : undefined}
-      onChange={(e) => {
-        bind && bind[1](e.target.value);
-      }}
+      onChange={
+        bind
+          ? (e) => {
+              bind[1](e.target.value);
+            }
+          : undefined
+      }
       {...rest}
     >
       {props.children}

@@ -68,6 +68,9 @@ async function handler(
           "Content-Type":
             res.headers["content-type"]?.toString() || "Application/Json",
           "Content-Disposition": res.headers["content-disposition"]?.toString(),
+          "Content-Transfer-Encoding":
+            res.headers["content-transfer-encoding"]?.toString(),
+          "Content-Length": res.headers["content-length"]?.toString(),
         },
       }
     );

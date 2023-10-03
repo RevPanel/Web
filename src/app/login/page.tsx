@@ -60,6 +60,13 @@ export default async function Page() {
           >
             Discord
           </LinkButton>
+          <LinkButton
+            href="/api/auth/login/github"
+            role="secondary"
+            className="w-full flex-1"
+          >
+            GitHub
+          </LinkButton>
         </div>
       </Form>
     </div>

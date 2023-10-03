@@ -66,7 +66,7 @@ export const POST = async (request: NextRequest) => {
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/",
+        Location: "/panel",
       },
     });
   } catch (e) {
