@@ -11,7 +11,7 @@ export default function SidebarWrapper({
 
   return (
     <div
-      className="fixed z-10 flex min-h-screen min-w-[15rem] flex-col gap-6 bg-background-secondary md:static"
+      className="fixed z-10 flex min-h-screen min-w-[20rem] flex-col gap-2 bg-background-secondary md:static"
       style={{
         left: open ? "0" : "-100rem",
       }}

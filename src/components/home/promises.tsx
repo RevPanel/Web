@@ -23,7 +23,7 @@ export default function Promises() {
           </div>
           <div className="flex flex-col items-center gap-2">
             <h1 className="text-2xl font-bold">Uptime</h1>
-            <h2 className="w-3/4 text-justify text-tertiary">
+            <h2 className="w-3/4 text-tertiary">
               We always do our best to fix downtimes as soon as they happens
             </h2>
           </div>
@@ -34,7 +34,7 @@ export default function Promises() {
           </div>
           <div className="flex flex-col items-center gap-2">
             <h1 className="text-2xl font-bold">Updated</h1>
-            <h2 className="w-3/4 text-justify text-tertiary">
+            <h2 className="w-3/4 text-tertiary">
               We ship new features monthly to always keep our standards high.
             </h2>
           </div>
@@ -45,7 +45,7 @@ export default function Promises() {
           </div>
           <div className="flex flex-col items-center gap-2">
             <h1 className="text-2xl font-bold">We listen</h1>
-            <h2 className="w-3/4 text-justify text-tertiary">
+            <h2 className="w-3/4 text-tertiary">
               You are at our first place as in priority. We always listen to
               feedbacks for reports and improvements.
             </h2>

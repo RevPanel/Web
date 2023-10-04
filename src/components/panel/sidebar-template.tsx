@@ -28,17 +28,17 @@ export const accountSection: RouteSection = {
     {
       title: "Account",
       icon: faUserCircle,
-      href: "/account",
+      href: "/panel/account",
     },
     {
       title: "API Keys",
       icon: faKey,
-      href: "/account/keys",
+      href: "/panel/account/keys",
     },
     {
       title: "User Logs",
       icon: faAlignLeft,
-      href: "/account/logs",
+      href: "/panel/account/logs",
     },
     {
       title: "Logout",
@@ -49,7 +49,6 @@ export const accountSection: RouteSection = {
 };
 
 function comparePaths(current: string, expected: string) {
-  // compare the last segment of the path
   const currentSplit = current.split("/");
   const expectedSplit = expected.split("/");
 
@@ -69,33 +68,28 @@ export default function SidebarTemplate({
 
   return (
     <>
-      <div className="border-b border-b-tertiary p-6">
+      <div className="p-6">
         <h1 className="text-4xl font-extrabold">VPS Panel</h1>
       </div>
       {sections.map((section) => (
-        <div key={section.title} className="ml-8">
-          <p className="text-xl uppercase">{section.title}</p>
-          <ul className="flex flex-col gap-3">
+        <div key={section.title} className="mx-4">
+          <ul className="flex flex-col gap-2">
             {section.links.map((link) => (
-              <li key={link.title}>
+              <li
+                key={link.title}
+                className={
+                  "rounded-lg p-2 pl-4 hover:bg-background/60 " +
+                  (comparePaths(path, link.href) ? "bg-background/60" : "")
+                }
+              >
                 <Link
                   href={link.href}
                   className={
-                    "flex w-full items-center gap-2 text-xl text-white " +
-                    (comparePaths(path, link.href)
-                      ? "font-bold"
-                      : "hover:font-semibold")
+                    "flex w-full items-center gap-2 text-lg text-white " +
+                    (comparePaths(path, link.href) ? "font-bold" : "")
                   }
                 >
-                  <FontAwesomeIcon
-                    icon={link.icon}
-                    className="mr-2"
-                    width={25}
-                  />{" "}
                   {link.title}
-                  {comparePaths(path, link.href) && (
-                    <span className="ml-auto block h-8 w-1 rounded-xl bg-white"></span>
-                  )}
                 </Link>
               </li>
             ))}
