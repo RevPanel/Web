@@ -1,7 +1,10 @@
 "use client";
 
-import StartIcon from "@/components/icons/Start";
 import { useFetcher } from "@/hooks/fetcher";
+import { faCross } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 
 type Task = {
   pid: number;
@@ -28,30 +31,48 @@ export default function TaskManager({
   return (
     <div className="w-full">
       <div className="card relative w-full overflow-x-auto p-4">
-        <div className="min-w-[25rem]">
-          <div className="flex justify-between">
-            <div className="font-bold">Name</div>
-            <div className="font-bold">Status</div>
-            <div className="font-bold">CPU</div>
-            <div className="font-bold">Memory</div>
-            <div className="font-bold">Disk</div>
-            <div className="font-bold">Network</div>
-          </div>
-          <div className="flex h-[70vh] w-full flex-col gap-2 overflow-y-auto">
+        <table className="h-[70vh] w-full overflow-y-auto">
+          <tbody>
+            <tr>
+              <td className="font-bold">Name</td>
+              <td className="font-bold">Status</td>
+              <td className="font-bold">CPU</td>
+              <td className="font-bold">Memory</td>
+              <td className="font-bold">Disk</td>
+              <td className="font-bold">Network</td>
+            </tr>
+
             {data?.map((task) => (
-              <div key={task.pid} className="flex items-center justify-between">
-                <div>{task.command.split("/").pop()?.split(" ").shift()}</div>
-                <div>
-                  <StartIcon width={20} height={20} className="text-white" />
-                </div>
-                <div>{task.cpu}%</div>
-                <div>{task.memory}%</div>
-                <div>10MB</div>
-                <div>2,5MBps</div>
-              </div>
+              <ContextMenuTrigger
+                key={task.pid}
+                id="task_cm"
+                renderTag={"tr"}
+                collect={() => ({ pid: task.pid })}
+              >
+                <td>{task.command.split("/").pop()?.split(" ").shift()}</td>
+                <td>Running</td>
+                <td>{task.cpu}%</td>
+                <td>{task.memory}%</td>
+                <td>10MB</td>
+                <td>2,5MBps</td>
+              </ContextMenuTrigger>
             ))}
-          </div>
-        </div>
+          </tbody>
+        </table>
+
+        <ContextMenu id="task_cm">
+          <MenuItem
+            onClick={async (_, { pid }: { pid: number }) => {
+              await axios.post(
+                `/api/servers/${server}/system/process/${pid}/kill`,
+                {}
+              );
+              mutate();
+            }}
+          >
+            <FontAwesomeIcon icon={faCross} /> Kill
+          </MenuItem>
+        </ContextMenu>
       </div>
     </div>
   );
