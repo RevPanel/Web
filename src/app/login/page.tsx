@@ -40,7 +40,7 @@ export default async function Page() {
           <Link href="/register" className="text-tertiary">
             Register
           </Link>
-          <Link href="/forgot" className="text-tertiary">
+          <Link href="/password/reset" className="text-tertiary">
             Forgot Password?
           </Link>
         </div>

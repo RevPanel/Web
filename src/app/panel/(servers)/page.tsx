@@ -12,7 +12,7 @@ async function getServerList(): Promise<ServerWithoutKey[]> {
 
   const servers = await prisma.server.findMany({
     where: {
-      ownerId: session.userId,
+      ownerId: session.user.userId,
     },
   });
 
