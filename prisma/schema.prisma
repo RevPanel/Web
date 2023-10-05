@@ -17,6 +17,7 @@ model User {
   auth_session Session[]
   key          Key[]
   servers      Server[]
+  logs         UserLogs[]
 }
 
 model Session {
@@ -54,4 +55,20 @@ model Server {
   ownerId     String
   status      InstallStatus @default(STARTED)
   createdAt   DateTime      @default(now())
+}
+
+model UserLogs {
+  id        Int        @id @default(autoincrement())
+  action    UserAction
+  data      String?
+  createdAt DateTime   @default(now())
+
+  user   User   @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId String
+}
+
+enum UserAction {
+  LOGIN
+  REGISTER
+  CREATE_SEVRER
 }

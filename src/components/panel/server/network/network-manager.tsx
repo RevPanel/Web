@@ -1,9 +1,8 @@
 "use client";
 
 import { Button } from "@/components/button";
-import RecentConnection from "./connection";
-import Port from "./port";
 import { useFetcher } from "@/hooks/fetcher";
+import RecentConnection from "./connection";
 
 export default function NetworkManager({ server }: { server: string }) {
   const { data } = useFetcher(`/api/servers/${server}/system/network/list`);

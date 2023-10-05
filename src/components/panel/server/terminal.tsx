@@ -1,9 +1,9 @@
 "use client";
 
 import type { ServiceProps } from "@/types/service";
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import socketIO, { Socket } from "socket.io-client";
-import axios from "axios";
 
 export function DockerTerminal(props: ServiceProps) {
   const [socket, setSocket] = useState<Socket | null>(null);

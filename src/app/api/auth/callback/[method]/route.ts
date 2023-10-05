@@ -1,6 +1,7 @@
-import { auth, discordAuth, validateCallback } from "@/lib/lucia";
+import { auth, validateCallback } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import { OAuthRequestError } from "@lucia-auth/oauth";
+import { UserAction } from "@prisma/client";
 import { cookies, headers } from "next/headers";
 
 import type { NextRequest } from "next/server";
@@ -101,6 +102,13 @@ export const GET = async (
 
     authRequest.setSession(session);
 
+    await prisma.userLogs.create({
+      data: {
+        userId: user.userId,
+        action: UserAction.LOGIN,
+      },
+    });
+
     return new Response(null, {
       status: 302,
       headers: {
@@ -113,7 +121,7 @@ export const GET = async (
         status: 400,
       });
     }
-    
+
     return new Response(null, {
       status: 500,
     });

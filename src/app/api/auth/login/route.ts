@@ -1,8 +1,10 @@
 import { auth } from "@/lib/lucia";
+import { LuciaError } from "lucia";
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
-import { LuciaError } from "lucia";
 
+import prisma from "@/lib/prisma";
+import { UserAction } from "@prisma/client";
 import type { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
@@ -31,6 +33,13 @@ export const POST = async (request: NextRequest) => {
 
     const authRequest = auth.handleRequest(request.method, context);
     authRequest.setSession(session);
+
+    await prisma.userLogs.create({
+      data: {
+        userId: key.userId,
+        action: UserAction.LOGIN,
+      },
+    });
 
     return new Response(null, {
       status: 302,

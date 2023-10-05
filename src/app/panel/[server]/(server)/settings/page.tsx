@@ -5,8 +5,8 @@ import Image from "next/image";
 
 export default function SettingsPage() {
   return (
-    <div className="flex flex-col lg:flex-row w-full justify-between gap-4">
-      <div className="flex lg:w-1/2 flex-col gap-4 xl:w-1/3">
+    <div className="flex w-full flex-col justify-between gap-4 lg:flex-row">
+      <div className="flex flex-col gap-4 lg:w-1/2 xl:w-1/3">
         <div className="card w-full p-4">
           <h1 className="font-bold">VPS Name</h1>
           <p className="text-justify">
@@ -53,7 +53,7 @@ export default function SettingsPage() {
           </div>
         </div>
       </div>
-      <div className="flex lg:w-1/2 flex-col gap-4 xl:w-1/3">
+      <div className="flex flex-col gap-4 lg:w-1/2 xl:w-1/3">
         <div className="flex flex-col gap-2">
           <h1 className="text-xl font-bold">Notifications</h1>
           <div className="flex flex-col gap-1">

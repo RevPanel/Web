@@ -10,7 +10,9 @@ function Start(
       <path
         d="M30.315 13.215L5.172.975C3.129-.02 0 .945 0 3.404v24.475c0 2.206 2.907 3.535 5.172 2.43l25.143-12.235c2.243-1.088 2.25-3.77 0-4.859z"
         fill={
-          props.gradient === "true" ? "url(#prefix__paint0_linear_5_296)" : "currentColor"
+          props.gradient === "true"
+            ? "url(#prefix__paint0_linear_5_296)"
+            : "currentColor"
         }
       />
       <defs>

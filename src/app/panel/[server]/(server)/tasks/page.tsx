@@ -4,7 +4,7 @@ import { useFetcher } from "@/hooks/fetcher";
 import { faCross } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
+import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
 
 type Task = {
   pid: number;

@@ -1,6 +1,7 @@
 import { auth } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import { error } from "@/utils/responses";
+import { UserAction } from "@prisma/client";
 import { randomUUID } from "crypto";
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
@@ -35,6 +36,14 @@ export async function POST(req: Request, res: Response) {
       description,
       key: randomUUID(),
       owner: session.user.userId,
+    },
+  });
+
+  await prisma.userLogs.create({
+    data: {
+      userId: session.user.userId,
+      action: UserAction.CREATE_SEVRER,
+      data: name,
     },
   });
 

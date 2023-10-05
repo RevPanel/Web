@@ -39,7 +39,7 @@ const Form = ({
         }
       }}
     >
-      {error && <p className="text-red-500 text-left">{error}</p>}
+      {error && <p className="text-left text-red-500">{error}</p>}
       {children}
     </form>
   );

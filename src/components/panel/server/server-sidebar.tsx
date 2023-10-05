@@ -8,7 +8,7 @@ import {
   faGears,
   faHome,
   faTasks,
-  faTerminal
+  faTerminal,
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "next/navigation";
 import SidebarTemplate, { accountSection } from "../sidebar-template";

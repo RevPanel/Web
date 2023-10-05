@@ -1,9 +1,9 @@
 import prismadb from "@/lib/prisma";
 import { prisma } from "@lucia-auth/adapter-prisma";
 import { discord, github } from "@lucia-auth/oauth/providers";
+import { Octokit } from "@octokit/core";
 import { lucia } from "lucia";
 import { nextjs_future } from "lucia/middleware";
-import { Octokit } from "@octokit/core";
 
 export const auth = lucia({
   env: process.env.NODE_ENV === "development" ? "DEV" : "PROD",

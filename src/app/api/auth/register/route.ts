@@ -1,4 +1,6 @@
 import { auth } from "@/lib/lucia";
+import prisma from "@/lib/prisma";
+import { UserAction } from "@prisma/client";
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -62,6 +64,13 @@ export const POST = async (request: NextRequest) => {
 
     const authRequest = auth.handleRequest(request.method, context);
     authRequest.setSession(session);
+
+    await prisma.userLogs.create({
+      data: {
+        userId: user.userId,
+        action: UserAction.REGISTER,
+      },
+    });
 
     return new Response(null, {
       status: 302,

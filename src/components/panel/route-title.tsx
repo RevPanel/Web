@@ -1,9 +1,9 @@
 "use client";
 
 import { capitalize } from "@/utils/text";
+import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import { useServerName, useServiceName } from "../servers";
-import Link from "next/link";
 
 export default function RouteTitle() {
   const { server, service } = useParams();

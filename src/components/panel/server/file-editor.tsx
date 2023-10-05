@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/button";
 import { useFetcher } from "@/hooks/fetcher";
-import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
+import Editor from "@monaco-editor/react";
 import axios from "axios";
 import { useState } from "react";
 

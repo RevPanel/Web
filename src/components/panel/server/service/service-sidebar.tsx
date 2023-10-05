@@ -6,8 +6,8 @@ import {
   faHome,
   faTerminal,
 } from "@fortawesome/free-solid-svg-icons";
-import SidebarTemplate, { accountSection } from "../../sidebar-template";
 import { useParams } from "next/navigation";
+import SidebarTemplate, { accountSection } from "../../sidebar-template";
 
 export default function ServiceSidebar() {
   const { server, service } = useParams();

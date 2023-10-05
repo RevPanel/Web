@@ -5,4 +5,3 @@ export default function useServer() {
 
   return params.server as string;
 }
-

@@ -1,6 +1,5 @@
 "use client";
 
-import { useFetcher } from "@/hooks/fetcher";
 import { ServiceProps } from "@/types/service";
 
 function StatBar({

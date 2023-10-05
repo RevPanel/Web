@@ -1,8 +1,8 @@
 import { auth } from "@/lib/lucia";
 import * as context from "next/headers";
 import Link from "next/link";
-import UserIcon from "./icons/User";
 import { cache } from "react";
+import UserIcon from "./icons/User";
 
 export const getSession = cache(() => {
   const authRequest = auth.handleRequest("GET", context);

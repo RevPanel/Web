@@ -1,4 +1,4 @@
-import ContextMenu from "react-contextmenu";
+import "react-contextmenu";
 
 declare module "react-contextmenu" {
   export interface ContextMenuProps {
