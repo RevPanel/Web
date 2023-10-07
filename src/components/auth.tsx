@@ -26,7 +26,7 @@ export async function SignedOut({ children }: { children: React.ReactNode }) {
 export function UserButton() {
   return (
     <Link
-      href="/account"
+      href="/panel/account"
       className="flex h-14 w-14 items-center justify-center rounded-xl bg-background-secondary p-4 text-3xl"
     >
       <UserIcon />

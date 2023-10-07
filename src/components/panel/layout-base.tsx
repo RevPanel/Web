@@ -2,6 +2,7 @@ import { UserButton } from "../auth";
 import BellIcon from "../icons/Bell";
 import RouteTitle from "./route-title";
 import SidebarWrapper from "./sidebar-wrapper";
+import Link from "next/link";
 
 export default function BaseLayout({
   sidebar,
@@ -24,6 +25,12 @@ export default function BaseLayout({
           </div>
         </div>
         {children}
+        <div className="mt-auto flex w-full flex-col justify-between border-t border-t-gray-900 pt-4 text-tertiary md:flex-row">
+          <p>Copyright &copy; VPS Panel - 2023</p>
+          <Link className="text-tertiary" href="mailto:contact@vpspanel.com">
+            contact@vpspanel.com
+          </Link>
+        </div>
       </div>
     </div>
   );
