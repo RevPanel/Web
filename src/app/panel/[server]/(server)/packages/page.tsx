@@ -3,7 +3,7 @@ import FormInput from "@/components/input";
 
 function PackageCard() {
   return (
-    <div className="rounded-xl bg-background-secondary w-80 h-64">
+    <div className="h-64 w-80 rounded-xl bg-background-secondary">
       <p>Package</p>
     </div>
   );
@@ -23,7 +23,7 @@ export default function Page() {
           Search
         </Button>
       </div>
-      <div className="flex gap-4 mt-8">
+      <div className="mt-8 flex gap-4">
         <PackageCard />
       </div>
     </div>
