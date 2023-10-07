@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { UserButton } from "../auth";
 import BellIcon from "../icons/Bell";
 import RouteTitle from "./route-title";
 import SidebarWrapper from "./sidebar-wrapper";
-import Link from "next/link";
 
 export default function BaseLayout({
   sidebar,

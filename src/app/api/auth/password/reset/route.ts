@@ -1,7 +1,5 @@
-import { auth } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import { randomUUID } from "crypto";
-import * as context from "next/headers";
 import { NextResponse } from "next/server";
 
 import type { NextRequest } from "next/server";
