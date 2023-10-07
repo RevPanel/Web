@@ -4,14 +4,10 @@ import RestartIcon from "@/components/icons/Restart";
 import StartIcon from "@/components/icons/Start";
 import StopIcon from "@/components/icons/Stop";
 import type { ServiceProps, SessionProps } from "@/types/service";
+import axios from "axios";
 
 async function run(action: string, props: ServiceProps) {
-  fetch(`/api/servers/${props.serverId}/containers/${props.id}/${action}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  axios.post(`/api/servers/${props.serverId}/containers/${props.id}/${action}`);
 }
 
 export default function QuickActions(props: ServiceProps & SessionProps) {

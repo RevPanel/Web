@@ -1,15 +1,17 @@
 "use client";
 
+import PlusIcon from "@/components/icons/Plus";
 import RestartIcon from "@/components/icons/Restart";
 import StartIcon from "@/components/icons/Start";
 import StopIcon from "@/components/icons/Stop";
+import TickIcon from "@/components/icons/Tick";
 import TickOffIcon from "@/components/icons/TickOff";
 import { useFetcher } from "@/hooks/fetcher";
 import { AuditLog, ServiceProps } from "@/types/service";
 import { capitalize } from "@/utils/text";
 import moment from "moment";
 
-function LogBar(props: AuditLog) {
+export function LogBar(props: AuditLog) {
   let icon;
 
   switch (props.action) {
@@ -21,6 +23,13 @@ function LogBar(props: AuditLog) {
       break;
     case "RESTART":
       icon = <RestartIcon className="h-8 w-6" />;
+      break;
+    case "CREATE_SEVRER":
+      icon = <PlusIcon className="h-8 w-6" />;
+      break;
+    case "LOGIN":
+    case "REGISTER":
+      icon = <TickIcon className="h-8 w-6" />;
       break;
     default:
       icon = <TickOffIcon className="h-8 w-6" />;
