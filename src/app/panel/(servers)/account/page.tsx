@@ -1,12 +1,16 @@
-"use client";
+import { getSession } from "@/components/auth";
 import { Button } from "@/components/button";
-import Devices from "@/components/panel/account/devices";
 import Drawer from "@/components/panel/account/drawer";
 import UpdateAvatar from "@/components/panel/account/update-avatar";
 import UpdateDetails from "@/components/panel/account/update-details";
 import UpdatePassword from "@/components/panel/account/update-password";
+import { auth } from "@/lib/lucia";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { faDiscord, faGithub } from "@fortawesome/free-brands-svg-icons";
+import {
+  faDiscord,
+  faGithub,
+  faGoogle,
+} from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faLock, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -31,66 +35,100 @@ function OauthConnection({
     >
       <FontAwesomeIcon icon={icon} className="text-xl" />
       <p>{name}</p>
-      <p className="text-gradient ml-auto">{link ? "Linked" : "Not linked"}</p>
+      {/* todo: allow linking */}
+      <p className="text-gradient ml-auto">
+        {link ? "Linked" : "Click to link"}
+      </p>
     </div>
   );
 }
 
-export default function Page() {
+async function getOauthState() {
+  const session = await getSession();
+  if (!session)
+    return {
+      github: false,
+      discord: false,
+      google: false,
+    };
+
+  const keys = await auth.getAllUserKeys(session.user.userId);
+
+  return {
+    github: keys.some((k) => k.providerId === "github"),
+    discord: keys.some((k) => k.providerId === "discord"),
+    google: keys.some((k) => k.providerId === "google"),
+  };
+}
+
+export default async function Page() {
+  const session = await getSession();
+  const state = await getOauthState();
+
   return (
-    <div>
-      <div className=" flex flex-col gap-3">
+    <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-3">
         <Drawer
           title="Verify your email address"
           content="We will send you an link to verify your email address"
           icon={faEnvelope}
-          buttonAction={() => {}}
+          link="/panel/account/verify-email"
         />
         <Drawer
           title="Setup 2fa authentication"
-          content="Lorem ipsum"
+          content="Your account should be secure and you should not worry about hackers who wants to rob your account. Setup a two factor authentication to stay safe"
           icon={faLock}
-          buttonAction={() => {}}
+          link="/panel/account/2fa"
         />
         <Drawer
           title="Add a new machine to the panel"
-          content="Lorem ipsum"
+          content="Add your first machine to the panel and enjoy all our features"
           icon={faPlus}
-          buttonAction={() => {}}
+          link="/panel"
         />
       </div>
-      <div className="mt-8 flex gap-6">
-        <div>
-          <h1 className="text-3xl font-extrabold uppercase">
+      <div className="flex flex-col gap-6 xl:flex-row">
+        <div className="xl:w-3/4">
+          <h1 className="w-fit text-3xl font-extrabold uppercase">
             Update your details
           </h1>
-          <div className="mt-4 flex justify-between gap-4">
+          <div className="mt-4 flex flex-col items-center gap-4 md:items-start lg:flex-row">
             <UpdateAvatar />
-            <UpdateDetails />
+            <UpdateDetails
+              defaultName={session.user.name}
+              defaultEmail={session.user.email}
+            />
           </div>
         </div>
         <UpdatePassword />
       </div>
-      <div className="mt-8 flex w-full gap-6">
-        <div className="w-1/2">
+      <div className="flex w-full flex-col gap-6 md:flex-row">
+        <div className="md:w-1/2">
           <h1 className="text-3xl font-extrabold uppercase">
             Oauth connections
           </h1>
           <div className="mt-4 flex flex-col gap-4">
-            <OauthConnection name="Github" icon={faEnvelope} link={true} />
-            <OauthConnection name="Github" icon={faGithub} link={false} />
-            <OauthConnection name="Discord" icon={faDiscord} link={true} />
+            <OauthConnection
+              name="GitHub"
+              icon={faGithub}
+              link={state.github}
+            />
+            <OauthConnection
+              name="Google"
+              icon={faGoogle}
+              link={state.google}
+            />
+            <OauthConnection
+              name="Discord"
+              icon={faDiscord}
+              link={state.discord}
+            />
           </div>
         </div>
-        <div className="w-1/2">
+        <div className="md:w-1/2">
           <h1 className="text-3xl font-extrabold uppercase">Devices</h1>
-          <div className="mt-4 flex gap-4">
-            <Devices
-              name="Test"
-              status={true}
-              location="Test"
-              ip="127.0.0.1"
-            />
+          <div className="mt-4 flex flex-col gap-4 md:flex-row">
+            {/* todo: code backend <Devices name="Test" status={true} location="Test" ip="127.0.0.1" />
             <Devices
               name="Test"
               status={false}
@@ -102,7 +140,7 @@ export default function Page() {
               status={false}
               location="Test"
               ip="127.0.0.1"
-            />
+            /> */}
           </div>
           <Button role="primary" className="mt-4 w-full !p-4 !px-8 font-medium">
             View more
