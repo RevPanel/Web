@@ -88,7 +88,7 @@ export default function SidebarTemplate({
                     (comparePaths(path, link.href) ? "font-bold" : "")
                   }
                 >
-                  {link.title}
+                  <p>{link.title}</p>
                 </Link>
               </li>
             ))}
