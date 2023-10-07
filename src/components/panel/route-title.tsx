@@ -25,7 +25,7 @@ export default function RouteTitle() {
             </Link>
           </h2>
           <h1 className="text-2xl font-extrabold">
-            {capitalize(pathname.split("/").slice(4) || "Dashboard")}
+            {capitalize(pathname.split("/").slice(4)) || "Dashboard"}
           </h1>
         </div>
       );
@@ -39,7 +39,7 @@ export default function RouteTitle() {
           </Link>
         </h2>
         <h1 className="text-2xl font-extrabold">
-          {capitalize(pathname.split("/").slice(3) || "Dashboard")}
+          {capitalize(pathname.split("/").slice(3)) || "Dashboard"}
         </h1>
       </div>
     );

@@ -6,6 +6,7 @@ import { useFetcher } from "@/hooks/fetcher";
 import useServer from "@/hooks/server";
 import { Describable } from "@/types/service";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 
 function ServerChart() {
   return (
@@ -29,9 +30,15 @@ export default function ServicesHome() {
   const server = useServer();
   const {
     data: services,
+    error,
   }: {
     data?: Describable[];
+    error: any;
   } = useFetcher(`/api/servers/${server}/containers/list`);
+
+  if (error?.response?.status === 404 || error?.response?.status === 401) {
+    return notFound();
+  }
 
   return (
     <div className="flex w-full flex-col gap-4">

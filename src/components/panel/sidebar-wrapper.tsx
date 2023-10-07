@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function SidebarWrapper({
   sidebar,
@@ -8,23 +9,31 @@ export default function SidebarWrapper({
   sidebar: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <div
       className="fixed z-10 flex min-h-screen min-w-[20rem] flex-col gap-2 bg-background-secondary md:static"
       style={{
-        left: open ? "0" : "-100rem",
+        left: open ? "0" : "-20rem",
+        transition: "left 0.5s ease-in-out",
       }}
     >
       {sidebar}
-      <button className="bg-gradient fixed bottom-6 right-6 flex h-14 w-14 items-center justify-center rounded-xl p-4 text-3xl md:hidden">
+      <button
+        onClick={() => setOpen((prev) => !prev)}
+        className="bg-gradient fixed bottom-6 left-6 flex h-14 w-14 items-center justify-center rounded-xl p-4 text-3xl md:hidden"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6 text-white"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
-          onClick={() => setOpen((prev) => !prev)}
         >
           {open ? (
             <path

@@ -1,3 +1,5 @@
+import type { UserAction } from "@prisma/client";
+
 export interface Describable {
   id: string;
   name: string;
@@ -13,10 +15,17 @@ export interface SessionProps {
   session: any;
 }
 
+export type ServiceLogAction =
+  | "START"
+  | "STOP"
+  | "RESTART"
+  | "COMMAND"
+  | "CREATE";
+
 export interface AuditLog {
   id: number;
-  action: "START" | "STOP" | "RESTART" | "COMMAND" | "CREATE";
-  data?: string;
+  action: ServiceLogAction | UserAction;
+  data: string | null;
   userId: string;
   createdAt: Date;
 }
