@@ -38,7 +38,7 @@ export default function PackageCard(props: ImageInfo) {
           <ul className="list-inside list-disc text-left">
             {props.ports.map((port) => (
               <li key={port.id}>
-                {port.publicPort}: {port.name}
+                {port.containerPort}: {port.name}
               </li>
             ))}
           </ul>
