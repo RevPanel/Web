@@ -75,12 +75,17 @@ async function handler(
       }
     );
   } catch (err: any) {
-    return new NextResponse(JSON.stringify(err.response.data), {
-      status: err.response.status,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return new NextResponse(
+      JSON.stringify(
+        err.response?.data || { error: "Could not reach the external server" }
+      ),
+      {
+        status: err.response?.status || 500,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   }
 }
 

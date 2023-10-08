@@ -8,7 +8,7 @@ export default function Footer() {
     <footer className="mx-auto flex flex-col gap-8 border-t border-t-gray-900 py-4 md:w-4/5">
       <div className="flex flex-col items-center justify-between gap-4 md:flex-row md:gap-0">
         <div className="flex flex-col gap-2">
-          <h1 className="text-xl">VPS Panel</h1>
+          <h1 className="text-xl">RevPanel</h1>
           <div className="flex gap-2">
             <LinkButton aria-label="Discord" role="secondary" href="/discord">
               <FontAwesomeIcon icon={faDiscord} />
@@ -73,9 +73,9 @@ export default function Footer() {
         </div>
       </div>
       <div className="flex w-full flex-col justify-between border-t border-t-gray-900 pt-4 text-tertiary md:flex-row">
-        <p>Copyright &copy; VPS Panel - 2023</p>
-        <Link className="text-tertiary" href="mailto:contact@vpspanel.com">
-          contact@vpspanel.com
+        <p>Copyright &copy; RevPanel - 2023</p>
+        <Link className="text-tertiary" href="mailto:contact@revpanel.io">
+          contact@revpanel.io
         </Link>
       </div>
     </footer>

@@ -68,7 +68,7 @@ export default function SidebarTemplate({
   return (
     <>
       <div className="p-6">
-        <h1 className="text-4xl font-extrabold">VPS Panel</h1>
+        <h1 className="text-4xl font-extrabold">RevPanel</h1>
       </div>
       {sections.map((section) => (
         <div key={section.title} className="mx-4">

@@ -14,7 +14,7 @@ export default function BaseLayout({
   return (
     <div className="flex h-full w-full">
       <SidebarWrapper sidebar={sidebar} />
-      <div className="my-6 flex w-full flex-col gap-8 overflow-y-auto px-10">
+      <div className="my-6 flex min-h-[94vh] w-full flex-col gap-8 overflow-y-auto px-10">
         <div className="flex w-full justify-between">
           <RouteTitle />
           <div className="flex gap-4">
@@ -26,9 +26,9 @@ export default function BaseLayout({
         </div>
         {children}
         <div className="mt-auto flex w-full flex-col justify-between border-t border-t-gray-900 pt-4 text-tertiary md:flex-row">
-          <p>Copyright &copy; VPS Panel - 2023</p>
-          <Link className="text-tertiary" href="mailto:contact@vpspanel.com">
-            contact@vpspanel.com
+          <p>Copyright &copy; RevPanel - 2023</p>
+          <Link className="text-tertiary" href="mailto:contact@revpanel.io">
+            contact@revpanel.io
           </Link>
         </div>
       </div>
