@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/button";
+import { LinkButton } from "@/components/button";
 import ServerContainer from "@/components/panel/server";
 import { useFetcher } from "@/hooks/fetcher";
 import useServer from "@/hooks/server";
@@ -49,12 +49,13 @@ export default function ServicesHome() {
         <ServerChart />
       </div>
 
-      <Button
+      <LinkButton
+        href={`/panel/${server}/add`}
         role="primary"
         className="mb-4 ml-auto px-20 py-4 font-extrabold uppercase"
       >
         Add new service
-      </Button>
+      </LinkButton>
       {services?.map((service) => (
         <ServerContainer key={service.id} {...service} serverId={server} />
       ))}

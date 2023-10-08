@@ -94,5 +94,5 @@ export {
   handler as GET,
   handler as PATCH,
   handler as POST,
-  handler as PUT,
+  handler as PUT
 };
