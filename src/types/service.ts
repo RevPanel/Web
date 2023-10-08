@@ -1,4 +1,4 @@
-import type { UserAction } from "@prisma/client";
+import type { ImagePort, UserAction } from "@prisma/client";
 
 export interface Describable {
   id: string;
@@ -29,3 +29,14 @@ export interface AuditLog {
   userId: string;
   createdAt: Date;
 }
+
+export type ImageInfo = {
+  id: string;
+  name: string;
+  description: string;
+  version: string;
+  homepage: string | null;
+  createdAt: Date;
+  dockerImage: string;
+  ports: ImagePort[];
+};

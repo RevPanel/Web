@@ -1,15 +1,29 @@
 import { Button } from "@/components/button";
 import FormInput from "@/components/input";
+import PackageCard from "@/components/panel/server/package";
+import prisma from "@/lib/prisma";
+import { ImageInfo } from "@/types/service";
 
-function PackageCard() {
-  return (
-    <div className="h-64 w-80 rounded-xl bg-background-secondary">
-      <p>Package</p>
-    </div>
-  );
+async function getPackages(): Promise<ImageInfo[]> {
+  const images = await prisma.imageConfiguration.findMany({
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      version: true,
+      homepage: true,
+      createdAt: true,
+      dockerImage: true,
+      ports: true,
+    },
+  });
+
+  return images;
 }
 
-export default function Page() {
+export default async function Page() {
+  const packages = await getPackages();
+
   return (
     <div>
       <div className="flex gap-4">
@@ -24,7 +38,9 @@ export default function Page() {
         </Button>
       </div>
       <div className="mt-8 flex gap-4">
-        <PackageCard />
+        {packages.map((pack) => (
+          <PackageCard key={pack.id} {...pack} />
+        ))}
       </div>
     </div>
   );

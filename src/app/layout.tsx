@@ -9,7 +9,7 @@ config.autoAddCss = false;
 const font = Space_Grotesk({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "VPS Panel",
+  title: "RevPanel",
   description: "The panel everyone can use",
 };
 

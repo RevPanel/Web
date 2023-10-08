@@ -8,7 +8,7 @@ export default function SettingsPage() {
     <div className="flex w-full flex-col justify-between gap-4 lg:flex-row">
       <div className="flex flex-col gap-4 lg:w-1/2 xl:w-1/3">
         <div className="card w-full p-4">
-          <h1 className="font-bold">VPS Name</h1>
+          <h1 className="font-bold">Server Name</h1>
           <p className="text-justify">
             Lorem ipsum dolor sit amet. Et suscipit molestiae ut cumque commodi
             sit culpa explicabo.
@@ -85,7 +85,7 @@ export default function SettingsPage() {
           </div>
         </div>
         <Button role="secondary" className="uppercase">
-          Remove vps
+          Remove server
         </Button>
       </div>
     </div>

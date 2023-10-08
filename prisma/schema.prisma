@@ -67,6 +67,31 @@ model UserLogs {
   userId String
 }
 
+model ImageConfiguration {
+  id String @id @default(cuid())
+
+  name        String
+  description String
+  version     String
+  homepage    String?
+  mountPath   String?
+  createdAt   DateTime @default(now())
+
+  environments String[]
+  ports        ImagePort[]
+  dockerImage  String
+}
+
+model ImagePort {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  containerPort Int
+
+  image   ImageConfiguration @relation(fields: [imageId], references: [id], onDelete: Cascade)
+  imageId String
+}
+
 enum UserAction {
   LOGIN
   REGISTER
