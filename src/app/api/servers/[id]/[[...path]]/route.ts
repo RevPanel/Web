@@ -16,11 +16,31 @@ async function handler(
     };
   }
 ) {
-  const authRequest = auth.handleRequest(req.method, context);
-  const session = await authRequest.validate();
+  let userId;
 
-  if (!session) {
-    return error("Not logged in", 403);
+  if (req.headers.has("Authorization")) {
+    const key = req.headers.get("Authorization")?.split(" ")[1];
+
+    const k = await prisma.apiKey.findUnique({
+      where: {
+        key,
+      },
+    });
+
+    if (!k) {
+      return error("Unauthorized", 403);
+    }
+
+    userId = k.ownerId;
+  } else {
+    const authRequest = auth.handleRequest(req.method, context);
+    const session = await authRequest.validate();
+
+    if (!session) {
+      return error("Not logged in", 403);
+    }
+
+    userId = session.user.userId;
   }
 
   const { id, path } = params;
@@ -37,7 +57,7 @@ async function handler(
     return error("Server not found", 404);
   }
 
-  if (server.ownerId !== session.user.userId) {
+  if (server.ownerId !== userId) {
     return error("Unauthorized", 403);
   }
 
@@ -53,7 +73,7 @@ async function handler(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${server.key}`,
-        "Panel-User": session.user.userId,
+        "Panel-User": userId,
       },
       data: body ? JSON.stringify(body) : undefined,
     });
@@ -94,5 +114,5 @@ export {
   handler as GET,
   handler as PATCH,
   handler as POST,
-  handler as PUT
+  handler as PUT,
 };

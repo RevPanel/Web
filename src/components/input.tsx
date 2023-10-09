@@ -10,7 +10,7 @@ export default function FormInput(
   return (
     <input
       className={
-        "block w-fit min-w-[10rem] xl:min-w-[20rem] rounded-xl bg-background-secondary px-4 py-2 text-white " +
+        "block w-fit min-w-[10rem] rounded-xl bg-background-secondary px-4 py-2 text-white daisy-input xl:min-w-[20rem] " +
         (className || "")
       }
       value={bind ? bind[0] : undefined}

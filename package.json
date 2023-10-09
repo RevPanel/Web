@@ -8,9 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "prisma": "dotenv -e .env.local prisma",
-    "migrate:new": "prisma migrate dev",
-    "migrate:run": "prisma migrate deploy",
-    "postinstall": "prisma generate"
+    "migrate:new": "pnpm prisma migrate dev",
+    "migrate:run": "pnpm prisma migrate deploy",
+    "postinstall": "pnpm prisma generate"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
