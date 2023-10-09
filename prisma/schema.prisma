@@ -16,6 +16,7 @@ model User {
 
   auth_session Session[]
   key          Key[]
+  apiKeys      ApiKey[]
   servers      Server[]
   logs         UserLogs[]
 }
@@ -37,6 +38,17 @@ model Key {
   user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
   @@index([user_id])
+}
+
+model ApiKey {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique @default(cuid())
+  description String
+  ips         String[]
+  createdAt   DateTime @default(now())
+
+  owner   User   @relation(references: [id], fields: [ownerId], onDelete: Cascade)
+  ownerId String
 }
 
 enum InstallStatus {

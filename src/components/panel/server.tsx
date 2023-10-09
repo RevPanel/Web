@@ -50,6 +50,14 @@ export default function ServerContainer({
               "%"
             : "Loading"}
         </p>
+        <p>
+          Disk:{" "}
+          {stats?.offline
+            ? "0%"
+            : stats
+            ? ((stats.disk?.usage / stats.disk?.total) * 100).toFixed() + "%"
+            : "Loading"}
+        </p>
       </div>
       {!isLoading && stats && !stats.offline ? (
         <div className="flex items-center gap-2">

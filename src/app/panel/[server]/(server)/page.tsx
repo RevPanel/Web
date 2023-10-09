@@ -28,13 +28,9 @@ function ServerChart() {
 
 export default function ServicesHome() {
   const server = useServer();
-  const {
-    data: services,
-    error,
-  }: {
-    data?: Describable[];
-    error: any;
-  } = useFetcher(`/api/servers/${server}/containers/list`);
+  const { data: services, error } = useFetcher<Describable[]>(
+    `/api/servers/${server}/containers/list`
+  );
 
   if (error?.response?.status === 404 || error?.response?.status === 401) {
     return notFound();
