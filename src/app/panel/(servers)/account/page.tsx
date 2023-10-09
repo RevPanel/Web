@@ -147,6 +147,32 @@ export default async function Page() {
           </Button>
         </div>
       </div>
+      <div>
+        <h1 className="text-3xl font-extrabold uppercase">Your plan</h1>
+        <div className="mt-4 flex flex-col gap-4">
+          <div className="flex rounded-xl bg-background-secondary gap-12 p-4">
+            <div className="gap-4 flex flex-col">
+              <h1 className="text-3xl font-extrabold">Pro plan:</h1>
+              <p>
+                You are currently using the free plan. You can upgrade to a paid
+                plan to get more features.
+              </p>
+              <Button
+                role="primary"
+                className="mt-auto w-1/2 !p-4 !px-8 font-medium"
+              >
+                Change plan
+              </Button>
+            </div>
+            <div>
+              <h1 className="text-3xl font-extrabold">Features:</h1>
+              <ul className="mt-4 flex flex-col gap-4 list-inside list-disc">
+                <li>Lorem Ipsum</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
