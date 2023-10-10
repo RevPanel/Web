@@ -3,6 +3,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import ProgressWrapper from "@/components/progress-wrapper";
 
 config.autoAddCss = false;
 
@@ -26,6 +27,7 @@ export default function RootLayout({
           " flex min-h-screen flex-col items-center bg-background text-white"
         }
       >
+        <ProgressWrapper />
         {children}
       </body>
     </html>

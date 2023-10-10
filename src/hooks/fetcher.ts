@@ -1,8 +1,34 @@
 "use client";
 
-import axios from "axios";
+import axios, { AxiosProgressEvent } from "axios";
 import useSWR from "swr";
+import NProgress from "nprogress";
 
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-export const useFetcher = <T = any>(url: string | undefined) =>
+const processProgress = (progressEvent: AxiosProgressEvent) => {
+  if (!NProgress.isStarted()) {
+    NProgress.start();
+  }
+
+  const percentCompleted = Math.round(
+    (progressEvent.loaded * 100) / (progressEvent.total || 1)
+  );
+
+  NProgress.set(percentCompleted / 100);
+
+  if (percentCompleted === 100) {
+    setTimeout(() => {
+      NProgress.done();
+    }, 500);
+  }
+};
+
+const axiosClient = axios.create({
+  onUploadProgress: processProgress,
+  onDownloadProgress: processProgress,
+});
+
+const fetcher = (url: string) => axiosClient.get(url).then((res) => res.data);
+const useFetcher = <T = any>(url: string | undefined) =>
   useSWR<T>(url, fetcher);
+
+export { axiosClient, useFetcher };

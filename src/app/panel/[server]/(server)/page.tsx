@@ -5,36 +5,35 @@ import ServerContainer from "@/components/panel/server";
 import { useFetcher } from "@/hooks/fetcher";
 import useServer from "@/hooks/server";
 import { Describable } from "@/types/service";
-import Image from "next/image";
-import { notFound } from "next/navigation";
 
 function ServerChart() {
   return (
     <div className="card flex w-full flex-col gap-2 p-2 lg:w-auto lg:last:hidden xl:last:flex">
       <div className="m-4 flex gap-2">
-        <div>
-          <div className="block h-20 w-20 rounded-full bg-tertiary"></div>
-        </div>
+        <div
+          className="daisy-radial-progress bg-background text-secondary"
+          style={
+            {
+              "--value": 70,
+            } as any
+          }
+        ></div>
+
         <div>
           <h3 className="text-xl">CPU</h3>
           <h2 className="text-2xl font-bold">2.3%</h2>
           <p>10 GB of 100 GB used</p>
         </div>
       </div>
-      <Image src="/chart.svg" width={300} height={100} alt="chart" />
     </div>
   );
 }
 
 export default function ServicesHome() {
   const server = useServer();
-  const { data: services, error } = useFetcher<Describable[]>(
+  const { data: services } = useFetcher<Describable[]>(
     `/api/servers/${server}/containers/list`
   );
-
-  if (error?.response?.status === 404 || error?.response?.status === 401) {
-    return notFound();
-  }
 
   return (
     <div className="flex w-full flex-col gap-4">
