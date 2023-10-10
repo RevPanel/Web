@@ -1,0 +1,101 @@
+import {
+  Body,
+  Button,
+  Container,
+  Head,
+  Hr,
+  Html,
+  Img,
+  Preview,
+  Section,
+  Text,
+} from "@react-email/components";
+import * as React from "react";
+
+export const RevPanelWelcomeEmail = ({
+  name,
+  link,
+}: {
+  name: string;
+  link: string;
+}) => (
+  <Html>
+    <Head />
+    <Preview>
+      The sales intelligence platform that helps you uncover qualified leads.
+    </Preview>
+    <Body style={main}>
+      <Container style={container}>
+        <Img
+          src={"../../public/logo.png"}
+          width="64"
+          height="64"
+          alt="RevPanel Logo"
+        />
+        <Text style={paragraph}>Hi {name},</Text>
+        <Text style={paragraph}>
+          We've received your password reset request. Click the button below to
+          create a new one
+        </Text>
+        <Section style={btnContainer}>
+          <Button pX={12} pY={12} style={button} href={link}>
+            Change Password
+          </Button>
+        </Section>
+        <Text style={paragraph}>
+          If you didn't request the reset, delete this mail and don't click the
+          link above
+        </Text>
+        <Text style={paragraph}>
+          Best,
+          <br />
+          The RevPanel team
+        </Text>
+        <Hr style={hr} />
+        <Text style={footer}>Copyright &copy; RevPanel - 2023</Text>
+      </Container>
+    </Body>
+  </Html>
+);
+
+export default RevPanelWelcomeEmail;
+
+const main = {
+  backgroundColor: "#ffffff",
+  fontFamily:
+    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+};
+
+const container = {
+  margin: "0 auto",
+  padding: "20px 0 48px",
+};
+
+const paragraph = {
+  fontSize: "16px",
+  lineHeight: "26px",
+};
+
+const btnContainer = {
+  textAlign: "center" as const,
+};
+
+const button = {
+  backgroundColor: "#7967FF",
+  borderRadius: "3px",
+  color: "#fff",
+  fontSize: "16px",
+  textDecoration: "none",
+  textAlign: "center" as const,
+  display: "block",
+};
+
+const hr = {
+  borderColor: "#cccccc",
+  margin: "20px 0",
+};
+
+const footer = {
+  color: "#8898aa",
+  fontSize: "12px",
+};
