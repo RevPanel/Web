@@ -9,10 +9,11 @@ import {
   Preview,
   Section,
   Text,
+  Link,
 } from "@react-email/components";
 import * as React from "react";
 
-export const RevPanelWelcomeEmail = ({
+export const RevPanelRegisterEmail = ({
   name,
   link,
 }: {
@@ -21,7 +22,9 @@ export const RevPanelWelcomeEmail = ({
 }) => (
   <Html>
     <Head />
-    <Preview>Click the link below to reset your password</Preview>
+    <Preview>
+      Welcome to RevPanel! Click the link below to activate your account
+    </Preview>
     <Body style={main}>
       <Container style={container}>
         <Img
@@ -32,17 +35,20 @@ export const RevPanelWelcomeEmail = ({
         />
         <Text style={paragraph}>Hi {name},</Text>
         <Text style={paragraph}>
-          We've received your password reset request. Click the button below to
-          create a new one
+          Thanks for joining RevPanel, we are happy to see you gave us a chance
+          and you won&apos;t regret it! Click the button below to begin this
+          awesome adventure
         </Text>
         <Section style={btnContainer}>
           <Button pX={12} pY={12} style={button} href={link}>
-            Change Password
+            Activate Account
           </Button>
         </Section>
         <Text style={paragraph}>
-          If you didn't request the reset, delete this mail and don't click the
-          link above
+          Remember that for any assistance you can contact us at{" "}
+          <Link href={"mailto:support@revpanel.io"} style={linkStyle}>
+            support@revpanel.io
+          </Link>
         </Text>
         <Text style={paragraph}>
           Best,
@@ -56,7 +62,7 @@ export const RevPanelWelcomeEmail = ({
   </Html>
 );
 
-export default RevPanelWelcomeEmail;
+export default RevPanelRegisterEmail;
 
 const main = {
   backgroundColor: "#ffffff",
@@ -96,4 +102,9 @@ const hr = {
 const footer = {
   color: "#8898aa",
   fontSize: "12px",
+};
+
+const linkStyle = {
+  color: "#7967FF",
+  textDecoration: "underline",
 };

@@ -1,6 +1,5 @@
 import {
   Body,
-  Button,
   Container,
   Head,
   Hr,
@@ -8,20 +7,27 @@ import {
   Img,
   Preview,
   Section,
+  Button,
   Text,
 } from "@react-email/components";
 import * as React from "react";
 
-export const RevPanelWelcomeEmail = ({
+export const RevPanelNewDeviceEmail = ({
   name,
   link,
+  device,
 }: {
   name: string;
   link: string;
+  device: {
+    name: string;
+    location: string;
+    time: string;
+  };
 }) => (
   <Html>
     <Head />
-    <Preview>Click the link below to reset your password</Preview>
+    <Preview>There is a new device for your account</Preview>
     <Body style={main}>
       <Container style={container}>
         <Img
@@ -32,18 +38,26 @@ export const RevPanelWelcomeEmail = ({
         />
         <Text style={paragraph}>Hi {name},</Text>
         <Text style={paragraph}>
-          We've received your password reset request. Click the button below to
-          create a new one
+          We noticed a recent login to your RevPanel account.
+        </Text>
+        <Text>
+          <b>Device:</b> {device.name}
+        </Text>
+        <Text>
+          <b>Location:</b> {device.location}
+        </Text>
+        <Text>
+          <b>Time:</b> {device.time}
+        </Text>
+        <Text style={paragraph}>
+          If you didn't recognize this device, click here to disconnect it and
+          then change your password
         </Text>
         <Section style={btnContainer}>
           <Button pX={12} pY={12} style={button} href={link}>
-            Change Password
+            Check devices
           </Button>
         </Section>
-        <Text style={paragraph}>
-          If you didn't request the reset, delete this mail and don't click the
-          link above
-        </Text>
         <Text style={paragraph}>
           Best,
           <br />
@@ -56,7 +70,7 @@ export const RevPanelWelcomeEmail = ({
   </Html>
 );
 
-export default RevPanelWelcomeEmail;
+export default RevPanelNewDeviceEmail;
 
 const main = {
   backgroundColor: "#ffffff",
@@ -74,6 +88,16 @@ const paragraph = {
   lineHeight: "26px",
 };
 
+const hr = {
+  borderColor: "#cccccc",
+  margin: "20px 0",
+};
+
+const footer = {
+  color: "#8898aa",
+  fontSize: "12px",
+};
+
 const btnContainer = {
   textAlign: "center" as const,
 };
@@ -86,14 +110,4 @@ const button = {
   textDecoration: "none",
   textAlign: "center" as const,
   display: "block",
-};
-
-const hr = {
-  borderColor: "#cccccc",
-  margin: "20px 0",
-};
-
-const footer = {
-  color: "#8898aa",
-  fontSize: "12px",
 };
