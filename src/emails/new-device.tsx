@@ -50,7 +50,7 @@ export const RevPanelNewDeviceEmail = ({
           <b>Time:</b> {device.time}
         </Text>
         <Text style={paragraph}>
-          If you didn't recognize this device, click here to disconnect it and
+          If you didn&apos;t recognize this device, click here to disconnect it and
           then change your password
         </Text>
         <Section style={btnContainer}>

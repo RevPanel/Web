@@ -32,7 +32,7 @@ export const RevPanelWelcomeEmail = ({
         />
         <Text style={paragraph}>Hi {name},</Text>
         <Text style={paragraph}>
-          We've received your password reset request. Click the button below to
+          We&apos;ve received your password reset request. Click the button below to
           create a new one
         </Text>
         <Section style={btnContainer}>
@@ -41,7 +41,7 @@ export const RevPanelWelcomeEmail = ({
           </Button>
         </Section>
         <Text style={paragraph}>
-          If you didn't request the reset, delete this mail and don't click the
+          If you didn&apos;t request the reset, delete this mail and don&apos;t click the
           link above
         </Text>
         <Text style={paragraph}>

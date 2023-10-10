@@ -37,8 +37,9 @@ export const RevPanelRegisterEmail = ({
         />
         <Text style={paragraph}>Hi {name},</Text>
         <Text style={paragraph}>
-          We're happy to share some exciting news and updates with you. We've
-          introduced some new amazing things that we're sure you will enjoy:
+          We&apos;re happy to share some exciting news and updates with you.
+          We&apos;ve introduced some new amazing things that we&apos;re sure you
+          will enjoy:
         </Text>
         <ul>
           <li>
