@@ -13,6 +13,8 @@ model User {
   username   String  @unique
   email      String  @unique
   resetToken String? @unique
+  plan       String?
+  renewDate  DateTime?
 
   auth_session Session[]
   key          Key[]
@@ -20,6 +22,7 @@ model User {
   servers      Server[]
   logs         UserLogs[]
   serverMember ServerMember[]
+  checkouts    CheckoutSession[]
 }
 
 model Session {
@@ -39,6 +42,15 @@ model Key {
   user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
   @@index([user_id])
+}
+
+model CheckoutSession {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  plan      String
+
+  user   User   @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId String
 }
 
 model ApiKey {

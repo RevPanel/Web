@@ -6,6 +6,7 @@ import { Button } from "../button";
 import TickIcon from "../icons/Tick";
 import TickOffIcon from "../icons/TickOff";
 import Toggle from "../toggle";
+import axios from "axios";
 
 type Price = {
   name: string;
@@ -33,7 +34,7 @@ const prices: Price[] = [
     },
   },
   {
-    name: "Pro",
+    name: "Premium",
     subtitle: "Perfect plan for professionals!",
     description:
       "Only for professionals! The best plan with benefits for your company",
@@ -48,7 +49,7 @@ const prices: Price[] = [
     },
   },
   {
-    name: "Ultimate",
+    name: "Pro",
     subtitle: "Best suits for great company!",
     description:
       "If you are looking for the best, this is the best plan for your company",
@@ -87,7 +88,20 @@ function PriceCard(
           </li>
         ))}
       </ul>
-      <Button role="primary" className="mx-auto mt-auto w-full !rounded-full">
+      <Button
+        onClick={() => {
+          axios
+            .post("/api/stripe/create", {
+              plan: price.name.toLowerCase(),
+              yearly: price.yearly,
+            })
+            .then((res) => {
+              window.location.href = res.data.url;
+            });
+        }}
+        role="primary"
+        className="mx-auto mt-auto w-full !rounded-full"
+      >
         Get Started
       </Button>
     </div>
