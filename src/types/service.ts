@@ -40,3 +40,22 @@ export type ImageInfo = {
   dockerImage: string;
   ports: ImagePort[];
 };
+
+export type SystemStats = {
+  cpu: {
+    cores: number;
+    usage: number;
+  };
+
+  memory: {
+    total: number;
+    usage: number;
+  };
+
+  disk: {
+    total: number;
+    usage: number;
+  };
+
+  processes: number;
+};

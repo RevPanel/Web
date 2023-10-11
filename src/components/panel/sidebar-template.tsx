@@ -67,9 +67,9 @@ export default function SidebarTemplate({
 
   return (
     <>
-      <div className="p-6">
+      <Link href="/panel" className="p-6">
         <h1 className="text-4xl font-extrabold">RevPanel</h1>
-      </div>
+      </Link>
       {sections.map((section) => (
         <div key={section.title} className="mx-4">
           <ul className="flex flex-col gap-2">

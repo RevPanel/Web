@@ -4,25 +4,51 @@ import { LinkButton } from "@/components/button";
 import ServerContainer from "@/components/panel/server";
 import { useFetcher } from "@/hooks/fetcher";
 import useServer from "@/hooks/server";
-import { Describable } from "@/types/service";
+import { Describable, SystemStats } from "@/types/service";
+import { useMemo } from "react";
 
-function ServerChart() {
+function ServerChart({
+  total,
+  used,
+  unit,
+  label,
+  showPercent = true,
+}: {
+  total: number;
+  used: number;
+  unit: string;
+  label: string;
+  showPercent?: boolean;
+}) {
+  const percent = useMemo(
+    () => Math.min(Math.round((used / total) * 100), 100),
+    [used, total]
+  );
+
   return (
-    <div className="card flex w-full flex-col gap-2 p-2 lg:w-auto lg:last:hidden xl:last:flex">
+    <div className="card flex w-80 flex-col gap-2 p-2">
       <div className="m-4 flex gap-2">
         <div
-          className="daisy-radial-progress bg-background text-secondary"
+          className="daisy-radial-progress min-h-[80px] min-w-[80px] bg-background text-secondary"
           style={
             {
-              "--value": 70,
+              "--value": percent,
             } as any
           }
-        ></div>
+        >
+          {percent} {showPercent && "%"}
+        </div>
 
         <div>
-          <h3 className="text-xl">CPU</h3>
-          <h2 className="text-2xl font-bold">2.3%</h2>
-          <p>10 GB of 100 GB used</p>
+          <h3 className="text-xl">{label}</h3>
+          <h2 className="text-2xl font-bold">
+            {percent}
+            {showPercent && "%"}
+          </h2>
+          <p>
+            {Math.round(used)} {unit}{" "}
+            {showPercent && `of ${Math.round(total)} ${unit}`} used
+          </p>
         </div>
       </div>
     </div>
@@ -34,14 +60,38 @@ export default function ServicesHome() {
   const { data: services } = useFetcher<Describable[]>(
     `/api/servers/${server}/containers/list`
   );
+  const { data: stats, isLoading } = useFetcher<SystemStats>(
+    `/api/servers/${server}/system/stats`
+  );
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="mb-4 flex flex-wrap justify-between gap-2 lg:flex-nowrap">
-        <ServerChart />
-        <ServerChart />
-        <ServerChart />
-        <ServerChart />
+      <div className="mb-4 flex flex-wrap justify-around gap-2 xl:justify-between">
+        <ServerChart
+          label="CPU"
+          total={stats?.cpu.cores || 0}
+          used={stats?.cpu.usage || 0}
+          unit="cores"
+        />
+        <ServerChart
+          label="Memory"
+          total={(stats?.memory.total || 0) / 1000000000}
+          used={(stats?.memory.usage || 0) / 1000000000}
+          unit="GB"
+        />
+        <ServerChart
+          label="Disk"
+          total={(stats?.disk.total || 0) / 1000000000}
+          used={(stats?.disk.usage || 0) / 1000000000}
+          unit="GB"
+        />
+        <ServerChart
+          label="Processes"
+          total={100}
+          used={stats?.processes || 0}
+          unit="processes"
+          showPercent={false}
+        />
       </div>
 
       <LinkButton

@@ -20,11 +20,19 @@ async function serverExists(id: string, service: string) {
 
   try {
     const { data } = await axios.get(
-      `/api/servers/${server.id}/containers/${encodeURIComponent(service)}`
+      `${process.env.APP_URL}/api/servers/${
+        server.id
+      }/exists?id=${encodeURIComponent(service)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.ADMIN_KEY}`,
+        },
+      }
     );
 
-    return !!data.id;
+    return data === true;
   } catch (error) {
+    console.log(error);
     return false;
   }
 }

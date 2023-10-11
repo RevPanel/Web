@@ -69,6 +69,10 @@
   }
 }
 
+::selection {
+  @apply bg-primary text-white;
+}
+
 a {
   @apply text-secondary;
 }

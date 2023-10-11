@@ -39,7 +39,7 @@ export default function Stats(props: ServiceProps) {
     <div className="card">
       <h1 className="font-light uppercase">Stats</h1>
       <StatBar title="Memory" used={50} total={100} />
-      <StatBar title=" SpaDiskce" used={50} total={100} />
+      <StatBar title="Diskspace" used={50} total={100} />
     </div>
   );
 }
