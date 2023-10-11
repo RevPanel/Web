@@ -21,45 +21,46 @@ type Price = {
 const prices: Price[] = [
   {
     name: "Free",
-    subtitle: "Perfect plan to get started",
-    description: "A free plan grants you access to some cool features.",
+    subtitle: "The free plan, best for personal use.",
+    description:
+      "Just some basic features for your personal use, but free, forever!",
     price: 0,
     features: {
-      "Sync accross device": true,
-      "5 workspace": true,
-      "Collaborate with 5 user": true,
-      "Sharing permission": false,
-      "Admin tools": false,
-      "100+ integrations": false,
+      "Max servers: 1": true,
+      "Max services: 5": true,
+      "Max users: 3": true,
+      "Baisc stastistics": true,
+      "Advanced features": false,
     },
   },
   {
     name: "Premium",
-    subtitle: "Perfect plan for professionals!",
+    subtitle: "The best plan to keep all your projects organized",
     description:
-      "Only for professionals! The best plan with benefits for your company",
-    price: 12,
+      "Best for small companies or for more professional project management. Comes with more usefull features",
+    price: 7.99,
     features: {
-      "Everything in Free Plan": true,
-      "Unlimited workspace": true,
-      "Collaborative workspace": true,
-      "Sharing permission": true,
-      "Admin tools": true,
-      "100+ integrations": true,
+      "Max servers: 3": true,
+      "Max services: 15": true,
+      "Max users: 5": true,
+      "Advanced features": true,
+      "AI Assistant": true,
+      "Beta Features": false,
     },
   },
   {
     name: "Pro",
-    subtitle: "Best suits for great company!",
+    subtitle: "The best plan for your company",
     description:
-      "If you are looking for the best, this is the best plan for your company",
-    price: 33,
+      "Best for every type of project. You can do whatever you want and you have access to all the exclusive features.",
+    price: 14.99,
     features: {
       "Everything in Pro Plan": true,
-      "Daily performance reports": true,
-      "Artificial intelligence": true,
-      "Marketing tools & automations": true,
-      "Advanced security": true,
+      "Unillimited servers, services and users": true,
+      "AI Assistant": true,
+      "Personal Assistant": true,
+      "Beta Features": true,
+      "Advanced Statistics": true,
     },
   },
 ];
@@ -74,7 +75,7 @@ function PriceCard(
       <h1 className="text-3xl">{price.name}</h1>
       <p className="text-tertiary">{price.subtitle}</p>
       <h2 className="my-5 text-3xl">
-        €{Math.round(price.price * (price.yearly ? 0.35 : 1))}
+        €{Math.round(price.price * (price.yearly ? 0.75 : 1))}
         <span className="text-sm text-tertiary">/month</span>
       </h2>
       <p className="w-full text-tertiary">{price.description}</p>
@@ -128,7 +129,7 @@ export default function Pricing() {
                 <p>Monthly</p>
                 <div className="flex h-[75px] items-end justify-end">
                   <div className="flex items-center justify-center rounded-full bg-[#E7DEFE] px-3 py-1 text-center text-black">
-                    <p className="mx-auto text-center">Save 65%</p>
+                    <p className="mx-auto text-center">Save 25%</p>
                   </div>
                 </div>
               </div>

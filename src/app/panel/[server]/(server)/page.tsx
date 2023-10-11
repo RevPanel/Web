@@ -5,6 +5,14 @@ import ServerContainer from "@/components/panel/server";
 import { useFetcher } from "@/hooks/fetcher";
 import useServer from "@/hooks/server";
 import { Describable, SystemStats } from "@/types/service";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import {
+  faBarsProgress,
+  faHardDrive,
+  faMemory,
+  faMicrochip,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useMemo } from "react";
 
 function ServerChart({
@@ -13,11 +21,13 @@ function ServerChart({
   unit,
   label,
   showPercent = true,
+  icon,
 }: {
   total: number;
   used: number;
   unit: string;
   label: string;
+  icon: IconProp;
   showPercent?: boolean;
 }) {
   const percent = useMemo(
@@ -36,7 +46,7 @@ function ServerChart({
             } as any
           }
         >
-          {percent} {showPercent && "%"}
+          <FontAwesomeIcon icon={icon} className="text-2xl" />
         </div>
 
         <div>
@@ -72,18 +82,21 @@ export default function ServicesHome() {
           total={stats?.cpu.cores || 0}
           used={stats?.cpu.usage || 0}
           unit="cores"
+          icon={faMicrochip}
         />
         <ServerChart
           label="Memory"
           total={(stats?.memory.total || 0) / 1000000000}
           used={(stats?.memory.usage || 0) / 1000000000}
           unit="GB"
+          icon={faMemory}
         />
         <ServerChart
           label="Disk"
           total={(stats?.disk.total || 0) / 1000000000}
           used={(stats?.disk.usage || 0) / 1000000000}
           unit="GB"
+          icon={faHardDrive}
         />
         <ServerChart
           label="Processes"
@@ -91,6 +104,7 @@ export default function ServicesHome() {
           used={stats?.processes || 0}
           unit="processes"
           showPercent={false}
+          icon={faBarsProgress}
         />
       </div>
 
