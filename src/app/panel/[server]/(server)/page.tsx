@@ -60,7 +60,7 @@ export default function ServicesHome() {
   const { data: services } = useFetcher<Describable[]>(
     `/api/servers/${server}/containers/list`
   );
-  const { data: stats, isLoading } = useFetcher<SystemStats>(
+  const { data: stats } = useFetcher<SystemStats>(
     `/api/servers/${server}/system/stats`
   );
 
