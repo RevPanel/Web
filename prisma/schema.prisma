@@ -19,6 +19,7 @@ model User {
   apiKeys      ApiKey[]
   servers      Server[]
   logs         UserLogs[]
+  serverMember ServerMember[]
 }
 
 model Session {
@@ -58,15 +59,28 @@ enum InstallStatus {
 }
 
 model Server {
-  id          String        @id @default(cuid())
+  id          String         @id @default(cuid())
   name        String
   description String?
   ip          String
   key         String
-  owner       User          @relation(references: [id], fields: [ownerId], onDelete: Cascade)
+  owner       User           @relation(references: [id], fields: [ownerId], onDelete: Cascade)
   ownerId     String
-  status      InstallStatus @default(STARTED)
-  createdAt   DateTime      @default(now())
+  status      InstallStatus  @default(STARTED)
+  createdAt   DateTime       @default(now())
+  members     ServerMember[]
+}
+
+model ServerMember {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  permissions String[]
+
+  server   Server @relation(references: [id], fields: [serverId], onDelete: Cascade)
+  serverId String
+  user     User   @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId   String
 }
 
 model UserLogs {

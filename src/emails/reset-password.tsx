@@ -10,7 +10,6 @@ import {
   Section,
   Text,
 } from "@react-email/components";
-import * as React from "react";
 
 export const RevPanelWelcomeEmail = ({
   name,
@@ -32,8 +31,8 @@ export const RevPanelWelcomeEmail = ({
         />
         <Text style={paragraph}>Hi {name},</Text>
         <Text style={paragraph}>
-          We&apos;ve received your password reset request. Click the button below to
-          create a new one
+          We&apos;ve received your password reset request. Click the button
+          below to create a new one
         </Text>
         <Section style={btnContainer}>
           <Button pX={12} pY={12} style={button} href={link}>
@@ -41,11 +40,11 @@ export const RevPanelWelcomeEmail = ({
           </Button>
         </Section>
         <Text style={paragraph}>
-          If you didn&apos;t request the reset, delete this mail and don&apos;t click the
-          link above
+          If you didn&apos;t request the reset, delete this mail and don&apos;t
+          click the link above
         </Text>
         <Text style={paragraph}>
-          Best,
+          Best regards,
           <br />
           The RevPanel team
         </Text>

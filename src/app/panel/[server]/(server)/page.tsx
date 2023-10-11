@@ -27,7 +27,7 @@ function ServerChart({
 
   return (
     <div className="card flex w-80 flex-col gap-2 p-2">
-      <div className="m-4 flex gap-2">
+      <div className="m-4 flex gap-3">
         <div
           className="daisy-radial-progress min-h-[80px] min-w-[80px] bg-background text-secondary"
           style={

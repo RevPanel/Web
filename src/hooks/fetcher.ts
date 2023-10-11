@@ -28,7 +28,12 @@ const axiosClient = axios.create({
 });
 
 const fetcher = (url: string) => axiosClient.get(url).then((res) => res.data);
-const useFetcher = <T = any>(url: string | undefined) =>
-  useSWR<T>(url, fetcher);
+const useFetcher = <T = any>(
+  url: string | undefined,
+  refreshInterval?: number
+) =>
+  useSWR<T>(url, fetcher, {
+    refreshInterval,
+  });
 
 export { axiosClient, useFetcher };

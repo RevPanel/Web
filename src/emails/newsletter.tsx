@@ -9,14 +9,12 @@ import {
   Preview,
   Section,
   Text,
-  Link,
 } from "@react-email/components";
-import * as React from "react";
 
 export const RevPanelRegisterEmail = ({
   name,
   link,
-  news,
+  news = [],
 }: {
   name: string;
   link: string;
@@ -42,9 +40,11 @@ export const RevPanelRegisterEmail = ({
           will enjoy:
         </Text>
         <ul>
-          <li>
-            <Text style={paragraph}>{news[0].title}</Text>
-          </li>
+          {news.map((item, i) => (
+            <li key={i}>
+              <Text style={paragraph}>{item.title}</Text>
+            </li>
+          ))}
         </ul>
         <Text style={paragraph}>
           Visit our site and check all these feataures by yourself!
@@ -55,7 +55,7 @@ export const RevPanelRegisterEmail = ({
           </Button>
         </Section>
         <Text style={paragraph}>
-          Best,
+          Best regards,
           <br />
           The RevPanel team
         </Text>

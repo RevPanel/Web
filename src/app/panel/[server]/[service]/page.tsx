@@ -14,9 +14,9 @@ export default async function ServiceDashboard(props: {
   const session = await getSession();
 
   return (
-    <div className="flex w-full flex-col gap-8 lg:gap-4">
-      <div className="flex w-full flex-col gap-8 lg:flex-row">
-        <div className="flex h-full flex-col gap-8 lg:w-1/2 lg:gap-4">
+    <div className="flex w-full flex-col gap-4">
+      <div className="flex w-full flex-col gap-4 lg:flex-row">
+        <div className="flex h-full flex-col gap-4 lg:w-1/2">
           <QuickActions
             serverId={props.params.server}
             id={props.params.service}
@@ -26,7 +26,7 @@ export default async function ServiceDashboard(props: {
         </div>
         <OpenPorts serverId={props.params.server} id={props.params.service} />
       </div>
-      <div className="flex w-full flex-col gap-8 lg:flex-row">
+      <div className="flex w-full flex-col gap-4 lg:flex-row">
         <AuditLogs serverId={props.params.server} id={props.params.service} />
         <TrafficUsage />
       </div>

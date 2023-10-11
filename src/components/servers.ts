@@ -3,7 +3,7 @@ import useSWR from "swr";
 
 export function useServerName(id: string) {
   const { data } = useSWR(
-    id ? `/api/servers/info/${id}` : null,
+    id ? `/api/servers/${id}/info` : null,
     async (url?: string) => {
       if (!url) return null;
       const { data } = await axios.get(url);

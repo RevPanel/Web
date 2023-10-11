@@ -1,58 +1,39 @@
 import { Button } from "@/components/button";
-import FormInput from "@/components/input";
+import EditServer from "@/components/panel/server/edit-server";
 import Toggle from "@/components/toggle";
-import Image from "next/image";
+import prisma from "@/lib/prisma";
 
-export default function SettingsPage() {
+async function getServer(server: string) {
+  const s = await prisma.server.findUnique({
+    where: { id: server },
+    select: {
+      name: true,
+      description: true,
+      members: {
+        select: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return s;
+}
+
+export default async function SettingsPage({
+  params,
+}: {
+  params: { server: string };
+}) {
+  const server = await getServer(params.server);
+
   return (
     <div className="flex w-full flex-col justify-between gap-4 lg:flex-row">
-      <div className="flex flex-col gap-4 lg:w-1/2 xl:w-1/3">
-        <div className="card w-full p-4">
-          <h1 className="font-bold">Server Name</h1>
-          <p className="text-justify">
-            Lorem ipsum dolor sit amet. Et suscipit molestiae ut cumque commodi
-            sit culpa explicabo.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2">
-          <h1 className="text-xl font-bold">Name</h1>
-          <FormInput placeholder="Name" />
-        </div>
-        <div className="flex flex-col gap-2">
-          <h1 className="text-xl font-bold">Description</h1>
-          <FormInput placeholder="Description" />
-        </div>
-        <div className="flex flex-col gap-2">
-          <h1 className="text-xl font-bold">Manage Collaborators</h1>
-          <p className="text-justify">
-            Lorem ipsum dolor sit amet. Et suscipit molestiae ut cumque commodi
-            sit culpa explicabo. Est magnam incidunt eum dolorem veniam est
-            impedit aliquid a error nostrum quo nemo eius sit animi asperiores
-            sit iure inventore.
-          </p>
-          <div className="flex w-full items-center justify-between">
-            <div className="flex">
-              <Image
-                src="/lorenzo0111.png"
-                width={30}
-                height={30}
-                className="rounded-full"
-                alt="lorenzo0111"
-              />
-              <Image
-                src="/lorenzo0111.png"
-                width={30}
-                height={30}
-                className="rounded-full"
-                alt="lorenzo0111"
-              />
-            </div>
-            <Button role="primary" className="uppercase">
-              Add new
-            </Button>
-          </div>
-        </div>
-      </div>
+      {server && <EditServer {...server} />}
       <div className="flex flex-col gap-4 lg:w-1/2 xl:w-1/3">
         <div className="flex flex-col gap-2">
           <h1 className="text-xl font-bold">Notifications</h1>

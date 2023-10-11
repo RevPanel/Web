@@ -1,5 +1,6 @@
 import {
   Body,
+  Button,
   Container,
   Head,
   Hr,
@@ -7,15 +8,17 @@ import {
   Img,
   Preview,
   Section,
-  Button,
   Text,
 } from "@react-email/components";
-import * as React from "react";
 
 export const RevPanelNewDeviceEmail = ({
-  name,
-  link,
-  device,
+  name = "Michele",
+  link = "https://revpanel.io",
+  device = {
+    name: "Chrome",
+    location: "Italy",
+    time: "2021-01-01 10:00:00",
+  },
 }: {
   name: string;
   link: string;
@@ -50,8 +53,8 @@ export const RevPanelNewDeviceEmail = ({
           <b>Time:</b> {device.time}
         </Text>
         <Text style={paragraph}>
-          If you didn&apos;t recognize this device, click here to disconnect it and
-          then change your password
+          If you didn&apos;t recognize this device, click here to disconnect it
+          and then change your password
         </Text>
         <Section style={btnContainer}>
           <Button pX={12} pY={12} style={button} href={link}>
@@ -59,7 +62,7 @@ export const RevPanelNewDeviceEmail = ({
           </Button>
         </Section>
         <Text style={paragraph}>
-          Best,
+          Best regards,
           <br />
           The RevPanel team
         </Text>

@@ -51,19 +51,37 @@ async function handler(
     where: {
       id,
     },
+    select: {
+      ownerId: true,
+      ip: true,
+      key: true,
+      members: {
+        where: {
+          userId: userId,
+        },
+      },
+    },
   });
 
   if (!server) {
     return error("Server not found", 404);
   }
 
+  let permissions = ["*"];
   if (server.ownerId !== userId) {
-    return error("Unauthorized", 403);
+    if (server.members.length === 0) return error("Unauthorized", 403);
+
+    const member = server.members[0];
+    permissions = member.permissions;
   }
 
   try {
     const body =
-      req.method !== "GET" && req.body !== null ? await req.json() : undefined;
+      req.method !== "GET" &&
+      req.body != null &&
+      req.headers.get("Content-Type")?.includes("application/json")
+        ? await req.json()
+        : undefined;
 
     const res = await axios({
       method,
@@ -74,6 +92,7 @@ async function handler(
         "Content-Type": "application/json",
         Authorization: `Bearer ${server.key}`,
         "Panel-User": userId,
+        "Panel-User-Permissions": JSON.stringify(permissions),
       },
       data: body ? JSON.stringify(body) : undefined,
     });
