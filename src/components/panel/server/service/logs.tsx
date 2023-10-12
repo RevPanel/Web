@@ -39,8 +39,8 @@ export function LogBar(props: AuditLog) {
   return (
     <div className="flex items-center gap-4 rounded-xl bg-background p-4">
       {icon}
-      <p>{capitalize(props.action)}</p>
-      <p className="ml-auto text-tertiary">
+      <p>{capitalize(props.action)?.replace("_", " ")}</p>
+      <p className="word-break ml-auto overflow-hidden text-ellipsis whitespace-nowrap text-tertiary">
         {moment(props.createdAt).fromNow()}
       </p>
     </div>
@@ -48,7 +48,7 @@ export function LogBar(props: AuditLog) {
 }
 
 export default function AuditLogs(props: ServiceProps) {
-  const { data: logs } = useFetcher(
+  const { data: logs } = useFetcher<AuditLog[]>(
     `/api/servers/${props.serverId}/audit/${props.id}`
   );
 

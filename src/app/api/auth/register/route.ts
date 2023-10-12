@@ -1,5 +1,7 @@
+import RegisterEmail from "@/emails/register";
 import { auth } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
+import resend from "@/lib/resend";
 import { UserAction } from "@prisma/client";
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
@@ -54,6 +56,7 @@ export const POST = async (request: NextRequest) => {
         email,
         username: username.toLowerCase(),
         name,
+        emailVerified: false,
       },
     });
 
@@ -70,6 +73,17 @@ export const POST = async (request: NextRequest) => {
         userId: user.userId,
         action: UserAction.REGISTER,
       },
+    });
+
+    await resend.sendEmail({
+      from: "RevPanel <noreply@revpanel.io>",
+      to: [user.email],
+      subject: "Thanks for creating an account!",
+      text: "",
+      react: RegisterEmail({
+        name: user.name,
+        link: `${process.env.APP_URL}/api/auth/verify/${user.emailToken}`,
+      }),
     });
 
     return new Response(null, {

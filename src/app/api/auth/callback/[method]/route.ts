@@ -2,7 +2,7 @@ import { auth, validateCallback } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import { OAuthRequestError } from "@lucia-auth/oauth";
 import { UserAction } from "@prisma/client";
-import { cookies, headers } from "next/headers";
+import * as context from "next/headers";
 
 import type { NextRequest } from "next/server";
 
@@ -22,9 +22,12 @@ export const GET = async (
     });
   }
 
-  const storedState = cookies().get(
-    `${params.method.toLowerCase()}_oauth_state`
-  )?.value;
+  const authRequest = auth.handleRequest(request.method, context);
+  const currentSession = await authRequest.validate();
+
+  const storedState = context
+    .cookies()
+    .get(`${params.method.toLowerCase()}_oauth_state`)?.value;
   const url = new URL(request.url);
   const state = url.searchParams.get("state");
   const code = url.searchParams.get("code");
@@ -43,10 +46,19 @@ export const GET = async (
       });
     }
 
-    const { getExistingUser, platformUser, createUser } = res;
+    const { getExistingUser, platformUser, createUser, createKey } = res;
     const getUser = async () => {
       let existingUser = await getExistingUser();
       if (existingUser) return existingUser;
+
+      if (!platformUser.emailVerified) {
+        throw new Error("Email not verified");
+      }
+
+      if (currentSession) {
+        await createKey(currentSession.user.userId);
+        return currentSession.user;
+      }
 
       const prismaUser = await prisma.user.findFirst({
         where: {
@@ -57,14 +69,9 @@ export const GET = async (
       let user;
 
       if (prismaUser) {
-        await auth.createKey({
-          userId: prismaUser.id,
-          providerId: params.method.toLowerCase(),
-          providerUserId: String(platformUser.id),
-          password: null,
-        });
+        await createKey(prismaUser.id);
 
-        user = await auth.getUser(prismaUser.id);
+        user = auth.transformDatabaseUser(prismaUser);
       } else {
         let username;
         let name;
@@ -82,6 +89,7 @@ export const GET = async (
             username: username!,
             email: platformUser.email!,
             name: name!,
+            emailVerified: true,
           },
         });
       }
@@ -95,11 +103,7 @@ export const GET = async (
       attributes: {},
     });
 
-    const authRequest = auth.handleRequest(request.method, {
-      cookies,
-      headers,
-    });
-
+    const authRequest = auth.handleRequest(request.method, context);
     authRequest.setSession(session);
 
     await prisma.userLogs.create({

@@ -1,7 +1,5 @@
 import { auth } from "@/lib/lucia";
-import prisma from "@/lib/prisma";
 import { error } from "@/utils/responses";
-import { randomUUID } from "crypto";
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
 
@@ -26,7 +24,7 @@ export const POST = async (req: NextRequest) => {
       session.user.username,
       currentPassword
     );
-    
+
     if (!key) {
       return error("Incorrect password", 400);
     }

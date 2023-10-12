@@ -12,7 +12,7 @@ import {
   Text,
 } from "@react-email/components";
 
-export const RevPanelRegisterEmail = ({
+export const RegisterEmail = ({
   name,
   link,
 }: {
@@ -61,7 +61,7 @@ export const RevPanelRegisterEmail = ({
   </Html>
 );
 
-export default RevPanelRegisterEmail;
+export default RegisterEmail;
 
 const main = {
   backgroundColor: "#ffffff",

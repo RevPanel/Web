@@ -14,6 +14,7 @@ import {
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faLock, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 function OauthConnection({
   name,
@@ -35,10 +36,16 @@ function OauthConnection({
     >
       <FontAwesomeIcon icon={icon} className="text-xl" />
       <p>{name}</p>
-      {/* todo: allow linking */}
-      <p className="text-gradient ml-auto">
-        {link ? "Linked" : "Click to link"}
-      </p>
+      {link ? (
+        <p className="text-gradient ml-auto">Linked</p>
+      ) : (
+        <Link
+          href={`/api/auth/login/${name?.toLowerCase()}`}
+          className="text-gradient ml-auto"
+        >
+          Click to link
+        </Link>
+      )}
     </div>
   );
 }
@@ -93,10 +100,10 @@ export default async function Page() {
             Update your details
           </h1>
           <div className="mt-4 flex flex-col items-center gap-4 md:items-start lg:flex-row">
-            <UpdateAvatar />
+            <UpdateAvatar avatar={session?.user.avatarUrl} />
             <UpdateDetails
-              defaultName={session.user.name}
-              defaultEmail={session.user.email}
+              defaultName={session?.user.name || ""}
+              defaultEmail={session?.user.email || ""}
             />
           </div>
         </div>
@@ -150,8 +157,8 @@ export default async function Page() {
       <div>
         <h1 className="text-3xl font-extrabold uppercase">Your plan</h1>
         <div className="mt-4 flex flex-col gap-4">
-          <div className="flex rounded-xl bg-background-secondary gap-12 p-4">
-            <div className="gap-4 flex flex-col">
+          <div className="flex gap-12 rounded-xl bg-background-secondary p-4">
+            <div className="flex flex-col gap-4">
               <h1 className="text-3xl font-extrabold">Pro plan:</h1>
               <p>
                 You are currently using the free plan. You can upgrade to a paid
@@ -166,7 +173,7 @@ export default async function Page() {
             </div>
             <div>
               <h1 className="text-3xl font-extrabold">Features:</h1>
-              <ul className="mt-4 flex flex-col gap-4 list-inside list-disc">
+              <ul className="mt-4 flex list-inside list-disc flex-col gap-4">
                 <li>Lorem Ipsum</li>
               </ul>
             </div>

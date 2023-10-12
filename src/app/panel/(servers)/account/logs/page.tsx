@@ -22,7 +22,7 @@ export default async function Page() {
 
   return (
     <div>
-      {logs.map((log) => (
+      {logs.reverse().map((log) => (
         <LogBar key={log.id} {...log} />
       ))}
     </div>

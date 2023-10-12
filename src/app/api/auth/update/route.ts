@@ -1,7 +1,10 @@
-import { NextResponse, type NextRequest } from "next/server";
-import * as context from "next/headers";
+import RegisterEmail from "@/emails/register";
 import { auth } from "@/lib/lucia";
+import resend from "@/lib/resend";
 import { error } from "@/utils/responses";
+import { createId } from "@paralleldrive/cuid2";
+import * as context from "next/headers";
+import { NextResponse, type NextRequest } from "next/server";
 
 export const POST = async (req: NextRequest) => {
   const authRequest = auth.handleRequest(req.method, context);
@@ -18,7 +21,24 @@ export const POST = async (req: NextRequest) => {
       email: email,
     });
 
-    // todo: send verify email
+    if (email !== session.user.email) {
+      const newToken = createId();
+      await auth.updateUserAttributes(session.user.userId, {
+        emailVerified: false,
+        emailToken: newToken,
+      });
+
+      await resend.sendEmail({
+        from: "RevPanel <noreply@revpanel.io>",
+        to: [session.user.email],
+        subject: "Thanks for creating an account!",
+        text: "",
+        react: RegisterEmail({
+          name: session.user.name,
+          link: `${process.env.APP_URL}/api/auth/verify/${newToken}`,
+        }),
+      });
+    }
 
     authRequest.invalidate();
 

@@ -35,7 +35,7 @@ export async function POST(req: Request, res: Response) {
       name,
       description,
       key: randomUUID(),
-      owner: session.user.userId,
+      ownerId: session.user.userId,
     },
   });
 

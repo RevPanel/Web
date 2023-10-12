@@ -1,4 +1,4 @@
-import { discordAuth, getAuthUrl } from "@/lib/lucia";
+import { getAuthUrl } from "@/lib/lucia";
 import { cookies } from "next/headers";
 import type { NextRequest } from "next/server";
 

@@ -78,9 +78,9 @@ a {
 }
 
 .react-contextmenu {
-  @apply card z-50 bg-background;
+  @apply card z-50 bg-background p-3 gap-0 min-w-[8rem];
 }
 
 .react-contextmenu-item {
-  @apply cursor-pointer flex gap-2 items-center;
+  @apply cursor-pointer flex gap-2 p-2 rounded-lg items-center hover:bg-background-secondary;
 }

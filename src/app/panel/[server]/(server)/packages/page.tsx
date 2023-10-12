@@ -31,13 +31,13 @@ export default async function Page() {
           name="search"
           id="search"
           placeholder="Search a package"
-          className="!w-1/2 !p-4 !pl-6"
+          className="h-full !w-1/2 !p-4 !pl-6"
         />
         <Button role="primary" className="!p-4 !px-8 font-medium">
           Search
         </Button>
       </div>
-      <div className="mt-8 flex gap-4">
+      <div className="mt-8 flex flex-wrap gap-4">
         {packages.map((pack) => (
           <PackageCard key={pack.id} {...pack} />
         ))}

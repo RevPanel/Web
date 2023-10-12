@@ -1,6 +1,11 @@
 import prismadb from "@/lib/prisma";
 import { prisma } from "@lucia-auth/adapter-prisma";
-import { discord, github } from "@lucia-auth/oauth/providers";
+import {
+  DiscordUser,
+  GithubUser,
+  discord,
+  github,
+} from "@lucia-auth/oauth/providers";
 import { Octokit } from "@octokit/core";
 import { lucia } from "lucia";
 import { nextjs_future } from "lucia/middleware";
@@ -17,6 +22,9 @@ export const auth = lucia({
       username: data.username,
       name: data.name,
       email: data.email,
+      emailVerified: data.emailVerified,
+      emailToken: data.emailToken,
+      avatarUrl: data.avatarUrl,
     };
   },
 });
@@ -69,11 +77,14 @@ export const validateCallback = async (method: string, code: string) => {
 
   if (!data) return null;
 
-  const { getExistingUser, createUser } = data;
-  let platformUser;
+  const { getExistingUser, createUser, createKey } = data;
+  let platformUser: (GithubUser | DiscordUser) & {
+    emailVerified?: boolean;
+  };
 
   if ("discordUser" in data) {
     platformUser = data.discordUser;
+    platformUser.emailVerified = data.discordUser.verified;
   } else if ("githubUser" in data) {
     platformUser = data.githubUser;
 
@@ -83,6 +94,7 @@ export const validateCallback = async (method: string, code: string) => {
       const primaryEmail = emails.data.find((email) => email.primary);
       if (primaryEmail) {
         platformUser.email = primaryEmail.email;
+        platformUser.emailVerified = primaryEmail.verified;
       }
     }
   }
@@ -91,5 +103,6 @@ export const validateCallback = async (method: string, code: string) => {
     getExistingUser,
     createUser,
     platformUser: platformUser!,
+    createKey,
   };
 };

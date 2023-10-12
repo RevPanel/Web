@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function RecentConnection() {
   return (
-    <div className="card flex w-full flex-col flex-wrap items-center justify-between md:flex-row">
+    <div className="card flex min-h-[5.25rem] w-full flex-col flex-wrap items-center justify-between md:flex-row">
       <div className="flex items-center gap-4">
         <FontAwesomeIcon icon={faLaptop} className="text-2xl" />
         <p>127.0.0.1</p>

@@ -10,7 +10,7 @@ export default function Port({
   return (
     <div
       className={
-        "flex items-center gap-4 rounded-xl bg-background p-4 text-tertiary " +
+        "flex min-h-[5.25rem] items-center gap-4 rounded-xl bg-background p-4 text-tertiary " +
         (className || "")
       }
     >

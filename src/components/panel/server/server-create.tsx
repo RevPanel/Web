@@ -13,6 +13,7 @@ export default function CreateServer() {
   const [description, setDescription] = useState("");
   const [ip, setIp] = useState("");
   const [command, setCommand] = useState("");
+  const [error, setError] = useState("");
 
   return (
     <>
@@ -37,12 +38,13 @@ export default function CreateServer() {
                 });
 
                 setCommand(data.command);
-              } catch (e) {
-                // todo: handle error
+              } catch (e: any) {
+                setError(e.response.data.message);
               }
             }}
             className="mt-2 flex w-full flex-col gap-2"
           >
+            {error && <p className="text-red-500">{error}</p>}
             <FormInput
               type="text"
               placeholder="Name"

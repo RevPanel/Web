@@ -95,6 +95,7 @@ async function handler(
         "Panel-User-Permissions": JSON.stringify(permissions),
       },
       data: body ? JSON.stringify(body) : undefined,
+      timeout: 10000,
     });
 
     return new NextResponse(

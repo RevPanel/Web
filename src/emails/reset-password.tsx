@@ -11,7 +11,7 @@ import {
   Text,
 } from "@react-email/components";
 
-export const RevPanelWelcomeEmail = ({
+export const ResetPasswordEmail = ({
   name,
   link,
 }: {
@@ -55,7 +55,7 @@ export const RevPanelWelcomeEmail = ({
   </Html>
 );
 
-export default RevPanelWelcomeEmail;
+export default ResetPasswordEmail;
 
 const main = {
   backgroundColor: "#ffffff",

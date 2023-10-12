@@ -1,24 +1,40 @@
 "use client";
 
 import { Button } from "@/components/button";
+import axios from "axios";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
-export default function UpdateAvatar() {
+export default function UpdateAvatar({ avatar }: { avatar?: string | null }) {
+  const [avatarUrl, setAvatarUrl] = useState(avatar || "/logo.png");
   const fileRef = useRef<HTMLInputElement>(null);
-  // todo: handle file upload
 
   return (
     <div className="relative h-[200px] w-[200px]">
       <Image
-        src="/lorenzo0111.png"
+        src={avatarUrl}
         width={200}
         height={200}
         draggable={false}
         alt="logoProfile"
         className="rounded-xl"
       />
-      <input type="file" hidden ref={fileRef} />
+      <input
+        type="file"
+        hidden
+        ref={fileRef}
+        onChange={() => {
+          const file = fileRef.current?.files?.[0];
+          if (!file) return;
+
+          const formData = new FormData();
+          formData.append("file", file);
+
+          axios.postForm("/api/auth/update/avatar", formData).then((res) => {
+            setAvatarUrl(res.data.url);
+          });
+        }}
+      />
       <div className="absolute bottom-14 left-0 flex w-full flex-col items-center">
         <Button
           onClick={() => fileRef.current?.click()}

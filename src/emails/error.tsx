@@ -45,14 +45,14 @@ export const RevPanelNewDeviceEmail = ({
           <b>Lines:</b>
         </Text>
         <ul>
-          {error.lines.map((line,i) => (
+          {error.lines.map((line, i) => (
             <li key={i}>
               <Text style={paragraph}>{line}</Text>
             </li>
           ))}
         </ul>
         <Text style={paragraph}>
-          We suggest checking the error to make sure it doesn't crash your
+          We suggest checking the error to make sure it doesn&apos;t crash your
           application!
         </Text>
         <Section style={btnContainer}>

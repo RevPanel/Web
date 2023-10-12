@@ -30,10 +30,10 @@ function ServerChart({
   icon: IconProp;
   showPercent?: boolean;
 }) {
-  const percent = useMemo(
-    () => Math.min(Math.round((used / total) * 100), 100),
-    [used, total]
-  );
+  const percent = useMemo(() => {
+    const p = Math.min(Math.round((used / total) * 100), 100);
+    return Number.isNaN(p) ? 0 : p;
+  }, [used, total]);
 
   return (
     <div className="card flex w-80 flex-col gap-2 p-2">

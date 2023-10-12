@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  faAlignLeft,
   faBox,
   faDumpsterFire,
   faFile,
@@ -51,11 +50,6 @@ export default function ServerSidebar() {
               title: "Task Manager",
               icon: faTasks,
               href: `/panel/${server}/tasks`,
-            },
-            {
-              title: "Logs",
-              icon: faAlignLeft,
-              href: `/panel/${server}/logs`,
             },
             {
               title: "Settings",

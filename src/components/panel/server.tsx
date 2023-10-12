@@ -12,7 +12,11 @@ export default function ServerContainer({
 }: Describable & {
   serverId?: string;
 }) {
-  const { data: stats, isLoading } = useFetcher(
+  const {
+    data: stats,
+    isLoading,
+    error,
+  } = useFetcher(
     serverId
       ? `/api/servers/${serverId}/containers/${server.id}/stats`
       : `/api/servers/${server.id}/system/stats`
@@ -23,7 +27,7 @@ export default function ServerContainer({
       href={
         serverId ? `/panel/${serverId}/${server.id}` : `/panel/${server.id}`
       }
-      className="flex flex-row items-center justify-between gap-2 overflow-x-auto rounded-xl bg-background-secondary px-6 py-4 text-white"
+      className="flex min-h-[5.25rem] flex-row items-center justify-between gap-2 overflow-x-auto rounded-xl bg-background-secondary px-6 py-4 text-white"
     >
       <div className="flex items-center gap-4">
         <FontAwesomeIcon icon={faServer} className="text-4xl" />
@@ -35,7 +39,7 @@ export default function ServerContainer({
       <div className="flex items-center gap-10">
         <p>
           CPU:{" "}
-          {stats?.offline
+          {stats?.offline || error
             ? "0%"
             : stats
             ? stats.cpu?.usage?.toFixed(2) + "%"
@@ -43,7 +47,7 @@ export default function ServerContainer({
         </p>
         <p>
           Memory:{" "}
-          {stats?.offline
+          {stats?.offline || error
             ? "0%"
             : stats
             ? ((stats.memory?.usage / stats.memory?.total) * 100).toFixed() +
@@ -52,7 +56,7 @@ export default function ServerContainer({
         </p>
         <p>
           Disk:{" "}
-          {stats?.offline
+          {stats?.offline || error
             ? "0%"
             : stats
             ? ((stats.disk?.usage / stats.disk?.total) * 100).toFixed() + "%"

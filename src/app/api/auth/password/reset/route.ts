@@ -1,4 +1,6 @@
+import ResetPasswordEmail from "@/emails/reset-password";
 import prisma from "@/lib/prisma";
+import resend from "@/lib/resend";
 import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 
@@ -48,10 +50,21 @@ export const POST = async (request: NextRequest) => {
     },
   });
 
-  // todo: send email
+  await resend.sendEmail({
+    from: "RevPanel <noreply@revpanel.io>",
+    to: [user.email],
+    subject: "Reset your password",
+    text: "",
+    react: ResetPasswordEmail({
+      name: user.name,
+      link: `${process.env.APP_URL}/password/reset/callback?token=${token}`,
+    }),
+  });
+
   return NextResponse.json(
     {
       success: true,
+      message: "Password reset email sent",
     },
     {
       status: 200,
