@@ -57,8 +57,41 @@ export function DockerTerminal(props: ServiceProps) {
   );
 }
 
-export function SSHTerminal() {
-  return <TerminalWrapper lines={[]} submit={() => {}} />;
+export function SSHTerminal({ server }: { server: string }) {
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const [lines, setLines] = useState<string[]>([]);
+
+  useEffect(() => {
+    // todo: change ip
+    const socket = socketIO("http://172.27.3.36:8080/terminal");
+
+    socket.on("connect", () => {
+      setSocket(socket);
+
+      socket.on("data", (data) => {
+        setLines((lines) => [...lines, data]);
+      });
+      socket.emit("create");
+    });
+  }, []);
+
+  return (
+    <TerminalWrapper
+      lines={lines}
+      submit={(command) => {
+        socket?.emit("execute", {
+          command: command,
+        });
+
+        setLines((lines) => [...lines, "> " + command]);
+
+        if (command === "clear")
+          setTimeout(() => {
+            setLines([]);
+          }, 100);
+      }}
+    />
+  );
 }
 
 function TerminalWrapper({
