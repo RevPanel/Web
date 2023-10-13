@@ -122,6 +122,9 @@ dependencies:
   typescript:
     specifier: 5.2.2
     version: 5.2.2
+  ua-parser-js:
+    specifier: ^1.0.36
+    version: 1.0.36
   utf-8-validate:
     specifier: ^6.0.3
     version: 6.0.3
@@ -130,6 +133,9 @@ devDependencies:
   '@types/nprogress':
     specifier: ^0.2.1
     version: 0.2.1
+  '@types/ua-parser-js':
+    specifier: ^0.7.37
+    version: 0.7.37
   daisyui:
     specifier: ^3.9.2
     version: 3.9.2
@@ -1287,6 +1293,10 @@ packages:
   /@types/scheduler@0.16.3:
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
     dev: false
+
+  /@types/ua-parser-js@0.7.37:
+    resolution: {integrity: sha512-4sOxS3ZWXC0uHJLYcWAaLMxTvjRX3hT96eF4YWUh1ovTaenvibaZOE5uXtIp4mksKMLRwo7YDiCBCw6vBiUPVg==}
+    dev: true
 
   /@typescript-eslint/parser@6.4.1(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-610G6KHymg9V7EqOaNBMtD1GgpAmGROsmfHJPXNLCU9bfIuLrkdOygltK784F6Crboyd5tBFayPB7Sf0McrQwg==}
@@ -5043,6 +5053,10 @@ packages:
     resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
     engines: {node: '>=14.17'}
     hasBin: true
+    dev: false
+
+  /ua-parser-js@1.0.36:
+    resolution: {integrity: sha512-znuyCIXzl8ciS3+y3fHJI/2OhQIXbXw9MWC/o3qwyR+RGppjZHrM27CGFSKCJXi2Kctiz537iOu2KnXs1lMQhw==}
     dev: false
 
   /unbox-primitive@1.0.2:

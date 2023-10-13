@@ -7,8 +7,12 @@ declare namespace Lucia {
     username: string;
     name: string;
     emailVerified: boolean;
+    plan?: string | null;
     emailToken?: string | null;
     avatarUrl?: string | null;
   };
-  type DatabaseSessionAttributes = {};
+  type DatabaseSessionAttributes = {
+    address: string;
+    user_agent: string;
+  };
 }

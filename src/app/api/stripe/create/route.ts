@@ -1,22 +1,10 @@
 import { auth } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import stripe from "@/lib/stripe";
+import { plans } from "@/types/plans";
 import { error } from "@/utils/responses";
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
-
-const plans = [
-  {
-    plan: "premium",
-    price: 5.99,
-    description: "Premium plan",
-  },
-  {
-    plan: "pro",
-    price: 12.99,
-    description: "Pro plan",
-  },
-];
 
 export async function POST(req: Request) {
   const { plan } = await req.json();
@@ -31,7 +19,7 @@ export async function POST(req: Request) {
     return error("No plan provided", 400);
   }
 
-  const selectedPlan = plans.find((p) => p.plan === plan);
+  const selectedPlan = plans.find((p) => p.name === plan);
   if (!selectedPlan) {
     return error("Invalid plan", 400);
   }

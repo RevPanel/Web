@@ -33,6 +33,8 @@ model Session {
   user_id        String
   active_expires BigInt
   idle_expires   BigInt
+  address        String
+  user_agent     String
   user           User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
   @@index([user_id])

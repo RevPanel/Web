@@ -17,6 +17,12 @@ export const auth = lucia({
     expires: false,
   },
   adapter: prisma(prismadb),
+  getSessionAttributes: (data) => {
+    return {
+      address: data.address,
+      user_agent: data.user_agent,
+    };
+  },
   getUserAttributes: (data) => {
     return {
       username: data.username,
@@ -25,6 +31,7 @@ export const auth = lucia({
       emailVerified: data.emailVerified,
       emailToken: data.emailToken,
       avatarUrl: data.avatarUrl,
+      plan: data.plan,
     };
   },
 });

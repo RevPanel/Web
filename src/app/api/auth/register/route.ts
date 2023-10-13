@@ -60,9 +60,13 @@ export const POST = async (request: NextRequest) => {
       },
     });
 
+    const address = request.headers.get("x-real-ip") || request.ip;
     const session = await auth.createSession({
       userId: user.userId,
-      attributes: {},
+      attributes: {
+        address: address || "N/A",
+        user_agent: request.headers.get("user-agent") || "N/A",
+      },
     });
 
     const authRequest = auth.handleRequest(request.method, context);

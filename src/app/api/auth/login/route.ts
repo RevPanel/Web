@@ -1,11 +1,10 @@
 import { auth } from "@/lib/lucia";
-import { LuciaError } from "lucia";
-import * as context from "next/headers";
-import { NextResponse } from "next/server";
-
 import prisma from "@/lib/prisma";
 import { UserAction } from "@prisma/client";
+import { LuciaError } from "lucia";
+import * as context from "next/headers";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
   const formData = await request.formData();
@@ -26,9 +25,13 @@ export const POST = async (request: NextRequest) => {
   try {
     const key = await auth.useKey("username", username.toLowerCase(), password);
 
+    const address = request.headers.get("x-real-ip") || request.ip;
     const session = await auth.createSession({
       userId: key.userId,
-      attributes: {},
+      attributes: {
+        address: address || "N/A",
+        user_agent: request.headers.get("user-agent") || "N/A",
+      },
     });
 
     const authRequest = auth.handleRequest(request.method, context);
