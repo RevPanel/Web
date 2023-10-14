@@ -24,11 +24,18 @@ export function DockerTerminal(props: ServiceProps) {
   useEffect(() => {
     axios
       .get(`/api/servers/${props.serverId}/containers/${props.id}/logs`)
-      .then(({ data }) => {
+      .then(async ({ data }) => {
         setLines(data.split("\n"));
 
-        // todo: change ip
-        const socket = socketIO("http://172.27.3.36:8080/containers");
+        const { data: settings } = await axios.post(
+          `/api/servers/${props.serverId}/socket`
+        );
+
+        const socket = socketIO(`${settings.ip}/containers`, {
+          auth: {
+            token: settings.token,
+          },
+        });
 
         socket.on("connect", () => {
           setSocket(socket);
@@ -62,18 +69,23 @@ export function SSHTerminal({ server }: { server: string }) {
   const [lines, setLines] = useState<string[]>([]);
 
   useEffect(() => {
-    // todo: change ip
-    const socket = socketIO("http://172.27.3.36:8080/terminal");
-
-    socket.on("connect", () => {
-      setSocket(socket);
-
-      socket.on("data", (data) => {
-        setLines((lines) => [...lines, data]);
+    axios.post(`/api/servers/${server}/socket`).then(({ data }) => {
+      const socket = socketIO(`${data.ip}/terminal`, {
+        auth: {
+          token: data.token,
+        },
       });
-      socket.emit("create");
+
+      socket.on("connect", () => {
+        setSocket(socket);
+
+        socket.on("data", (data) => {
+          setLines((lines) => [...lines, data]);
+        });
+        socket.emit("create");
+      });
     });
-  }, []);
+  }, [server]);
 
   return (
     <TerminalWrapper

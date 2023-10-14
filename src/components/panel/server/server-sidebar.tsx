@@ -37,11 +37,6 @@ export default function ServerSidebar() {
               href: `/panel/${server}/files`,
             },
             {
-              title: "Network",
-              icon: faDumpsterFire,
-              href: `/panel/${server}/network`,
-            },
-            {
               title: "Packages",
               icon: faBox,
               href: `/panel/${server}/packages`,
