@@ -30,7 +30,7 @@ export default function EditServer(server: {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <div className="card flex w-full flex-col gap-4 xl:flex-row xl:justify-between">
+    <div className="flex flex-col justify-between gap-4 lg:flex-row">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -43,7 +43,7 @@ export default function EditServer(server: {
             .catch((e) => setError(e.response.data.error))
             .then(() => setSuccess("Server information updated!"));
         }}
-        className="flex flex-col gap-4 xl:w-1/2"
+        className="card w-1/2 xl:w-2/5"
       >
         <h1 className="text-2xl font-bold">Server Information</h1>
         {error && <p className="text-red-500">{error}</p>}
@@ -68,7 +68,8 @@ export default function EditServer(server: {
           Save
         </Button>
       </form>
-      <div className="flex flex-col gap-4 xl:w-1/2">
+
+      <div className="card w-1/2 xl:w-3/5">
         <h1 className="text-2xl font-extrabold">Manage Collaborators</h1>
         <div className="flex max-h-[12rem] flex-col gap-2 overflow-y-auto">
           {server.members.map((member) => (
@@ -78,12 +79,12 @@ export default function EditServer(server: {
                 setEditing(member.user.username);
                 onOpen();
               }}
-              className="flex w-full items-center gap-4 rounded-xl bg-background p-4"
+              className="flex w-full items-center gap-4 rounded-xl bg-background px-4 py-2"
             >
               <Image
                 src={member.user.avatarUrl || "/logo.png"}
-                width={50}
-                height={50}
+                width={40}
+                height={40}
                 className="rounded-full"
                 alt="avatar"
               />
