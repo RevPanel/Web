@@ -11,25 +11,40 @@ import axios from "axios";
 import hljs from "highlight.js/lib/core";
 import accesslog from "highlight.js/lib/languages/accesslog";
 import "highlight.js/styles/atom-one-dark.css";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
 import socketIO, { Socket } from "socket.io-client";
 
+hljs.addPlugin({
+  "after:highlight": function (data) {
+    const highlightedCode = data.value;
+    const modifiedCode = highlightedCode
+      .replace("**rv_red**", '<span class="text-red-500">')
+      .replace("**/rv_red**", "</span>");
+    data.value = modifiedCode;
+  },
+});
 hljs.registerLanguage("accesslog", accesslog);
 
 export function DockerTerminal(props: ServiceProps) {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [socketInstance, setSocket] = useState<Socket | null>(null);
   const [lines, setLines] = useState<string[]>([]);
+  const pathname = usePathname();
 
   useEffect(() => {
+    if (socketInstance) return;
     axios
       .get(`/api/servers/${props.serverId}/containers/${props.id}/logs`)
       .then(async ({ data }) => {
-        setLines(data.split("\n"));
+        const split = data.split("\n");
+        if (split[split.length - 1] === "") split.pop();
+        setLines(split);
 
         const { data: settings } = await axios.post(
           `/api/servers/${props.serverId}/socket`
         );
+        if (socketInstance) return;
 
         const socket = socketIO(`${settings.ip}/containers`, {
           auth: {
@@ -40,22 +55,30 @@ export function DockerTerminal(props: ServiceProps) {
         socket.on("connect", () => {
           setSocket(socket);
 
-          socket.on("message", (data) => {
-            setLines((lines) => [...lines, data]);
+          socket.on("message", (data: string) => {
+            setLines((lines) => [...lines, data.split("\r")[0]]);
           });
 
           socket.emit("subscribe", {
             id: props.id,
           });
+
+          socket.on("disconnect", () => {
+            socket.removeAllListeners();
+          });
         });
       });
-  }, [props]);
+  }, [props.id, props.serverId, socketInstance]);
+
+  useEffect(() => {
+    if (!pathname.endsWith("/console")) socketInstance?.disconnect();
+  }, [pathname, socketInstance]);
 
   return (
     <TerminalWrapper
       lines={lines}
       submit={(command) => {
-        socket?.emit("execute", {
+        socketInstance?.emit("execute", {
           id: props.id,
           command: command.split(" "),
         });
@@ -65,11 +88,13 @@ export function DockerTerminal(props: ServiceProps) {
 }
 
 export function SSHTerminal({ server }: { server: string }) {
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const [socketInstance, setSocket] = useState<Socket | null>(null);
   const [lines, setLines] = useState<string[]>([]);
+  const pathname = usePathname();
 
   useEffect(() => {
-    axios.post(`/api/servers/${server}/socket`).then(({ data }) => {
+    if (socketInstance) return;
+    axios.post(`/api/servers/${server}/socket`).then(async ({ data }) => {
       const socket = socketIO(`${data.ip}/terminal`, {
         auth: {
           token: data.token,
@@ -77,21 +102,41 @@ export function SSHTerminal({ server }: { server: string }) {
       });
 
       socket.on("connect", () => {
+        setLines((lines) => [
+          ...lines,
+          "[RevPanel] Connected to remote server",
+        ]);
         setSocket(socket);
 
-        socket.on("data", (data) => {
-          setLines((lines) => [...lines, data]);
+        socket.on("data", (data: string) => {
+          setLines((lines) => [...lines, data.split("\r")[0]]);
         });
+
+        socket.on("error", (data: string) => {
+          setLines((lines) => [
+            ...lines,
+            "**rv_red**" + data.split("\r")[0] + "**/rv_red**",
+          ]);
+        });
+
         socket.emit("create");
+
+        socket.on("disconnect", () => {
+          socket.removeAllListeners();
+        });
       });
     });
-  }, [server]);
+  }, [server, socketInstance]);
+
+  useEffect(() => {
+    if (!pathname.endsWith("/console")) socketInstance?.disconnect();
+  }, [pathname, socketInstance]);
 
   return (
     <TerminalWrapper
       lines={lines}
       submit={(command) => {
-        socket?.emit("execute", {
+        socketInstance?.emit("execute", {
           command: command,
         });
 

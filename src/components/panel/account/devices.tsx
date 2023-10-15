@@ -4,15 +4,18 @@ import { Button } from "@/components/button";
 import Modal from "@/components/modal";
 import useDisclosure from "@/hooks/disclosure";
 import { useFetcher } from "@/hooks/fetcher";
+import axios from "axios";
 
 export function Device({
+  id,
   name,
   status,
   ip,
   background,
 }: {
+  id: string;
   name: string;
-  status: "idle" | "active";
+  status: "idle" | "active" | "current";
   ip: string;
   background?: boolean;
 }) {
@@ -24,13 +27,24 @@ export function Device({
       }
     >
       <div className="flex">
-        <h2 className="font-extrabold">{name}</h2>
+        <h2 className="mr-5 font-extrabold">{name}</h2>
         <p className="text-gradient ml-auto uppercase">
-          {status ? "Online" : "Offline"}
+          {status === "current"
+            ? "Current"
+            : status === "active"
+            ? "Online"
+            : "Offline"}
         </p>
       </div>
       <p>IP Address: {ip}</p>
-      <button className="text-gradient mx-auto mt-auto">Disconnect</button>
+      <button
+        onClick={() => {
+          axios.delete(`/api/auth/sessions?id=${id}`);
+        }}
+        className="text-gradient mx-auto mt-auto"
+      >
+        Disconnect
+      </button>
     </div>
   );
 }
@@ -42,6 +56,7 @@ export function Devices() {
       name: string;
       state: "idle" | "active";
       address: string;
+      current?: boolean;
     }[]
   >("/api/auth/sessions");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -53,9 +68,10 @@ export function Devices() {
           ?.slice(0, 3)
           .map((session) => (
             <Device
+              id={session.sessionId}
               key={session.sessionId}
               name={session.name}
-              status={session.state}
+              status={session.current === true ? "current" : session.state}
               ip={session.address}
             />
           ))}
@@ -67,9 +83,10 @@ export function Devices() {
         <div className="mt-4 flex flex-col gap-4">
           {sessions?.map((session) => (
             <Device
+              id={session.sessionId}
               key={session.sessionId}
               name={session.name}
-              status={session.state}
+              status={session.current === true ? "current" : session.state}
               ip={session.address}
               background
             />

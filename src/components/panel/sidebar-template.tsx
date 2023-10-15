@@ -19,6 +19,7 @@ type RouteLink = {
   title: string;
   href: string;
   icon: IconProp;
+  noPrefetch?: boolean;
 };
 
 export const accountSection: RouteSection = {
@@ -43,6 +44,7 @@ export const accountSection: RouteSection = {
       title: "Logout",
       icon: faDoorOpen,
       href: "/logout",
+      noPrefetch: true
     },
   ],
 };
@@ -83,6 +85,7 @@ export default function SidebarTemplate({
               >
                 <Link
                   href={link.href}
+                  prefetch={!link.noPrefetch}
                   className={
                     "flex w-full items-center gap-2 text-lg text-white " +
                     (comparePaths(path, link.href) ? "font-bold" : "")

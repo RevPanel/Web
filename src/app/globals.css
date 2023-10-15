@@ -84,3 +84,7 @@ a {
 .react-contextmenu-item {
   @apply cursor-pointer flex gap-2 p-2 rounded-lg items-center hover:bg-background-secondary;
 }
+
+.rv-red {
+  @apply text-red-500;
+}
