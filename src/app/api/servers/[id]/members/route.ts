@@ -60,8 +60,8 @@ export async function POST(
   }
 
   const body = await req.json();
-  if (!body.userId) {
-    return error("Missing userId", 400);
+  if (!body.username) {
+    return error("Missing username", 400);
   }
 
   const server = await prisma.server.findUnique({
@@ -69,7 +69,15 @@ export async function POST(
       id: params.id,
     },
     select: {
-      members: true,
+      members: {
+        select: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      },
       ownerId: true,
     },
   });
@@ -82,8 +90,25 @@ export async function POST(
     return error("Unauthorized", 403);
   }
 
-  if (server.members.some((user) => user.userId === body.userId)) {
-    return error("User is already a member", 400);
+  if (server.members.some((user) => user.user.username === body.username)) {
+    await prisma.serverMember.deleteMany({
+      where: {
+        serverId: params.id,
+        user: {
+          username: body.username,
+        },
+      },
+    });
+  }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      username: body.username,
+    },
+  });
+
+  if (!user) {
+    return error("User not found", 404);
   }
 
   await prisma.server.update({
@@ -93,7 +118,11 @@ export async function POST(
     data: {
       members: {
         create: {
-          userId: body.userId,
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
           permissions: body.permissions,
         },
       },

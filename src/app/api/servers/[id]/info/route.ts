@@ -42,3 +42,50 @@ export async function GET(
     },
   });
 }
+
+export async function POST(
+  req: Request,
+  {
+    params,
+  }: {
+    params: {
+      id: string;
+    };
+  }
+) {
+  const authRequest = auth.handleRequest(req.method, context);
+  const session = await authRequest.validate();
+
+  if (!session) {
+    return error("Not logged in", 403);
+  }
+
+  const server = await prisma.server.findUnique({
+    where: {
+      id: params.id as string,
+    },
+  });
+
+  if (!server) {
+    return error("Server not found", 404);
+  }
+
+  if (server.ownerId !== session.user.userId) {
+    return error("Unauthorized", 403);
+  }
+
+  const body = await req.json();
+  await prisma.server.update({
+    where: {
+      id: server.id,
+    },
+    data: {
+      name: body.name,
+      description: body.description,
+    },
+  });
+
+  return NextResponse.json({
+    success: true,
+  });
+}
