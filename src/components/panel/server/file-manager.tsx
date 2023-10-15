@@ -221,7 +221,8 @@ export default function FileManager(props: {
                   },
                 }
               )
-              .then(() => mutate());
+              .then(() => mutate())
+              .catch(() => {});
           }}
         />
 
@@ -264,7 +265,8 @@ export default function FileManager(props: {
                     },
                   }
                 )
-                .then(() => mutate());
+                .then(() => mutate())
+                .catch(() => {});
             }}
             key={file.name}
           />
@@ -283,7 +285,8 @@ export default function FileManager(props: {
                   props.service || "root"
                 }/new?type=${type}&file=${path}/${name}`
             )
-            .then(() => mutate());
+            .then(() => mutate())
+            .catch(() => {});
         }}
         type={createType}
       />
@@ -308,7 +311,8 @@ export default function FileManager(props: {
                 },
               }
             )
-            .then(() => mutate());
+            .then(() => mutate())
+            .catch(() => {});
         }}
       />
 
@@ -323,7 +327,9 @@ export default function FileManager(props: {
               ? `/panel/${props.server}/${props.service}/files`
               : `/panel/${props.server}/files`;
 
-            if (files?.find((file) => file.name === name)?.type === "directory") {
+            if (
+              files?.find((file) => file.name === name)?.type === "directory"
+            ) {
               return;
             }
 

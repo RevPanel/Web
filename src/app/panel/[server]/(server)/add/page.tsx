@@ -90,7 +90,6 @@ export default function Page({
   const router = useRouter();
   const [name, setName] = useState("");
   const [memory, setMemory] = useState(0);
-  const [cpu, setCpu] = useState(0);
   const [disk, setDisk] = useState(0);
   const [error, setError] = useState("");
 
@@ -130,7 +129,6 @@ export default function Page({
             .post(`/api/servers/${params.server}/containers/create`, {
               name,
               memory,
-              cpu,
               disk,
               image: search.get("image"),
             })
@@ -160,10 +158,6 @@ export default function Page({
             bind={[memory, setMemory]}
             options={[25, 50, 75, 100]}
           />
-        </div>
-        <div className="card flex w-full flex-row items-center justify-between">
-          <h1 className="text-xl font-extrabold">Allocate CPU</h1>
-          <Range name="CPU" bind={[cpu, setCpu]} options={[25, 50, 75, 100]} />
         </div>
         <div className="card flex w-full flex-row items-center justify-between">
           <h1 className="text-xl font-extrabold">Allocate Disk</h1>
