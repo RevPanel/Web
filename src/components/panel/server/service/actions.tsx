@@ -5,14 +5,32 @@ import StartIcon from "@/components/icons/Start";
 import StopIcon from "@/components/icons/Stop";
 import type { ServiceProps, SessionProps } from "@/types/service";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 async function run(action: string, props: ServiceProps) {
   axios.post(`/api/servers/${props.serverId}/containers/${props.id}/${action}`);
 }
 
 export default function QuickActions(props: ServiceProps & SessionProps) {
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (!message || message === "") return;
+
+    setTimeout(() => {
+      setMessage("");
+    }, 2000);
+  }, [message]);
+
   return (
     <div className="card">
+      {message && (
+        <div className="card fixed bottom-4 right-4 z-10 flex h-20 w-96 flex-col justify-center p-0">
+          <p className="m-auto mt-6 text-center text-xl">{message}</p>
+          <span className="bg-gradient mt-auto block h-2 w-full rounded-xl"></span>
+        </div>
+      )}
+
       <h1 className="font-light uppercase">Quick Actions</h1>
       <div className="flex w-full flex-col justify-between gap-4 lg:flex-row">
         <div>
@@ -25,6 +43,7 @@ export default function QuickActions(props: ServiceProps & SessionProps) {
           <button
             onClick={() => {
               run("start", props);
+              setMessage("Server started successfully!");
             }}
             className="flex h-14 w-14 items-center justify-center rounded-xl bg-background p-4"
           >
@@ -33,6 +52,7 @@ export default function QuickActions(props: ServiceProps & SessionProps) {
           <button
             onClick={() => {
               run("stop", props);
+              setMessage("Server stopped successfully!");
             }}
             className="flex h-14 w-14 items-center justify-center rounded-xl bg-background p-4"
           >
@@ -41,6 +61,7 @@ export default function QuickActions(props: ServiceProps & SessionProps) {
           <button
             onClick={() => {
               run("restart", props);
+              setMessage("Server restarted successfully!");
             }}
             className="flex h-14 w-14 items-center justify-center rounded-xl bg-background p-4"
           >

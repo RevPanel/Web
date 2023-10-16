@@ -43,7 +43,7 @@ export default function EditServer(server: {
             .catch((e) => setError(e.response.data.error))
             .then(() => setSuccess("Server information updated!"));
         }}
-        className="card w-1/2 xl:w-2/5"
+        className="card lg:w-1/2 xl:w-2/5"
       >
         <h1 className="text-2xl font-bold">Server Information</h1>
         {error && <p className="text-red-500">{error}</p>}
@@ -69,7 +69,7 @@ export default function EditServer(server: {
         </Button>
       </form>
 
-      <div className="card w-1/2 xl:w-3/5">
+      <div className="card lg:w-1/2 xl:w-3/5">
         <h1 className="text-2xl font-extrabold">Manage Collaborators</h1>
         <div className="flex max-h-[12rem] flex-col gap-2 overflow-y-auto">
           {server.members.map((member) => (
@@ -141,7 +141,7 @@ function InviteModal({
   }, [editing]);
 
   return (
-    <Modal title="Add Collaborator" isOpen={isOpen} onClose={onClose}>
+    <Modal title="Add/Manage Collaborator" isOpen={isOpen} onClose={onClose}>
       <form
         onSubmit={(e) => {
           e.preventDefault();

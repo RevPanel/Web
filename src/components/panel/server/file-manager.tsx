@@ -107,11 +107,13 @@ function FileItem({
             ) : (
               <FontAwesomeIcon icon={faFolder} className="text-xl" />
             )}
-            <p>{file.name}</p>
+            <p className="word-break overflow-hidden text-ellipsis whitespace-nowrap">
+              {file.name}
+            </p>
           </button>
         </div>
         {file.name !== ".." && (
-          <div className="flex items-center gap-4">
+          <div className="word-break flex items-center gap-4 overflow-hidden text-ellipsis whitespace-nowrap">
             <p>{file.size}</p>
             <p>{moment(file.modified).fromNow()}</p>
           </div>

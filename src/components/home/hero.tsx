@@ -6,7 +6,11 @@ import { Button, LinkButton } from "../button";
 export default function Hero() {
   return (
     <div className="mx-auto flex flex-col items-center justify-center gap-4 text-center md:w-1/2 xl:w-1/3">
-      <Button className="text-gradient font-medium" role="secondary">
+      <Button
+        type="button"
+        className="text-gradient font-medium"
+        role="secondary"
+      >
         THE BEST PANEL ON THE MARKET
       </Button>
       <h1 className="text-4xl font-medium">

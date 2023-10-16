@@ -29,7 +29,7 @@ function CreateKey({ mutate }: { mutate: any }) {
             mutate();
           });
       }}
-      className="flex w-1/2 flex-col gap-4 rounded-xl bg-background-secondary p-4"
+      className="flex flex-col gap-4 rounded-xl bg-background-secondary p-4 lg:w-1/2"
     >
       <h1 className="text-3xl font-extrabold uppercase">Create api key</h1>
       {key && (
@@ -76,9 +76,9 @@ export default function Page() {
   const { data: keys, mutate } = useFetcher<ApiKey[]>("/api/keys");
 
   return (
-    <div className="flex w-full gap-4">
+    <div className="flex w-full flex-col gap-4 lg:flex-row">
       <CreateKey mutate={mutate} />
-      <div className="flex w-1/2 flex-col gap-4 rounded-xl bg-background-secondary p-4">
+      <div className="flex flex-col gap-4 rounded-xl bg-background-secondary p-4 lg:w-1/2">
         <h1 className="text-3xl font-extrabold uppercase">Api keys</h1>
         {keys && keys.length > 0 ? (
           <div className="flex w-full flex-col gap-2">

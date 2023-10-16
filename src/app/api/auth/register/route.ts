@@ -79,7 +79,7 @@ export const POST = async (request: NextRequest) => {
       },
     });
 
-    await resend.sendEmail({
+    const mailStatus = await resend.sendEmail({
       from: "RevPanel <noreply@revpanel.io>",
       to: [user.email],
       subject: "Thanks for creating an account!",
@@ -88,7 +88,17 @@ export const POST = async (request: NextRequest) => {
         name: user.name,
         link: `${process.env.APP_URL}/api/auth/verify/${user.emailToken}`,
       }),
+      tags: [
+        {
+          name: "category",
+          value: "register",
+        },
+      ],
     });
+
+    if ("message" in mailStatus) {
+      console.error(mailStatus);
+    }
 
     return new Response(null, {
       status: 302,

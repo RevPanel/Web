@@ -16,7 +16,7 @@ function PriceCard(
 ) {
   return (
     <div className="my-4 flex flex-col gap-2 rounded-xl bg-background-secondary p-4 shadow-lg md:m-0 md:w-[25rem] xl:min-h-[35rem]">
-      <h1 className="text-3xl">{price.name}</h1>
+      <h2 className="text-3xl">{price.name}</h2>
       <p className="text-tertiary">{price.subtitle}</p>
       <h2 className="my-5 text-3xl">
         €{Math.round(price.price * (price.yearly ? 0.75 : 1))}
@@ -45,6 +45,7 @@ function PriceCard(
             });
         }}
         role="primary"
+        type="button"
         className="mx-auto mt-auto w-full !rounded-full"
       >
         Get Started
@@ -57,15 +58,19 @@ export default function Pricing() {
   const [toggle, setToggle] = useState(true);
 
   return (
-    <div className="w-full p-8 py-24 md:bg-[#141417]">
+    <div id="pricing" className="w-full p-8 py-24 md:bg-[#141417]">
       <div className="mx-auto flex flex-col gap-2 text-center md:w-4/5 md:text-left">
-        <Button role="secondary" className="mx-auto w-fit uppercase md:m-0">
+        <Button
+          type="button"
+          role="secondary"
+          className="mx-auto w-fit uppercase md:m-0"
+        >
           <span className="text-gradient">Prices</span>
         </Button>
         <div className="flex w-full flex-col items-center justify-between md:flex-row">
           <div>
-            <h1 className="text-4xl">See the plans we offer</h1>
-            <p className="text-tertiary">The best plans for your company</p>
+            <h2 className="text-4xl">See the plans we offer</h2>
+            <h3 className="text-tertiary">The best plans for your company</h3>
           </div>
           <div className="flex flex-col">
             <div className="flex items-start gap-2 text-lg font-semibold">

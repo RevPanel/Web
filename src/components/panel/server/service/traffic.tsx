@@ -32,9 +32,9 @@ export default function TrafficUsage() {
   return (
     <div className="card lg:w-2/3">
       <h1 className="font-light uppercase">Traffic Usage</h1>
-      <UsageBar title="Inbound" used={10} total={20} />
-      <UsageBar title="Outbound" used={5} total={20} />
-      <UsageBar title="Total" used={15} total={40} />
+      <UsageBar title="Inbound" used={0} total={20} />
+      <UsageBar title="Outbound" used={0} total={20} />
+      <UsageBar title="Total" used={0} total={40} />
     </div>
   );
 }

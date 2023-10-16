@@ -11,7 +11,9 @@ const font = Space_Grotesk({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "RevPanel",
-  description: "The panel everyone can use",
+  description:
+    "RevPanel is a dashboard that allows users to easily manage their servers without any system administration knowledge.",
+  themeColor: "#C082FF",
 };
 
 export default function RootLayout({

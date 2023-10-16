@@ -15,9 +15,11 @@ export default function OpenPorts(props: ServiceProps) {
       <h1 className="font-light uppercase">
         Open Ports ({container?.ports.length})
       </h1>
-      {container?.ports.map((port: any) => (
-        <Port key={port.id} name={port.name} port={port.publicPort} />
-      ))}
+      <div className="flex max-h-[15rem] flex-col gap-4 overflow-y-auto">
+        {container?.ports.map((port: any) => (
+          <Port key={port.id} name={port.name} port={port.publicPort} />
+        ))}
+      </div>
       <Button role="primary" className="mt-auto font-extrabold uppercase">
         Manage Ports
       </Button>

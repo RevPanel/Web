@@ -55,7 +55,9 @@ export default function AuditLogs(props: ServiceProps) {
   return (
     <div className="card lg:w-1/3">
       <h1 className="font-light uppercase">Audit Logs</h1>
-      {logs?.map((log: AuditLog) => <LogBar key={log.id} {...log} />)}
+      <div className="flex max-h-[14rem] flex-col gap-4 overflow-y-auto">
+        {logs?.map((log: AuditLog) => <LogBar key={log.id} {...log} />)}
+      </div>
     </div>
   );
 }

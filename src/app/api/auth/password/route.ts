@@ -39,6 +39,6 @@ export const POST = async (req: NextRequest) => {
       message: "Password updated successfully",
     });
   } catch (e: any) {
-    return error(e.message, 500);
+    return error("Invalid current password", 500);
   }
 };

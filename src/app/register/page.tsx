@@ -12,13 +12,13 @@ export default async function Page() {
   if (session) redirect("/");
 
   return (
-    <div className="mx-auto flex min-h-screen w-full flex-col items-center justify-center text-center">
+    <div className="mx-auto flex min-h-screen w-full flex-col items-center justify-center px-10 text-center md:px-0">
       <h1 className="text-4xl font-bold">Register a new account</h1>
       <p className="text-tertiary">
         Create a new account now and start using our services
       </p>
       <Form
-        className="mx-auto mt-4 flex flex-col gap-2 md:w-1/2 lg:w-1/3 xl:w-1/5"
+        className="mx-auto mt-4 flex w-full flex-col gap-2 md:w-1/2 lg:w-1/3 2xl:w-1/5"
         action="/api/auth/register"
       >
         <div className="flex w-full gap-2">

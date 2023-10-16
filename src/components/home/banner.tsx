@@ -13,12 +13,12 @@ export default function Banner() {
           width="100"
           height="100"
         />
-        <h3 className="text-tertiary">
+        {/* <h3 className="text-tertiary">
           More than 1000+ machines are connected to our panel
-        </h3>
-        <h1 className="text-gradient text-3xl font-bold md:w-1/2">
+        </h3> */}
+        <p className="text-gradient text-3xl font-bold md:w-1/2">
           We&apos;ll pay your first month to let you enjoy the whole experience
-        </h1>
+        </p>
         <LinkButton
           href="/panel"
           role="white"

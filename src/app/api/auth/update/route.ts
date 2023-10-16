@@ -28,7 +28,7 @@ export const POST = async (req: NextRequest) => {
         emailToken: newToken,
       });
 
-      await resend.sendEmail({
+      const mailStatus = await resend.sendEmail({
         from: "RevPanel <noreply@revpanel.io>",
         to: [session.user.email],
         subject: "Thanks for creating an account!",
@@ -37,7 +37,17 @@ export const POST = async (req: NextRequest) => {
           name: session.user.name,
           link: `${process.env.APP_URL}/api/auth/verify/${newToken}`,
         }),
+        tags: [
+          {
+            name: "category",
+            value: "register",
+          },
+        ],
       });
+
+      if ("message" in mailStatus) {
+        console.error(mailStatus);
+      }
     }
 
     authRequest.invalidate();

@@ -35,11 +35,11 @@ export default async function SettingsPage({
   const server = await getServer(params.server);
 
   return (
-    <div className="flex w-full flex-col gap-4 h-full">
+    <div className="flex h-full w-full flex-col gap-4">
       {server && <EditServer {...server} />}
 
       <div className="flex flex-col justify-between gap-4 lg:flex-row">
-        <div className="card w-1/2 xl:w-3/5">
+        <div className="card lg:w-1/2 xl:w-3/5">
           <h1 className="text-3xl font-extrabold">Version</h1>
           <p className="text-justify xl:w-2/3">
             The panel daemon automatically updates itself to the latest version.
@@ -52,7 +52,7 @@ export default async function SettingsPage({
             <Button role="secondary">v 1.0</Button>
           </div>
         </div>
-        <div className="card w-1/2 xl:w-2/5">
+        <div className="card lg:w-1/2 xl:w-2/5">
           <h1 className="text-3xl font-extrabold">Notifications</h1>
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
@@ -71,7 +71,7 @@ export default async function SettingsPage({
         </div>
       </div>
 
-      <Button role="secondary" className="w-full uppercase mt-auto">
+      <Button role="secondary" className="mt-auto w-full uppercase">
         Remove server
       </Button>
     </div>

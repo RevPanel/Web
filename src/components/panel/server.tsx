@@ -24,6 +24,7 @@ export default function ServerContainer({
 
   return (
     <Link
+      draggable={false}
       href={
         serverId ? `/panel/${serverId}/${server.id}` : `/panel/${server.id}`
       }
