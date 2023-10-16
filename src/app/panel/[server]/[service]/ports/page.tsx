@@ -54,7 +54,7 @@ export default function Ports({
           axios
             .put(`/api/servers/${server}/containers/${service}/ports`, {
               name,
-              internalPort: internal,
+              containerPort: internal,
               publicPort,
             })
             .then(() => mutate());
