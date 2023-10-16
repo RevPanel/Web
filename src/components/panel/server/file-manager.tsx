@@ -127,7 +127,7 @@ export default function FileManager(props: {
   server: string;
   service?: string;
 }) {
-  const [path, setPath] = useState<string>(props.service ? "" : "/home");
+  const [path, setPath] = useState<string>(props.service ? "" : "/");
   const [selected, setSelected] = useState<string[]>([]);
   const [renaming, setRenaming] = useState<string>("");
   const [createType, setCreateType] = useState<"file" | "directory">("file");
@@ -200,7 +200,7 @@ export default function FileManager(props: {
           selected={false}
           onSelect={() => {}}
           setPath={() => {
-            if (path === "/home") return;
+            if (path === "/") return;
             setPath((prev: string) => prev.slice(0, prev.lastIndexOf("/")));
           }}
           file={{
