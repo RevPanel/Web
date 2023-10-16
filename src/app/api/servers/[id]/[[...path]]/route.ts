@@ -85,7 +85,7 @@ async function handler(
 
     const res = await axios({
       method,
-      url: `http://${server.ip}:8080/${path.join("/")}${
+      url: `https://${server.ip}:8080/${path.join("/")}${
         query ? `?${query.toString()}` : ""
       }`,
       headers: {

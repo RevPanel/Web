@@ -69,7 +69,7 @@ async function handler(
 
   try {
     const res = await axios.get(
-      `http://${server.ip}:8080/containers/${query.get("id")}/exists`,
+      `https://${server.ip}:8080/containers/${query.get("id")}/exists`,
       {
         headers: {
           Authorization: `Bearer ${server.key}`,

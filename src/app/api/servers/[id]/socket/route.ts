@@ -45,7 +45,7 @@ export async function POST(
 
   try {
     const { data } = await axios.post(
-      `http://${server.ip}:8080/sockets/create`,
+      `https://${server.ip}:8080/sockets/create`,
       {},
       {
         headers: {
@@ -61,7 +61,7 @@ export async function POST(
 
     return NextResponse.json({
       token: data.token,
-      ip: `http://${server.ip}:8080`,
+      ip: `https://${server.ip}:8080`,
     });
   } catch (e) {
     console.log(e);
