@@ -7,12 +7,10 @@ import Pricing from "@/components/home/pricing";
 import Promises from "@/components/home/promises";
 import Image from "next/image";
 
-export default async function Home() {
-  const session = await getSession();
-
+export default function Home() {
   return (
     <main className="flex w-full flex-col gap-10">
-      <Navbar loggedIn={!!session} />
+      <Navbar />
       <div className="relative flex w-full flex-col gap-10">
         <Image
           className="absolute left-52 top-14 -z-10 hidden md:block xl:left-[25rem]"
