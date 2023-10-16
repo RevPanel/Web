@@ -27,7 +27,7 @@ export default function RootLayout({
       <head>
         <PlausibleProvider
           domain="revpanel.io"
-          customDomain="stats.revpanel.io"
+          customDomain="https://stats.revpanel.io"
         />
       </head>
       <body
