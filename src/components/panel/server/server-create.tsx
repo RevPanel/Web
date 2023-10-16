@@ -4,7 +4,9 @@ import { Button } from "@/components/button";
 import FormInput from "@/components/input";
 import Modal from "@/components/modal";
 import useDisclosure from "@/hooks/disclosure";
+import { PlausibleEvents } from "@/types/plausible";
 import { default as axios } from "axios";
+import { usePlausible } from "next-plausible";
 import { useState } from "react";
 
 export default function CreateServer() {
@@ -14,6 +16,7 @@ export default function CreateServer() {
   const [ip, setIp] = useState("");
   const [command, setCommand] = useState("");
   const [error, setError] = useState("");
+  const plausible = usePlausible<PlausibleEvents>();
 
   return (
     <>
@@ -37,6 +40,7 @@ export default function CreateServer() {
                   ip,
                 });
 
+                plausible("serverCreate");
                 setCommand(data.command);
               } catch (e: any) {
                 setError(e.response.data.message);

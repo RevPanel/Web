@@ -38,6 +38,7 @@
     "lucia": "^2.7.1",
     "moment": "^2.29.4",
     "next": "13.5.4",
+    "next-plausible": "^3.11.1",
     "next-progress": "^2.3.1",
     "nprogress": "^0.2.0",
     "postcss": "8.4.31",

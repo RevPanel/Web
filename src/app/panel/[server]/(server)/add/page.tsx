@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/button";
 import FormInput from "@/components/input";
+import { PlausibleEvents } from "@/types/plausible";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faDocker, faNode } from "@fortawesome/free-brands-svg-icons";
 import {
@@ -12,6 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -92,6 +94,7 @@ export default function Page({
   const [memory, setMemory] = useState(0);
   const [disk, setDisk] = useState(0);
   const [error, setError] = useState("");
+  const plausible = usePlausible<PlausibleEvents>();
 
   if (!search.has("image"))
     return (
@@ -125,6 +128,12 @@ export default function Page({
         onSubmit={(e) => {
           e.preventDefault();
 
+          plausible("serviceCreate", {
+            props: {
+              image: search.get("image") || "",
+            },
+          });
+          
           axios
             .post(`/api/servers/${params.server}/containers/create`, {
               name,
@@ -132,9 +141,9 @@ export default function Page({
               disk,
               image: search.get("image"),
             })
-            .then(({ data }) =>
-              router.push(`/panel/${params.server}/${data.id}`)
-            )
+            .then(({ data }) => {
+              router.push(`/panel/${params.server}/${data.id}`);
+            })
             .catch((err) => setError(err.response.data.message));
         }}
         className="m-auto flex w-3/4 flex-col gap-4"

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import ProgressWrapper from "@/components/progress-wrapper";
+import PlausibleProvider from "next-plausible";
 
 config.autoAddCss = false;
 
@@ -23,6 +24,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <PlausibleProvider
+          domain="revpanel.io"
+          customDomain="stats.revpanel.io"
+        />
+      </head>
       <body
         className={
           font.className +
