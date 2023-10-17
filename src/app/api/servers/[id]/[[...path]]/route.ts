@@ -85,9 +85,9 @@ async function handler(
 
     const res = await axios({
       method,
-      url: `https://${server.ip}:8080/${path.join("/")}${
-        query ? `?${query.toString()}` : ""
-      }`,
+      url: `${process.env.NODE_ENV === "development" ? "http" : "https"}://${
+        server.ip
+      }:8080/${path.join("/")}${query ? `?${query.toString()}` : ""}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${server.key}`,

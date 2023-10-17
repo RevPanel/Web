@@ -69,7 +69,9 @@ async function handler(
 
   try {
     const res = await axios.get(
-      `https://${server.ip}:8080/containers/${query.get("id")}/exists`,
+      `${process.env.NODE_ENV === "development" ? "http" : "https"}://${
+        server.ip
+      }:8080/containers/${query.get("id")}/exists`,
       {
         headers: {
           Authorization: `Bearer ${server.key}`,

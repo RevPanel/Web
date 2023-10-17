@@ -5,8 +5,16 @@ import axios from "axios";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
-export default function UpdateAvatar({ avatar }: { avatar?: string | null }) {
-  const [avatarUrl, setAvatarUrl] = useState(avatar || "/logo.png");
+export default function UpdateAvatar({
+  avatar,
+  name,
+}: {
+  avatar?: string | null;
+  name: string;
+}) {
+  const [avatarUrl, setAvatarUrl] = useState(
+    avatar || `https://ui-avatars.com/api/?name=${name}&background=7967FF`
+  );
   const fileRef = useRef<HTMLInputElement>(null);
 
   return (

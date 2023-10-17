@@ -131,3 +131,69 @@ export async function POST(
 
   return NextResponse.json({ success: true });
 }
+
+export async function DELETE(
+  req: Request,
+  {
+    params,
+  }: {
+    params: {
+      id: string;
+    };
+  }
+) {
+  const authRequest = auth.handleRequest(req.method, context);
+  const session = await authRequest.validate();
+
+  if (!session) {
+    return error("Not logged in", 403);
+  }
+
+  const query = new URL(req.url).searchParams;
+  const username = query.get("user");
+
+  const server = await prisma.server.findUnique({
+    where: {
+      id: params.id,
+    },
+    select: {
+      members: {
+        select: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      },
+      ownerId: true,
+    },
+  });
+
+  if (!server) {
+    return error("Server not found", 404);
+  }
+
+  if (server.ownerId !== session.user.userId) {
+    return error("Unauthorized", 403);
+  }
+
+  if (!username) {
+    return error("Missing username", 400);
+  }
+
+  if (!server.members.some((user) => user.user.username === username)) {
+    return error("User not found", 404);
+  }
+
+  await prisma.serverMember.deleteMany({
+    where: {
+      serverId: params.id,
+      user: {
+        username,
+      },
+    },
+  });
+
+  return NextResponse.json({ success: true });
+}

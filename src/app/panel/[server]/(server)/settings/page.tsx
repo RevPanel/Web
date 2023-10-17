@@ -19,6 +19,7 @@ async function getServer(server: string) {
               username: true,
             },
           },
+          permissions: true,
         },
       },
     },

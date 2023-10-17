@@ -1,5 +1,7 @@
 "use client";
 
+import { useFetcher } from "@/hooks/fetcher";
+import useServer from "@/hooks/server";
 import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import {
   faAlignLeft,
@@ -19,6 +21,7 @@ type RouteLink = {
   title: string;
   href: string;
   icon: IconProp;
+  permission?: string;
   noPrefetch?: boolean;
 };
 
@@ -44,7 +47,7 @@ export const accountSection: RouteSection = {
       title: "Logout",
       icon: faDoorOpen,
       href: "/logout",
-      noPrefetch: true
+      noPrefetch: true,
     },
   ],
 };
@@ -65,7 +68,11 @@ export default function SidebarTemplate({
 }: {
   sections: RouteSection[];
 }) {
+  const server = useServer();
   const path = usePathname();
+  const { data: permissions } = useFetcher<string[]>(
+    server ? `/api/servers/${server}/members/permissions` : undefined
+  );
 
   return (
     <>
@@ -75,26 +82,33 @@ export default function SidebarTemplate({
       {sections.map((section) => (
         <div key={section.title} className="mx-4">
           <ul className="flex flex-col gap-2">
-            {section.links.map((link) => (
-              <li
-                key={link.title}
-                className={
-                  "rounded-lg p-2 pl-4 hover:bg-background/60 " +
-                  (comparePaths(path, link.href) ? "bg-background/60" : "")
-                }
-              >
-                <Link
-                  href={link.href}
-                  prefetch={!link.noPrefetch}
+            {section.links
+              .filter(
+                (link) =>
+                  !link.permission ||
+                  permissions?.includes("*") ||
+                  permissions?.includes(link.permission)
+              )
+              .map((link) => (
+                <li
+                  key={link.title}
                   className={
-                    "flex w-full items-center gap-2 text-lg text-white " +
-                    (comparePaths(path, link.href) ? "font-bold" : "")
+                    "rounded-lg p-2 pl-4 hover:bg-background/60 " +
+                    (comparePaths(path, link.href) ? "bg-background/60" : "")
                   }
                 >
-                  <p>{link.title}</p>
-                </Link>
-              </li>
-            ))}
+                  <Link
+                    href={link.href}
+                    prefetch={!link.noPrefetch}
+                    className={
+                      "flex w-full items-center gap-2 text-lg text-white " +
+                      (comparePaths(path, link.href) ? "font-bold" : "")
+                    }
+                  >
+                    <p>{link.title}</p>
+                  </Link>
+                </li>
+              ))}
           </ul>
         </div>
       ))}

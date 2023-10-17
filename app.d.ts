@@ -10,6 +10,7 @@ declare namespace Lucia {
     plan?: string | null;
     emailToken?: string | null;
     avatarUrl?: string | null;
+    serverCreated: boolean;
   };
   type DatabaseSessionAttributes = {
     address: string;

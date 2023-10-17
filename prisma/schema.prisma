@@ -18,6 +18,7 @@ model User {
   resetToken    String?   @unique
   plan          String?
   renewDate     DateTime?
+  serverCreated Boolean   @default(false)
 
   auth_session Session[]
   key          Key[]

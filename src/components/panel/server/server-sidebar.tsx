@@ -2,7 +2,6 @@
 
 import {
   faBox,
-  faDumpsterFire,
   faFile,
   faGears,
   faHome,
@@ -30,11 +29,13 @@ export default function ServerSidebar() {
               title: "Terminal",
               icon: faTerminal,
               href: `/panel/${server}/console`,
+              permission: "server.terminal",
             },
             {
               title: "File Manager",
               icon: faFile,
               href: `/panel/${server}/files`,
+              permission: "server.files",
             },
             {
               title: "Packages",
@@ -45,11 +46,13 @@ export default function ServerSidebar() {
               title: "Task Manager",
               icon: faTasks,
               href: `/panel/${server}/tasks`,
+              permission: "server.tasks",
             },
             {
               title: "Settings",
               icon: faGears,
               href: `/panel/${server}/settings`,
+              permission: "*",
             },
           ],
         },

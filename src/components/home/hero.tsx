@@ -5,7 +5,7 @@ import { Button, LinkButton } from "../button";
 
 export default function Hero() {
   return (
-    <div className="mx-auto flex flex-col items-center justify-center gap-4 text-center md:w-1/2 xl:w-1/3">
+    <div className="mx-auto flex w-3/4 flex-col items-center justify-center gap-4 p-4 text-center md:w-1/2 md:p-0 xl:w-1/3">
       <Button
         type="button"
         className="text-gradient font-medium"

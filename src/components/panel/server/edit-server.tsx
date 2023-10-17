@@ -4,11 +4,32 @@ import { Button } from "@/components/button";
 import FormInput from "@/components/input";
 import Modal from "@/components/modal";
 import useDisclosure from "@/hooks/disclosure";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Select from "react-select";
+
+const permissionList: readonly {
+  value: string;
+  label: string;
+}[] = [
+  { value: "*", label: "[Danger] Administrator" },
+
+  { value: "service.create", label: "Create Services" },
+  { value: "service.delete", label: "Delete Services" },
+  { value: "service.manage", label: "Manage Services Actions" },
+  { value: "service.edit", label: "Edit Services" },
+  { value: "service.files", label: "Access Services Files" },
+  { value: "service.terminal", label: "Access Services Terminal" },
+
+  { value: "server.files", label: "Access Server Files" },
+  { value: "server.terminal", label: "Access Server Terminal" },
+  { value: "server.tasks", label: "Access Server Task Manager" },
+];
 
 export default function EditServer(server: {
   id: string;
@@ -20,13 +41,18 @@ export default function EditServer(server: {
       avatarUrl: string | null;
       username: string;
     };
+    permissions: string[];
   }[];
 }) {
+  const router = useRouter();
   const [name, setName] = useState(server.name);
   const [description, setDescription] = useState(server.description || "");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [editing, setEditing] = useState("");
+  const [editing, setEditing] = useState<{
+    username: string;
+    permissions: string[];
+  } | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -73,29 +99,45 @@ export default function EditServer(server: {
         <h1 className="text-2xl font-extrabold">Manage Collaborators</h1>
         <div className="flex max-h-[12rem] flex-col gap-2 overflow-y-auto">
           {server.members.map((member) => (
-            <button
-              key={member.user.username}
-              onClick={() => {
-                setEditing(member.user.username);
-                onOpen();
-              }}
-              className="flex w-full items-center gap-4 rounded-xl bg-background px-4 py-2"
-            >
-              <Image
-                src={member.user.avatarUrl || "/logo.png"}
-                width={40}
-                height={40}
-                className="rounded-full"
-                alt="avatar"
-              />
+            <div key={member.user.username} className="flex items-center gap-4">
+              <button
+                onClick={() => {
+                  setEditing({
+                    username: member.user.username,
+                    permissions: member.permissions,
+                  });
+                  onOpen();
+                }}
+                className="flex w-full items-center gap-4 rounded-xl bg-background px-4 py-2"
+              >
+                <Image
+                  src={member.user.avatarUrl || "/logo.png"}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                  alt="avatar"
+                />
 
-              {member.user.username}
-            </button>
+                {member.user.username}
+              </button>
+              <button
+                onClick={() => {
+                  axios
+                    .delete(
+                      `/api/servers/${server.id}/members?user=${member.user.username}`
+                    )
+                    .then(() => router.refresh());
+                }}
+                className="transition-all hover:text-primary"
+              >
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+            </div>
           ))}
         </div>
         <Button
           onClick={() => {
-            setEditing("");
+            setEditing(null);
             onOpen();
           }}
           role="primary"
@@ -124,20 +166,34 @@ function InviteModal({
   isOpen: boolean;
   onClose: () => void;
   server: string;
-  editing: string;
+  editing: {
+    username: string;
+    permissions: string[];
+  } | null;
 }) {
-  const [username, setUsername] = useState(editing);
+  const [username, setUsername] = useState(editing?.username || "");
   const [permissions, setPermissions] = useState<
     readonly {
       value: string;
       label: string;
     }[]
-  >([]);
+  >(
+    editing?.permissions.map(
+      (p) => permissionList.find((perm) => perm.value === p)!
+    ) || []
+  );
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   useEffect(() => {
-    setUsername(editing);
+    if (editing) {
+      setUsername(editing.username);
+      setPermissions(
+        editing.permissions.map(
+          (p) => permissionList.find((perm) => perm.value === p)!
+        )
+      );
+    }
   }, [editing]);
 
   return (
@@ -181,18 +237,7 @@ function InviteModal({
             menu: () => "!bg-background",
             singleValue: () => "!text-white",
           }}
-          options={[
-            { value: "service.create", label: "Create Services" },
-            { value: "service.delete", label: "Delete Services" },
-            { value: "service.manage", label: "Manage Services Actions" },
-            { value: "service.edit", label: "Edit Services" },
-            { value: "service.files", label: "Access Services Files" },
-            { value: "service.terminal", label: "Access Services Terminal" },
-
-            { value: "server.files", label: "Access Server Files" },
-            { value: "server.terminal", label: "Access Server Terminal" },
-            { value: "server.tasks", label: "Access Server Task Manager" },
-          ]}
+          options={permissionList}
           value={permissions}
           onChange={(e) => setPermissions(e)}
         />

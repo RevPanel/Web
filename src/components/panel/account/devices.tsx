@@ -22,7 +22,7 @@ export function Device({
   return (
     <div
       className={
-        "flex flex-col rounded-xl p-4 " +
+        "flex h-32 flex-col rounded-xl p-4 " +
         (background ? "bg-background" : "bg-background-secondary")
       }
     >
@@ -63,7 +63,7 @@ export function Devices() {
 
   return (
     <>
-      <div className="my-4 flex h-full flex-col gap-4 md:flex-row">
+      <div className="my-4 flex h-32 flex-col flex-wrap gap-4 overflow-hidden md:flex-row">
         {sessions
           ?.slice(0, 3)
           .map((session) => (

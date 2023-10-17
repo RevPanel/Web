@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["localhost"],
+    domains: ["localhost", "ui-avatars.com", "cdn.revpanel.io"],
+    dangerouslyAllowSVG: true
   },
   output: "standalone",
 };

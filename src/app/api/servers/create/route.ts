@@ -47,6 +47,15 @@ export async function POST(req: Request, res: Response) {
     },
   });
 
+  await prisma.user.update({
+    where: {
+      id: session.user.userId,
+    },
+    data: {
+      serverCreated: true,
+    },
+  });
+
   return NextResponse.json({
     id: server.id,
     key: server.key,

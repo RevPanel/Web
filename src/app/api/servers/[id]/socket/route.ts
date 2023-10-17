@@ -45,7 +45,9 @@ export async function POST(
 
   try {
     const { data } = await axios.post(
-      `https://${server.ip}:8080/sockets/create`,
+      `${process.env.NODE_ENV === "development" ? "http" : "https"}://${
+        server.ip
+      }:8080/sockets/create`,
       {},
       {
         headers: {
@@ -61,7 +63,9 @@ export async function POST(
 
     return NextResponse.json({
       token: data.token,
-      ip: `https://${server.ip}:8080`,
+      ip: `${process.env.NODE_ENV === "development" ? "http" : "https"}://${
+        server.ip
+      }:8080`,
     });
   } catch (e) {
     console.log(e);

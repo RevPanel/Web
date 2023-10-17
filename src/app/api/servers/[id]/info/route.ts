@@ -25,13 +25,20 @@ export async function GET(
     where: {
       id: params.id as string,
     },
+    include: {
+      members: {
+        where: {
+          userId: session.user.userId,
+        },
+      },
+    },
   });
 
   if (!server) {
     return error("Server not found", 404);
   }
 
-  if (server.ownerId !== session.user.userId) {
+  if (server.ownerId !== session.user.userId && !server.members.length) {
     return error("Unauthorized", 403);
   }
 

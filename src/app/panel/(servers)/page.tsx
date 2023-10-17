@@ -12,7 +12,18 @@ async function getServerList(): Promise<ServerWithoutKey[]> {
 
   const servers = await prisma.server.findMany({
     where: {
-      ownerId: session.user.userId,
+      OR: [
+        {
+          ownerId: session.user.userId,
+        },
+        {
+          members: {
+            some: {
+              userId: session.user.userId,
+            },
+          },
+        },
+      ],
     },
   });
 
@@ -28,6 +39,11 @@ export default async function ServersHome() {
       {servers.map((server) => (
         <ServerContainer key={server.id} {...server} />
       ))}
+      {servers.length === 0 && (
+        <p className="text-center text-tertiary">
+          You don&apos;t have any server. Create one now!
+        </p>
+      )}
     </div>
   );
 }

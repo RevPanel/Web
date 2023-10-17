@@ -29,16 +29,19 @@ export default function ServiceSidebar() {
               title: "Console",
               icon: faTerminal,
               href: `${baseUrl}/console`,
+              permission: "service.terminal"
             },
             {
               title: "File Manager",
               icon: faFile,
               href: `${baseUrl}/files`,
+              permission: "service.files"
             },
             {
               title: "Port Manager",
               icon: faDumpsterFire,
               href: `${baseUrl}/ports`,
+              permission: "service.edit"
             },
           ],
         },

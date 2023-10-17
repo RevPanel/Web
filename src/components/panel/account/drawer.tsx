@@ -9,28 +9,39 @@ export default function Drawer({
   content,
   icon,
   link,
+  complete,
 }: {
   title: string;
   content: string;
   icon: IconProp;
-  link: string;
+  link?: string;
+  complete?: boolean;
 }) {
   return (
-    <div className="daisy-collapse-arrow daisy-card daisy-collapse bg-background-secondary">
+    <div className="daisy-card daisy-collapse daisy-collapse-arrow bg-background-secondary">
       <input type="radio" name="my-accordion-2" />
       <div className="daisy-collapse-title flex items-center gap-4 text-xl font-medium">
-        <FontAwesomeIcon icon={icon} />
+        <FontAwesomeIcon
+          icon={icon}
+          className={
+            complete
+              ? "rounded-full border border-primary p-3 text-primary"
+              : ""
+          }
+        />
         {title}
       </div>
       <div className="daisy-collapse-content">
         <p>{content}</p>
-        <LinkButton
-          role="primary"
-          className="mt-2 inline-block !p-4 !px-8 font-medium"
-          href={link}
-        >
-          Proceed
-        </LinkButton>
+        {!complete && link && (
+          <LinkButton
+            role="primary"
+            className="mt-2 inline-block !p-4 !px-8 font-medium"
+            href={link}
+          >
+            Proceed
+          </LinkButton>
+        )}
       </div>
     </div>
   );

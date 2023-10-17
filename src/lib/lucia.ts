@@ -32,6 +32,7 @@ export const auth = lucia({
       emailToken: data.emailToken,
       avatarUrl: data.avatarUrl,
       plan: data.plan,
+      serverCreated: data.serverCreated,
     };
   },
 });

@@ -12,7 +12,18 @@ async function serverExists(id: string, service: string) {
   const server = await prisma.server.findUnique({
     where: {
       id,
-      ownerId: session.user.userId,
+      OR: [
+        {
+          ownerId: session.user.userId,
+        },
+        {
+          members: {
+            some: {
+              userId: session.user.userId,
+            },
+          },
+        },
+      ],
     },
   });
 

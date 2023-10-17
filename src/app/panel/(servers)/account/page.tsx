@@ -79,21 +79,23 @@ export default async function Page() {
       <div className="flex flex-col gap-3">
         <Drawer
           title="Verify your email address"
-          content="We will send you an link to verify your email address"
+          content="We have sent you a link to verify your email address"
           icon={faEnvelope}
-          link="/panel/account/verify-email"
+          complete={session?.user.emailVerified}
         />
-        <Drawer
+        {/* <Drawer
           title="Setup 2fa authentication"
           content="Your account should be secure and you should not worry about hackers who wants to rob your account. Setup a two factor authentication to stay safe"
           icon={faLock}
           link="/panel/account/2fa"
-        />
+          complete={session?.user.twoFactorEnabled}
+        /> */}
         <Drawer
           title="Add a new machine to the panel"
           content="Add your first machine to the panel and enjoy all our features"
           icon={faPlus}
           link="/panel"
+          complete={session?.user.serverCreated}
         />
       </div>
       <div className="flex flex-col gap-6 xl:flex-row">
@@ -102,7 +104,10 @@ export default async function Page() {
             Update your details
           </h1>
           <div className="mt-4 flex flex-col items-center gap-4 md:items-start lg:flex-row">
-            <UpdateAvatar avatar={session?.user.avatarUrl} />
+            <UpdateAvatar
+              name={session?.user.name || "Unknown"}
+              avatar={session?.user.avatarUrl}
+            />
             <UpdateDetails
               defaultName={session?.user.name || ""}
               defaultEmail={session?.user.email || ""}

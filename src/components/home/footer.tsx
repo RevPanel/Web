@@ -32,10 +32,10 @@ export default function Footer() {
             <Link className="text-white" href="#">
               About Us
             </Link>
-            <Link className="text-white" href="#">
+            <Link className="text-white" href="/tos">
               Terms of Service
             </Link>
-            <Link className="text-white" href="#">
+            <Link className="text-white" href="/privacy">
               Privacy Policy
             </Link>
           </div>
