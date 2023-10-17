@@ -57,6 +57,7 @@ export const POST = async (request: NextRequest) => {
         username: username.toLowerCase(),
         name,
         emailVerified: false,
+        serverCreated: false
       },
     });
 
@@ -103,7 +104,7 @@ export const POST = async (request: NextRequest) => {
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/panel",
+        Location: "/panel/account",
       },
     });
   } catch (e) {
