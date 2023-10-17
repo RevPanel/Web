@@ -90,6 +90,7 @@ export const GET = async (
             email: platformUser.email!,
             name: name!,
             emailVerified: true,
+            serverCreated: false
           },
         });
       }
