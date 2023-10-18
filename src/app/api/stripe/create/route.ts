@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     return error("No plan provided", 400);
   }
 
-  const selectedPlan = plans.find((p) => p.name === plan);
+  const selectedPlan = plans.find((p) => p.name.toLowerCase() === plan);
   if (!selectedPlan) {
     return error("Invalid plan", 400);
   }

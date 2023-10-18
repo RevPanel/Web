@@ -1,5 +1,7 @@
+import NewServerEmail from "@/emails/new-server";
 import { auth } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
+import resend from "@/lib/resend";
 import { error } from "@/utils/responses";
 import * as context from "next/headers";
 import { NextResponse } from "next/server";
@@ -69,6 +71,8 @@ export async function POST(
       id: params.id,
     },
     select: {
+      id: true,
+      name: true,
       members: {
         select: {
           user: {
@@ -109,6 +113,28 @@ export async function POST(
 
   if (!user) {
     return error("User not found", 404);
+  }
+
+  const mailStatus = await resend.sendEmail({
+    from: "RevPanel <noreply@revpanel.io>",
+    to: [session.user.email],
+    subject: "New server added",
+    text: "",
+    react: NewServerEmail({
+      name: user.name,
+      link: `${process.env.APP_URL}/panel/${server.id}`,
+      service: server.name,
+    }),
+    tags: [
+      {
+        name: "category",
+        value: "new-server",
+      },
+    ],
+  });
+
+  if ("message" in mailStatus) {
+    console.error(mailStatus);
   }
 
   await prisma.server.update({

@@ -14,9 +14,10 @@ import {
   faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { faLock, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 function OauthConnection({
   name,
@@ -73,6 +74,8 @@ async function getOauthState() {
 export default async function Page() {
   const session = await getSession();
   const state = await getOauthState();
+
+  if (!session) return notFound();
 
   return (
     <div className="flex flex-col gap-8">

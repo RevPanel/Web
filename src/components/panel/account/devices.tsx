@@ -12,12 +12,14 @@ export function Device({
   status,
   ip,
   background,
+  mutate,
 }: {
   id: string;
   name: string;
   status: "idle" | "active" | "current";
   ip: string;
   background?: boolean;
+  mutate: () => void;
 }) {
   return (
     <div
@@ -39,7 +41,7 @@ export function Device({
       <p>IP Address: {ip}</p>
       <button
         onClick={() => {
-          axios.delete(`/api/auth/sessions?id=${id}`);
+          axios.delete(`/api/auth/sessions?id=${id}`).then(() => mutate());
         }}
         className="text-gradient mx-auto mt-auto"
       >
@@ -50,7 +52,7 @@ export function Device({
 }
 
 export function Devices() {
-  const { data: sessions } = useFetcher<
+  const { data: sessions, mutate } = useFetcher<
     {
       sessionId: string;
       name: string;
@@ -73,6 +75,7 @@ export function Devices() {
               name={session.name}
               status={session.current === true ? "current" : session.state}
               ip={session.address}
+              mutate={mutate}
             />
           ))}
       </div>
@@ -89,6 +92,7 @@ export function Devices() {
               status={session.current === true ? "current" : session.state}
               ip={session.address}
               background
+              mutate={mutate}
             />
           ))}
         </div>

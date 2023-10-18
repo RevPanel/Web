@@ -32,9 +32,9 @@ export const RevPanelNewDeviceEmail = ({
     <Body style={main}>
       <Container style={container}>
         <Img
-          src={"../../public/logo.png"}
+          src={"https://revpanel.io/logo.png"}
           width="64"
-          height="64"
+          height="74"
           alt="RevPanel Logo"
         />
         <Text style={paragraph}>Hi {name},</Text>

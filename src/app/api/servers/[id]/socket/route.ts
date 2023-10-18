@@ -39,7 +39,10 @@ export async function POST(
     return error("Server not found", 404);
   }
 
-  if (server.ownerId !== session.user.userId) {
+  if (
+    server.ownerId !== session.user.userId &&
+    !server.members[0]?.permissions
+  ) {
     return error("Unauthorized", 403);
   }
 

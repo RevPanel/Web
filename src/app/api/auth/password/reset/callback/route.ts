@@ -42,6 +42,14 @@ export const POST = async (request: NextRequest) => {
 
   try {
     await auth.updateKeyPassword("username", user.username, newPassword);
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        resetToken: null,
+      },
+    });
 
     return NextResponse.json({
       message: "Password updated successfully",

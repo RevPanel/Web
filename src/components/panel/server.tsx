@@ -28,41 +28,47 @@ export default function ServerContainer({
       href={
         serverId ? `/panel/${serverId}/${server.id}` : `/panel/${server.id}`
       }
-      className="flex min-h-[5.25rem] flex-row items-center justify-between gap-2 overflow-x-auto rounded-xl bg-background-secondary px-6 py-4 text-white"
+      className="flex min-h-[5.25rem] flex-row items-center justify-between gap-6 overflow-x-auto rounded-xl bg-background-secondary px-6 py-4 text-white md:gap-2"
     >
       <div className="flex items-center gap-4">
         <FontAwesomeIcon icon={faServer} className="text-4xl" />
-        <div className="flex flex-row items-center gap-2 md:flex-col md:items-start md:gap-0">
+        <div className="flex flex-col items-center md:items-start">
           <h1 className="w-fit text-xl font-bold">{server.name}</h1>
-          <p>{server.description}</p>
+          <p className="w-fit">{server.description}</p>
         </div>
       </div>
-      <div className="flex items-center gap-10">
-        <p>
-          CPU:{" "}
-          {stats?.offline || error
-            ? "0%"
-            : stats
-            ? stats.cpu?.usage?.toFixed(2) + "%"
-            : "Loading"}
-        </p>
-        <p>
-          Memory:{" "}
-          {stats?.offline || error
-            ? "0%"
-            : stats
-            ? ((stats.memory?.usage / stats.memory?.total) * 100).toFixed() +
-              "%"
-            : "Loading"}
-        </p>
-        <p>
-          Disk:{" "}
-          {stats?.offline || error
-            ? "0%"
-            : stats
-            ? ((stats.disk?.usage / stats.disk?.total) * 100).toFixed() + "%"
-            : "Loading"}
-        </p>
+      <div className="flex items-center gap-14 md:gap-10">
+        <div className="flex gap-2">
+          <span>CPU: </span>
+          <span>
+            {stats?.offline || error
+              ? "0%"
+              : stats
+              ? stats.cpu?.usage?.toFixed(2) + "%"
+              : "Loading"}
+          </span>
+        </div>
+        <div className="flex gap-2">
+          <span>Memory: </span>
+          <span>
+            {stats?.offline || error
+              ? "0%"
+              : stats
+              ? ((stats.memory?.usage / stats.memory?.total) * 100).toFixed() +
+                "%"
+              : "Loading"}
+          </span>
+        </div>
+        <div className="flex gap-2">
+          <span>Disk: </span>
+          <span>
+            {stats?.offline || error
+              ? "0%"
+              : stats
+              ? ((stats.disk?.usage / stats.disk?.total) * 100).toFixed() + "%"
+              : "Loading"}
+          </span>
+        </div>
       </div>
       {!isLoading && stats && !stats.offline ? (
         <div className="flex items-center gap-2">

@@ -11,7 +11,7 @@ import {
   Text,
 } from "@react-email/components";
 
-export const RevPanelNewDeviceEmail = ({
+export const NewServerEmail = ({
   name = "Michele",
   link = "https://revpanel.io",
   service = "RevPanel",
@@ -26,9 +26,9 @@ export const RevPanelNewDeviceEmail = ({
     <Body style={main}>
       <Container style={container}>
         <Img
-          src={"../../public/logo.png"}
+          src={"https://revpanel.io/logo.png"}
           width="64"
-          height="64"
+          height="74"
           alt="RevPanel Logo"
         />
         <Text style={paragraph}>Hi {name},</Text>
@@ -54,7 +54,7 @@ export const RevPanelNewDeviceEmail = ({
   </Html>
 );
 
-export default RevPanelNewDeviceEmail;
+export default NewServerEmail;
 
 const main = {
   backgroundColor: "#ffffff",

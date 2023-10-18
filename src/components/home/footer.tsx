@@ -28,9 +28,9 @@ export default function Footer() {
         </div>
         <div className="flex flex-col gap-8 md:flex-row">
           <div className="flex flex-col gap-2">
-            <h2 className="text-lg text-tertiary">About</h2>
-            <Link className="text-white" href="#">
-              About Us
+            <h2 className="text-lg text-tertiary">Links</h2>
+            <Link className="text-white" href="/#pricing">
+              Pricing
             </Link>
             <Link className="text-white" href="/tos">
               Terms of Service
@@ -41,8 +41,8 @@ export default function Footer() {
           </div>
           <div className="flex flex-col gap-2">
             <h2 className="text-lg text-tertiary">Support</h2>
-            <Link className="text-white" href="#">
-              Support Center
+            <Link className="text-white" href="https://discord.gg/nzVNM2uDaT">
+              Discord
             </Link>
             <Link className="text-white" href="https://status.revpanel.io">
               System Status

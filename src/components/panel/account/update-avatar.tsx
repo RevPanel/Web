@@ -13,7 +13,7 @@ export default function UpdateAvatar({
   name: string;
 }) {
   const [avatarUrl, setAvatarUrl] = useState(
-    avatar || `https://ui-avatars.com/api/?name=${name}&background=7967FF`
+    avatar || `https://ui-avatars.com/api/?name=${name}&background=7967FF&size=150`
   );
   const fileRef = useRef<HTMLInputElement>(null);
 
@@ -21,8 +21,9 @@ export default function UpdateAvatar({
     <div className="relative h-[200px] w-[200px]">
       <Image
         src={avatarUrl}
-        width={200}
-        height={200}
+        width={150}
+        height={150}
+        quality={100}
         draggable={false}
         alt="logoProfile"
         className="rounded-xl"

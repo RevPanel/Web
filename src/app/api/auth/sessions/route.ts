@@ -34,3 +34,32 @@ export const GET = async (req: NextRequest) => {
 
   return NextResponse.json(mapped);
 };
+
+export async function DELETE(req: NextRequest) {
+  const authRequest = auth.handleRequest(req.method, context);
+  const session = await authRequest.validate();
+
+  if (!session) {
+    return error("Not logged in", 403);
+  }
+
+  const query = new URL(req.nextUrl).searchParams;
+  const id = query.get("id");
+
+  if (!id) {
+    return error("Missing session id", 400);
+  }
+
+  const sessions = await auth.getAllUserSessions(session.user.userId);
+  const found = sessions.find((s) => s.sessionId === id);
+
+  if (!found) {
+    return error("Session not found", 404);
+  }
+
+  await auth.invalidateSession(id);
+
+  return NextResponse.json({
+    success: true,
+  });
+}

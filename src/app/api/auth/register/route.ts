@@ -57,7 +57,7 @@ export const POST = async (request: NextRequest) => {
         username: username.toLowerCase(),
         name,
         emailVerified: false,
-        serverCreated: false
+        serverCreated: false,
       },
     });
 
@@ -80,6 +80,15 @@ export const POST = async (request: NextRequest) => {
       },
     });
 
+    const { emailToken } = (await prisma.user.findUnique({
+      where: {
+        id: user.userId,
+      },
+      select: {
+        emailToken: true,
+      },
+    })) || { emailToken: null };
+
     const mailStatus = await resend.sendEmail({
       from: "RevPanel <noreply@revpanel.io>",
       to: [user.email],
@@ -87,7 +96,7 @@ export const POST = async (request: NextRequest) => {
       text: "",
       react: RegisterEmail({
         name: user.name,
-        link: `${process.env.APP_URL}/api/auth/verify/${user.emailToken}`,
+        link: `${process.env.APP_URL}/api/auth/verify/${emailToken}`,
       }),
       tags: [
         {
