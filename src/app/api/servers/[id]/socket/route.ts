@@ -58,7 +58,7 @@ export async function POST(
           Authorization: `Bearer ${server.key}`,
           "Panel-User": session.user.userId,
           "Panel-User-Permissions": JSON.stringify(
-            server.members[0]?.permissions || ["*"]
+            server.members[0]?.permissions || ["*","owner"]
           ),
         },
       }

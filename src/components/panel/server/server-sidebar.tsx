@@ -52,7 +52,7 @@ export default function ServerSidebar() {
               title: "Settings",
               icon: faGears,
               href: `/panel/${server}/settings`,
-              permission: "*",
+              permission: "owner",
             },
           ],
         },

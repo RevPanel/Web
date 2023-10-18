@@ -176,7 +176,10 @@ function TerminalWrapper({
   return (
     <div className="w-full rounded-xl bg-background-secondary">
       <ContextMenuTrigger id="console_cm">
-        <div ref={ref} className="h-[70vh] w-full overflow-y-auto p-4">
+        <div
+          ref={ref}
+          className="h-[60vh] w-full overflow-y-auto p-4 md:h-[70vh]"
+        >
           <pre
             className=" overflow-x-auto whitespace-pre-wrap break-words"
             dangerouslySetInnerHTML={{ __html: highlightedCode }}

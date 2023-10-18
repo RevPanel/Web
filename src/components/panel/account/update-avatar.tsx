@@ -13,12 +13,13 @@ export default function UpdateAvatar({
   name: string;
 }) {
   const [avatarUrl, setAvatarUrl] = useState(
-    avatar || `https://ui-avatars.com/api/?name=${name}&background=7967FF&size=150`
+    avatar ||
+      `https://ui-avatars.com/api/?name=${name}&background=7967FF&size=150`
   );
   const fileRef = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="relative h-[200px] w-[200px]">
+    <div className="relative flex h-[150px] w-[150px] flex-col items-center md:h-[200px] md:w-[200px]">
       <Image
         src={avatarUrl}
         width={150}
@@ -44,7 +45,7 @@ export default function UpdateAvatar({
           });
         }}
       />
-      <div className="absolute bottom-14 left-0 flex w-full flex-col items-center">
+      <div className="absolute bottom-4 left-0 flex w-full flex-col items-center md:bottom-14">
         <Button
           onClick={() => fileRef.current?.click()}
           className="mx-auto !px-8"

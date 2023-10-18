@@ -39,7 +39,7 @@ export async function GET(
   }
 
   if (server.ownerId === session.user.userId) {
-    return new NextResponse(JSON.stringify(["*"]), {
+    return new NextResponse(JSON.stringify(["*","owner"]), {
       headers: {
         "Content-Type": "application/json",
         "Cache-Control": "public, max-age=60",

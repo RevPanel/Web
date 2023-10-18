@@ -52,7 +52,7 @@ function ServerChart({
         <div>
           <h3 className="text-xl">{label}</h3>
           <h2 className="text-2xl font-bold">
-            {percent}
+            {showPercent ? percent : used}
             {showPercent && "%"}
           </h2>
           <p>

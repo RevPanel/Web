@@ -67,7 +67,7 @@ async function handler(
     return error("Server not found", 404);
   }
 
-  let permissions = ["*"];
+  let permissions = ["*", "owner"];
   if (server.ownerId !== userId) {
     if (server.members.length === 0) return error("Unauthorized", 403);
 
