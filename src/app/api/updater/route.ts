@@ -1,6 +1,8 @@
 import octokit from "@/lib/github";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   const daemon = await octokit.request(
     "GET /repos/{owner}/{repo}/releases/latest",
