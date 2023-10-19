@@ -121,6 +121,8 @@ export const validateCallback = async (method: string, code: string) => {
         platformUser.email = primaryEmail.email;
         platformUser.emailVerified = primaryEmail.verified;
       }
+    } else {
+      platformUser.emailVerified = true;
     }
   } else if ("googleUser" in data) {
     platformUser = data.googleUser;
