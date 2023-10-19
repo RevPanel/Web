@@ -31,6 +31,8 @@ export async function GET(
   env += "API_TOKEN='" + token + "'";
   env += "\n";
   env += "SERVER_ID='" + server.id + "'";
+  env += "\n";
+  env += "DOMAIN='" + server.ip + "'";
 
   return new NextResponse(env, {
     headers: {

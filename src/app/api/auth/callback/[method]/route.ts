@@ -16,7 +16,7 @@ export const GET = async (
     };
   }
 ) => {
-  if (!["discord", "github"].includes(params.method)) {
+  if (!["discord", "github", "google"].includes(params.method)) {
     return new Response(null, {
       status: 400,
     });
@@ -33,6 +33,7 @@ export const GET = async (
   const code = url.searchParams.get("code");
 
   if (!storedState || !state || storedState !== state || !code) {
+    console.error("Invalid state or code");
     return new Response(null, {
       status: 400,
     });
@@ -41,6 +42,7 @@ export const GET = async (
   try {
     const res = await validateCallback(params.method, code);
     if (!res) {
+      console.error("Invalid response");
       return new Response(null, {
         status: 400,
       });
@@ -90,7 +92,7 @@ export const GET = async (
             email: platformUser.email!,
             name: name!,
             emailVerified: true,
-            serverCreated: false
+            serverCreated: false,
           },
         });
       }
@@ -125,6 +127,7 @@ export const GET = async (
       },
     });
   } catch (e) {
+    console.error(e);
     if (e instanceof OAuthRequestError) {
       return new Response(null, {
         status: 400,

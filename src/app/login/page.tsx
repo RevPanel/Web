@@ -68,6 +68,13 @@ export default async function Page() {
             GitHub
           </LinkButton>
         </div>
+        <LinkButton
+          href="/api/auth/login/google"
+          role="secondary"
+          className="w-full flex-1"
+        >
+          Google
+        </LinkButton>
       </Form>
     </div>
   );

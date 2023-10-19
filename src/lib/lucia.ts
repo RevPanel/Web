@@ -3,8 +3,10 @@ import { prisma } from "@lucia-auth/adapter-prisma";
 import {
   DiscordUser,
   GithubUser,
+  GoogleUser,
   discord,
   github,
+  google,
 } from "@lucia-auth/oauth/providers";
 import { Octokit } from "@octokit/core";
 import { lucia } from "lucia";
@@ -56,6 +58,15 @@ export const githubAuth = github(auth, {
   scope: ["user:email", "read:user"],
 });
 
+export const googleAuth = google(auth, {
+  clientId: process.env.GOOGLE_CLIENT_ID!,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+  redirectUri: `${
+    process.env.APP_URL || process.env.VERCEL_URL
+  }/api/auth/callback/google`,
+  scope: ["email"],
+});
+
 export type Auth = typeof auth;
 
 export const getAuthUrl = async (method: string) => {
@@ -64,6 +75,8 @@ export const getAuthUrl = async (method: string) => {
       return await discordAuth.getAuthorizationUrl();
     case "github":
       return await githubAuth.getAuthorizationUrl();
+    case "google":
+      return await googleAuth.getAuthorizationUrl();
     default:
       return null;
   }
@@ -79,6 +92,9 @@ export const validateCallback = async (method: string, code: string) => {
     case "github":
       data = await githubAuth.validateCallback(code);
       break;
+    case "google":
+      data = await googleAuth.validateCallback(code);
+      break;
     default:
       data = null;
       break;
@@ -87,7 +103,7 @@ export const validateCallback = async (method: string, code: string) => {
   if (!data) return null;
 
   const { getExistingUser, createUser, createKey } = data;
-  let platformUser: (GithubUser | DiscordUser) & {
+  let platformUser: (GithubUser | DiscordUser | GoogleUser) & {
     emailVerified?: boolean;
   };
 
@@ -106,6 +122,9 @@ export const validateCallback = async (method: string, code: string) => {
         platformUser.emailVerified = primaryEmail.verified;
       }
     }
+  } else if ("googleUser" in data) {
+    platformUser = data.googleUser;
+    platformUser.emailVerified = data.googleUser.email_verified;
   }
 
   return {
