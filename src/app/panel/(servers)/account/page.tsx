@@ -1,12 +1,10 @@
 import { getSession } from "@/components/auth";
 import { Devices } from "@/components/panel/account/devices";
 import Drawer from "@/components/panel/account/drawer";
-import PlanButton from "@/components/panel/account/plan-button";
 import UpdateAvatar from "@/components/panel/account/update-avatar";
 import UpdateDetails from "@/components/panel/account/update-details";
 import UpdatePassword from "@/components/panel/account/update-password";
 import { auth } from "@/lib/lucia";
-import { getPlan } from "@/types/plans";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import {
   faDiscord,
