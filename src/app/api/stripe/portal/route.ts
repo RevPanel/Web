@@ -36,5 +36,5 @@ export async function GET(req: Request) {
     return_url: `${process.env.APP_URL}/panel/account`,
   });
 
-  return NextResponse.json({ id: portal.id, url: portal.url });
+  return NextResponse.redirect(portal.url, { status: 302 });
 }

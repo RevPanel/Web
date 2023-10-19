@@ -147,36 +147,6 @@ export default async function Page() {
           <Devices />
         </div>
       </div>
-      <div>
-        <h1 className="text-3xl font-extrabold uppercase">Your plan</h1>
-        <div className="mt-4 flex flex-col gap-4">
-          <div className="flex flex-col gap-12 rounded-xl bg-background-secondary p-4 lg:flex-row 2xl:w-fit">
-            <div className="flex flex-col gap-4">
-              <h1 className="text-3xl font-extrabold">
-                {getPlan(session?.user.plan).name}
-              </h1>
-              <p>{getPlan(session?.user.plan).description}</p>
-              <PlanButton plan={session?.user.plan || "free"} />
-            </div>
-            <div>
-              <h1 className="text-3xl font-extrabold">Features:</h1>
-              <ul className="mt-4 flex list-inside list-disc flex-col gap-4">
-                {Object.keys(getPlan(session?.user.plan).features).map(
-                  (feature, i) => {
-                    if (!getPlan(session?.user.plan).features[feature])
-                      return null;
-                    return (
-                      <li key={i}>
-                        <span>{feature}</span>
-                      </li>
-                    );
-                  }
-                )}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

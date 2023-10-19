@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function POST(
+export async function GET(
   req: Request,
   {
     params: { token },
@@ -24,23 +24,6 @@ export async function POST(
   if (!server) {
     return error("Invalid token", 404);
   }
-
-  const { domain } = await req.json();
-  if (!domain) {
-    return error("Missing domain", 400);
-  }
-
-  await prisma.server.update({
-    where: {
-      id: server.id,
-    },
-    data: {
-      ip: domain
-        .replace("https://", "")
-        .replace("http://", "")
-        .replace("/", ""),
-    },
-  });
 
   let env = "";
   env += "DATABASE_PASSWORD='" + randomUUID() + "'";

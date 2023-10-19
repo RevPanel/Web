@@ -79,7 +79,7 @@ export function Devices() {
             />
           ))}
       </div>
-      <Button onClick={onOpen} role="primary" className="mt-auto w-full">
+      <Button onClick={onOpen} role="primary" className="mt-auto w-full h-14">
         View More
       </Button>
       <Modal title="Device List" onClose={onClose} isOpen={isOpen}>

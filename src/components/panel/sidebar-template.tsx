@@ -34,6 +34,11 @@ export const accountSection: RouteSection = {
       href: "/panel/account",
     },
     {
+      title: "Billing",
+      icon: faUserCircle,
+      href: "/api/stripe/portal",
+    },
+    {
       title: "API Keys",
       icon: faKey,
       href: "/panel/account/keys",
