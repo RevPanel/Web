@@ -1,7 +1,7 @@
 import { getSession } from "@/components/auth";
-import { LinkButton } from "@/components/button";
 import { Devices } from "@/components/panel/account/devices";
 import Drawer from "@/components/panel/account/drawer";
+import PlanButton from "@/components/panel/account/plan-button";
 import UpdateAvatar from "@/components/panel/account/update-avatar";
 import UpdateDetails from "@/components/panel/account/update-details";
 import UpdatePassword from "@/components/panel/account/update-password";
@@ -156,13 +156,7 @@ export default async function Page() {
                 {getPlan(session?.user.plan).name}
               </h1>
               <p>{getPlan(session?.user.plan).description}</p>
-              <LinkButton
-                href="/#pricing"
-                role="primary"
-                className="mt-auto w-1/2 !p-4 !px-8 text-center font-medium"
-              >
-                Change plan
-              </LinkButton>
+              <PlanButton plan={session?.user.plan || "free"} />
             </div>
             <div>
               <h1 className="text-3xl font-extrabold">Features:</h1>

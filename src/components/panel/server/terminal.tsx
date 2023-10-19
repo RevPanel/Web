@@ -25,6 +25,13 @@ hljs.addPlugin({
     data.value = modifiedCode;
   },
 });
+hljs.addPlugin({
+  "after:highlight": function (data) {
+    const highlightedCode = data.value;
+    const modifiedCode = highlightedCode.replace("**rv_parent**", "> ");
+    data.value = modifiedCode;
+  },
+});
 hljs.registerLanguage("accesslog", accesslog);
 
 export function DockerTerminal(props: ServiceProps) {
@@ -109,7 +116,9 @@ export function SSHTerminal({ server }: { server: string }) {
         setSocket(socket);
 
         socket.on("data", (data: string) => {
-          setLines((lines) => [...lines, data.split("\r")[0]]);
+          setLines((lines) => {
+            return [...lines, data.split("\r")[0]];
+          });
         });
 
         socket.on("error", (data: string) => {
@@ -136,11 +145,22 @@ export function SSHTerminal({ server }: { server: string }) {
     <TerminalWrapper
       lines={lines}
       submit={(command) => {
+        setLines((lines) => {
+          // get last line that starts with **rv_parent**
+          const line = lines.filter((line) => line.startsWith("**rv_parent**")).pop();
+          const dir = line?.replace("**rv_parent**", "").trim() || "~";
+          // remove all lines starting with **rv_parent**
+
+          const newLines = lines.filter(
+            (line) => !line.startsWith("**rv_parent**")
+          );
+
+          return [...newLines, `${dir} > ` + command]
+        });
+
         socketInstance?.emit("execute", {
           command: command,
         });
-
-        setLines((lines) => [...lines, "> " + command]);
 
         if (command === "clear")
           setTimeout(() => {

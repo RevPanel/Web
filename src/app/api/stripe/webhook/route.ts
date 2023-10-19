@@ -1,8 +1,6 @@
 import prisma from "@/lib/prisma";
 import stripe from "@/lib/stripe";
-import { error } from "@/utils/responses";
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
 
 export async function POST(req: Request) {
   const webhook = stripe.webhooks.constructEvent(
@@ -11,25 +9,38 @@ export async function POST(req: Request) {
     process.env.STRIPE_WEBHOOK_SECRET!
   );
 
-  if (webhook.type === "checkout.session.completed") {
-    const session = webhook.data.object as Stripe.Checkout.Session;
+  switch (webhook.type) {
+    case "customer.subscription.deleted":
+    case "customer.subscription.updated":
+    case "customer.subscription.created":
+      const subscription = webhook.data.object;
+      const status = subscription.status;
 
-    const checkout = await prisma.checkoutSession.findUnique({
-      where: { id: session.id },
-    });
+      if (status !== "active" && status !== "trialing") {
+        const user = await prisma.user.findUnique({
+          where: { stripeId: subscription.customer as string },
+        });
 
-    if (!checkout) {
-      return error("Checkout session not found", 404);
-    }
+        if (user) {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { plan: null },
+          });
+        }
+      } else {
+        const plan = subscription.items.data[0].price.lookup_key!.split("-")[0];
+        const user = await prisma.user.findUnique({
+          where: { stripeId: subscription.customer as string },
+        });
 
-    await prisma.user.update({
-      where: { id: checkout.userId },
-      data: { plan: checkout.plan, renewDate: new Date() },
-    });
-
-    await prisma.checkoutSession.delete({
-      where: { id: checkout.id },
-    });
+        if (user) {
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { plan: plan },
+          });
+        }
+      }
+      break;
   }
 
   return NextResponse.json({ received: true });

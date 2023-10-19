@@ -45,7 +45,7 @@ export const plans: Price[] = [
       "Best for every type of project. You can do whatever you want and you have access to all the exclusive features.",
     price: 14.99,
     features: {
-      "Everything in Pro Plan": true,
+      "Everything in Premium Plan": true,
       "Unillimited servers, services and users": true,
       "AI Assistant": true,
       "Personal Assistant": true,
@@ -58,5 +58,5 @@ export const plans: Price[] = [
 export function getPlan(plan: string | null | undefined) {
   if (!plan) return plans[0];
 
-  return plans.find((p) => p.name === plan) || plans[0];
+  return plans.find((p) => p.name.toLowerCase() === plan) || plans[0];
 }

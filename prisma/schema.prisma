@@ -8,17 +8,17 @@ datasource db {
 }
 
 model User {
-  id            String    @id @unique
+  id            String  @id @unique
   name          String
-  username      String    @unique
+  username      String  @unique
   avatarUrl     String?
-  email         String    @unique
-  emailToken    String?   @unique @default(cuid())
-  emailVerified Boolean   @default(false)
-  resetToken    String?   @unique
+  email         String  @unique
+  emailToken    String? @unique @default(cuid())
+  emailVerified Boolean @default(false)
+  resetToken    String? @unique
   plan          String?
-  renewDate     DateTime?
-  serverCreated Boolean   @default(false)
+  stripeId      String? @unique
+  serverCreated Boolean @default(false)
 
   auth_session Session[]
   key          Key[]
@@ -26,7 +26,6 @@ model User {
   servers      Server[]
   logs         UserLogs[]
   serverMember ServerMember[]
-  checkouts    CheckoutSession[]
 }
 
 model Session {
@@ -48,15 +47,6 @@ model Key {
   user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
   @@index([user_id])
-}
-
-model CheckoutSession {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  plan      String
-
-  user   User   @relation(references: [id], fields: [userId], onDelete: Cascade)
-  userId String
 }
 
 model ApiKey {

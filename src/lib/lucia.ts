@@ -33,6 +33,7 @@ export const auth = lucia({
       avatarUrl: data.avatarUrl,
       plan: data.plan,
       serverCreated: data.serverCreated,
+      stripeId: data.stripeId,
     };
   },
 });

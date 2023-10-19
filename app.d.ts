@@ -11,6 +11,7 @@ declare namespace Lucia {
     emailToken?: string | null;
     avatarUrl?: string | null;
     serverCreated: boolean;
+    stripeId?: string | null;
   };
   type DatabaseSessionAttributes = {
     address: string;

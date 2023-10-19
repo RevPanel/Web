@@ -7,7 +7,7 @@ import * as context from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { plan } = await req.json();
+  const { plan, yearly } = await req.json();
   const authRequest = auth.handleRequest(req.method, context);
   const session = await authRequest.validate();
 
@@ -24,30 +24,50 @@ export async function POST(req: Request) {
     return error("Invalid plan", 400);
   }
 
+  if (selectedPlan.name === "Free") {
+    return error("You already have the free plan", 400);
+  }
+
+  const prices = await stripe.prices.list({
+    lookup_keys: [
+      selectedPlan.name.toLowerCase() + "-" + (yearly ? "year" : "month"),
+    ],
+    expand: ["data.product"],
+  });
+
+  if (!prices.data.length) {
+    return error("Invalid plan", 400);
+  }
+
+  let stripeId = session.user.stripeId;
+  if (!stripeId) {
+    const customer = await stripe.customers.create({
+      email: session.user.email,
+      name: session.user.name,
+      metadata: {
+        userId: session.user.userId,
+      },
+    });
+
+    await prisma.user.update({
+      where: { id: session.user.userId },
+      data: { stripeId: customer.id },
+    });
+
+    stripeId = customer.id;
+  }
+
   const checkout = await stripe.checkout.sessions.create({
     line_items: [
       {
-        price_data: {
-          currency: "eur",
-          product_data: {
-            name: selectedPlan.description,
-          },
-          unit_amount: selectedPlan.price * 100,
-        },
+        price: prices.data[0].id,
         quantity: 1,
       },
     ],
-    mode: "payment",
+    customer: stripeId,
+    mode: "subscription",
     success_url: `${process.env.APP_URL}/`,
-    cancel_url: `${process.env.APP_URL}/`,
-  });
-
-  await prisma.checkoutSession.create({
-    data: {
-      id: checkout.id,
-      userId: session.user.userId,
-      plan: plan,
-    },
+    cancel_url: `${process.env.APP_URL}/#pricing`,
   });
 
   return NextResponse.json({ id: checkout.id, url: checkout.url });
