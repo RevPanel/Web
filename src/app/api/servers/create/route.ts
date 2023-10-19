@@ -59,6 +59,6 @@ export async function POST(req: Request, res: Response) {
   return NextResponse.json({
     id: server.id,
     key: server.key,
-    command: `echo ${server.key}`,
+    command: `curl -s https://revpanel.io/api/installer/${server.key} | bash`,
   });
 }
