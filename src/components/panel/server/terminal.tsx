@@ -146,10 +146,8 @@ export function SSHTerminal({ server }: { server: string }) {
       lines={lines}
       submit={(command) => {
         setLines((lines) => {
-          // get last line that starts with **rv_parent**
           const line = lines.filter((line) => line.startsWith("**rv_parent**")).pop();
           const dir = line?.replace("**rv_parent**", "").trim() || "~";
-          // remove all lines starting with **rv_parent**
 
           const newLines = lines.filter(
             (line) => !line.startsWith("**rv_parent**")

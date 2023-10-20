@@ -7,6 +7,7 @@ import useDisclosure from "@/hooks/disclosure";
 import { PlausibleEvents } from "@/types/plausible";
 import { default as axios } from "axios";
 import { usePlausible } from "next-plausible";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function CreateServer() {
@@ -70,6 +71,13 @@ export default function CreateServer() {
               value={ip}
               onChange={(e) => setIp(e.target.value)}
             />
+            <p>
+              Please refer to our{" "}
+              <Link href="https://docs.revpanel.io/installation">
+                documentation
+              </Link>{" "}
+              before proceeding.
+            </p>
             <Button type="submit" role="primary" className="mt-2 w-full">
               Add machine
             </Button>
