@@ -35,10 +35,28 @@ export async function GET(req: NextRequest) {
           description: true,
         },
       },
+      serverMember: {
+        select: {
+          server: {
+            select: {
+              id: true,
+              name: true,
+              description: true,
+            },
+          },
+        },
+      }
     },
   });
 
   if (!user) return error("User not found", 404);
+  const servers = [
+    ...user.servers,
+    ...user.serverMember.map((member) => ({
+      subserver: true,
+      ...member.server
+    })),
+  ]
 
-  return NextResponse.json(user.servers);
+  return NextResponse.json(servers);
 }
