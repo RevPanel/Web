@@ -7,7 +7,7 @@ User-agent: *
 Disallow: /panel/
 
 # Host
-Host: http://localhost:3000
+Host: https://revpanel.io
 
 # Sitemaps
-Sitemap: http://localhost:3000/sitemap.xml
+Sitemap: https://revpanel.io/sitemap.xml
