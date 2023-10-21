@@ -9,7 +9,7 @@ import {
   faTerminal,
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "next/navigation";
-import SidebarTemplate, { accountSection } from "../sidebar-template";
+import SidebarTemplate from "../sidebar-template";
 
 export default function ServerSidebar() {
   const { server } = useParams();
@@ -56,7 +56,6 @@ export default function ServerSidebar() {
             },
           ],
         },
-        accountSection,
       ]}
     />
   );
