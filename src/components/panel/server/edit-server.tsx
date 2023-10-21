@@ -29,6 +29,7 @@ const permissionList: readonly {
   { value: "server.files", label: "Access Server Files" },
   { value: "server.terminal", label: "Access Server Terminal" },
   { value: "server.tasks", label: "Access Server Task Manager" },
+  { value: "server.logs", label: "Access Server Logs" },
 ];
 
 export default function EditServer(server: {

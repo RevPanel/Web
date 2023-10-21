@@ -49,7 +49,7 @@ export function DockerTerminal(props: ServiceProps) {
         setLines(split);
 
         const { data: settings } = await axios.post(
-          `/api/servers/${props.serverId}/socket`
+          `/api/servers/${props.serverId}/socket?type=service`
         );
         if (socketInstance) return;
 
@@ -101,40 +101,42 @@ export function SSHTerminal({ server }: { server: string }) {
 
   useEffect(() => {
     if (socketInstance) return;
-    axios.post(`/api/servers/${server}/socket`).then(async ({ data }) => {
-      const socket = socketIO(`${data.ip}/terminal`, {
-        auth: {
-          token: data.token,
-        },
-      });
-
-      socket.on("connect", () => {
-        setLines((lines) => [
-          ...lines,
-          "[RevPanel] Connected to remote server",
-        ]);
-        setSocket(socket);
-
-        socket.on("data", (data: string) => {
-          setLines((lines) => {
-            return [...lines, data.split("\r")[0]];
-          });
+    axios
+      .post(`/api/servers/${server}/socket?type=server`)
+      .then(async ({ data }) => {
+        const socket = socketIO(`${data.ip}/terminal`, {
+          auth: {
+            token: data.token,
+          },
         });
 
-        socket.on("error", (data: string) => {
+        socket.on("connect", () => {
           setLines((lines) => [
             ...lines,
-            "**rv_red**" + data.split("\r")[0] + "**/rv_red**",
+            "[RevPanel] Connected to remote server",
           ]);
-        });
+          setSocket(socket);
 
-        socket.emit("create");
+          socket.on("data", (data: string) => {
+            setLines((lines) => {
+              return [...lines, data.split("\r")[0]];
+            });
+          });
 
-        socket.on("disconnect", () => {
-          socket.removeAllListeners();
+          socket.on("error", (data: string) => {
+            setLines((lines) => [
+              ...lines,
+              "**rv_red**" + data.split("\r")[0] + "**/rv_red**",
+            ]);
+          });
+
+          socket.emit("create");
+
+          socket.on("disconnect", () => {
+            socket.removeAllListeners();
+          });
         });
       });
-    });
   }, [server, socketInstance]);
 
   useEffect(() => {
@@ -146,14 +148,16 @@ export function SSHTerminal({ server }: { server: string }) {
       lines={lines}
       submit={(command) => {
         setLines((lines) => {
-          const line = lines.filter((line) => line.startsWith("**rv_parent**")).pop();
+          const line = lines
+            .filter((line) => line.startsWith("**rv_parent**"))
+            .pop();
           const dir = line?.replace("**rv_parent**", "").trim() || "~";
 
           const newLines = lines.filter(
             (line) => !line.startsWith("**rv_parent**")
           );
 
-          return [...newLines, `${dir} > ` + command]
+          return [...newLines, `${dir} > ` + command];
         });
 
         socketInstance?.emit("execute", {

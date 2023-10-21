@@ -152,18 +152,11 @@ export default function FileManager(props: {
 
   useEffect(() => {
     if (fetchError) {
-      setError(fetchError);
+      setError(fetchError.response.data.message || "An error occurred");
+    } else {
+      setError("");
     }
   }, [fetchError]);
-
-  useEffect(() => {
-    if (error) {
-      window.scrollTo(0, 0);
-      setTimeout(() => {
-        setError("");
-      }, 5000);
-    }
-  }, [error]);
 
   return (
     <div className="flex w-full flex-col gap-4">

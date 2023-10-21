@@ -46,11 +46,16 @@ export async function POST(
     return error("Unauthorized", 403);
   }
 
+  const { type } = await req.json();
+  if (!type || !["server", "service"].includes(type)) {
+    return error("Invalid type", 400);
+  }
+
   try {
     const { data } = await axios.post(
       `${process.env.NODE_ENV === "development" ? "http" : "https"}://${
         server.ip
-      }:8080/sockets/create`,
+      }:8080/sockets/create?type=${type}`,
       {},
       {
         headers: {
@@ -58,7 +63,7 @@ export async function POST(
           Authorization: `Bearer ${server.key}`,
           "Panel-User": session.user.userId,
           "Panel-User-Permissions": JSON.stringify(
-            server.members[0]?.permissions || ["*","owner"]
+            server.members[0]?.permissions || ["*", "owner"]
           ),
         },
       }
