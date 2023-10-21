@@ -117,7 +117,7 @@ export async function POST(
 
   const mailStatus = await resend.sendEmail({
     from: "RevPanel <noreply@revpanel.io>",
-    to: [session.user.email],
+    to: [user.email],
     subject: "New server added",
     text: "",
     react: NewServerEmail({
