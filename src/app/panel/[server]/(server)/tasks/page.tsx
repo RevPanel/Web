@@ -20,26 +20,31 @@ export default function TaskManager({
     server: string;
   };
 }) {
-  const {
-    data,
-    mutate,
-  }: {
-    data?: Task[];
-    mutate: () => void;
-  } = useFetcher(`/api/servers/${server}/system/process/list`);
+  const { data, mutate, error } = useFetcher<Task[]>(
+    `/api/servers/${server}/system/process/list`
+  );
 
   return (
     <div className="w-full">
+      {error && (
+        <div className="mb-4 rounded-lg bg-red-500 p-4 text-white">
+          {error.response?.data?.message || "An error occurred!"}
+        </div>
+      )}
       <div className="card relative w-full overflow-x-auto p-4">
         <table className="h-[70vh] w-full overflow-y-auto">
           <tbody>
-            <tr>
-              <td className="font-bold">Name</td>
-              <td className="font-bold">Status</td>
-              <td className="font-bold">CPU</td>
-              <td className="font-bold">Memory</td>
-              <td className="font-bold">Disk</td>
-              <td className="font-bold">Network</td>
+            <tr
+              className={
+                !data?.length ? "flex items-start justify-between" : ""
+              }
+            >
+              <td className="font-bold min-w-[5rem]">Name</td>
+              <td className="font-bold min-w-[5rem]">Status</td>
+              <td className="font-bold min-w-[5rem]">CPU</td>
+              <td className="font-bold min-w-[5rem]">Memory</td>
+              <td className="font-bold min-w-[5rem]">Disk</td>
+              <td className="font-bold min-w-[5rem]">Network</td>
             </tr>
 
             {data?.map((task) => (

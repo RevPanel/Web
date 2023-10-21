@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import { useState, type DragEvent } from "react";
+import { useEffect, useState, type DragEvent } from "react";
 import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
 
 type FileInfo = {
@@ -130,6 +130,7 @@ export default function FileManager(props: {
   const [path, setPath] = useState<string>(props.service ? "" : "/");
   const [selected, setSelected] = useState<string[]>([]);
   const [renaming, setRenaming] = useState<string>("");
+  const [error, setError] = useState("");
   const [createType, setCreateType] = useState<"file" | "directory">("file");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
@@ -141,20 +142,34 @@ export default function FileManager(props: {
 
   const {
     data: files,
-    isLoading,
     mutate,
-  }: {
-    data?: FileInfo[];
-    isLoading: boolean;
-    mutate: () => void;
-  } = useFetcher(
+    error: fetchError,
+  } = useFetcher<FileInfo[]>(
     props.service
       ? `/api/servers/${props.server}/files/${props.service}/list?parent=${path}`
       : `/api/servers/${props.server}/files/root/list?parent=${path}`
   );
 
+  useEffect(() => {
+    if (fetchError) {
+      setError(fetchError);
+    }
+  }, [fetchError]);
+
+  useEffect(() => {
+    if (error) {
+      window.scrollTo(0, 0);
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+    }
+  }, [error]);
+
   return (
     <div className="flex w-full flex-col gap-4">
+      {error && (
+        <div className="mb-4 rounded-lg bg-red-500 p-4 text-white">{error}</div>
+      )}
       <div className="flex w-full justify-between rounded-xl bg-background-secondary p-4">
         <div className="flex items-center gap-4">
           <input
@@ -224,7 +239,9 @@ export default function FileManager(props: {
                 }
               )
               .then(() => mutate())
-              .catch(() => {});
+              .catch((err) => {
+                setError(err.response?.data?.message || "An error occurred");
+              });
           }}
         />
 
@@ -268,7 +285,9 @@ export default function FileManager(props: {
                   }
                 )
                 .then(() => mutate())
-                .catch(() => {});
+                .catch((err) => {
+                  setError(err.response?.data?.message || "An error occurred");
+                });
             }}
             key={file.name}
           />
@@ -288,7 +307,9 @@ export default function FileManager(props: {
                 }/new?type=${type}&file=${path}/${name}`
             )
             .then(() => mutate())
-            .catch(() => {});
+            .catch((err) => {
+              setError(err.response?.data?.message || "An error occurred");
+            });
         }}
         type={createType}
       />
@@ -314,7 +335,9 @@ export default function FileManager(props: {
               }
             )
             .then(() => mutate())
-            .catch(() => {});
+            .catch((err) => {
+              setError(err.response?.data?.message || "An error occurred");
+            });
         }}
       />
 
@@ -364,7 +387,10 @@ export default function FileManager(props: {
                   props.server +
                   `/files/${props.service || "root"}/delete/${path}/${name}`
               )
-              .then(() => mutate());
+              .then(() => mutate())
+              .catch((err) => {
+                setError(err.response?.data?.message || "An error occurred");
+              });
           }}
         >
           <FontAwesomeIcon icon={faTrash} /> Delete
