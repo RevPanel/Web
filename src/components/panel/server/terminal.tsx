@@ -49,7 +49,8 @@ export function DockerTerminal(props: ServiceProps) {
         setLines(split);
 
         const { data: settings } = await axios.post(
-          `/api/servers/${props.serverId}/socket?type=service`
+          `/api/servers/${props.serverId}/socket?type=service`,
+          {}
         );
         if (socketInstance) return;
 
@@ -102,7 +103,7 @@ export function SSHTerminal({ server }: { server: string }) {
   useEffect(() => {
     if (socketInstance) return;
     axios
-      .post(`/api/servers/${server}/socket?type=server`)
+      .post(`/api/servers/${server}/socket?type=server`, {})
       .then(async ({ data }) => {
         const socket = socketIO(`${data.ip}/terminal`, {
           auth: {

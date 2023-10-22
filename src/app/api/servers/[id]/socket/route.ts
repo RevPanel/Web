@@ -3,10 +3,10 @@ import prisma from "@/lib/prisma";
 import { error } from "@/utils/responses";
 import axios from "axios";
 import * as context from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
-  req: Request,
+  req: NextRequest,
   {
     params,
   }: {
@@ -46,8 +46,11 @@ export async function POST(
     return error("Unauthorized", 403);
   }
 
-  const { type } = await req.json();
-  if (!type || !["server", "service"].includes(type)) {
+  const query = new URL(req.nextUrl).searchParams;
+  if (
+    !query.has("type") ||
+    !["server", "service"].includes(query.get("type")!)
+  ) {
     return error("Invalid type", 400);
   }
 
@@ -55,7 +58,7 @@ export async function POST(
     const { data } = await axios.post(
       `${process.env.NODE_ENV === "development" ? "http" : "https"}://${
         server.ip
-      }:8080/sockets/create?type=${type}`,
+      }:8080/sockets/create?type=${query.get("type")}`,
       {},
       {
         headers: {
