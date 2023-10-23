@@ -16,22 +16,25 @@ async function getPackages(search?: string): Promise<ImageInfo[]> {
       dockerImage: true,
       ports: true,
     },
-    where: {
-      OR: [
-        {
-          name: {
-            contains: search,
-            mode: "insensitive",
-          },
-        },
-        {
-          description: {
-            contains: search,
-            mode: "insensitive",
-          },
-        },
-      ],
-    },
+    where:
+      search && search.length > 0
+        ? {
+            OR: [
+              {
+                name: {
+                  contains: search,
+                  mode: "insensitive",
+                },
+              },
+              {
+                description: {
+                  contains: search,
+                  mode: "insensitive",
+                },
+              },
+            ],
+          }
+        : undefined,
   });
 
   return images;

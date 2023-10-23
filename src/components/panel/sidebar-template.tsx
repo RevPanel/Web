@@ -37,6 +37,7 @@ export const accountSection: RouteSection = {
       title: "Billing",
       icon: faUserCircle,
       href: "/api/stripe/portal",
+      noPrefetch: true,
     },
     {
       title: "API Keys",

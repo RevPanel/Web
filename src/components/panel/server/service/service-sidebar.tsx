@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  faDoorOpen,
   faDumpsterFire,
   faFile,
   faHome,
@@ -29,19 +30,25 @@ export default function ServiceSidebar() {
               title: "Console",
               icon: faTerminal,
               href: `${baseUrl}/console`,
-              permission: "service.terminal"
+              permission: "service.terminal",
             },
             {
               title: "File Manager",
               icon: faFile,
               href: `${baseUrl}/files`,
-              permission: "service.files"
+              permission: "service.files",
             },
             {
               title: "Port Manager",
-              icon: faDumpsterFire,
+              icon: faDoorOpen,
               href: `${baseUrl}/ports`,
-              permission: "service.edit"
+              permission: "service.edit",
+            },
+            {
+              title: "Env Manager",
+              icon: faDumpsterFire,
+              href: `${baseUrl}/environment`,
+              permission: "service.edit",
             },
           ],
         },
