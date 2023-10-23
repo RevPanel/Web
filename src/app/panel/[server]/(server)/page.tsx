@@ -118,6 +118,11 @@ export default function ServicesHome() {
       {services?.map((service) => (
         <ServerContainer key={service.id} {...service} serverId={server} />
       ))}
+      {services?.length === 0 && (
+        <p className="text-center text-tertiary">
+          You don&apos;t have any service. Create one now!
+        </p>
+      )}
     </div>
   );
 }

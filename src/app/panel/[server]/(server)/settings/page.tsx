@@ -1,5 +1,6 @@
-import { Button } from "@/components/button";
-import EditServer from "@/components/panel/server/edit-server";
+import EditServer from "@/components/panel/server/settings/edit-server";
+import RemoveButton from "@/components/panel/server/settings/remove-button";
+import ServerUpdater from "@/components/panel/server/settings/updater";
 import Toggle from "@/components/toggle";
 import prisma from "@/lib/prisma";
 
@@ -40,19 +41,8 @@ export default async function SettingsPage({
       {server && <EditServer {...server} />}
 
       <div className="flex flex-col justify-between gap-4 lg:flex-row">
-        <div className="card lg:w-1/2 xl:w-3/5">
-          <h1 className="text-3xl font-extrabold">Version</h1>
-          <p className="text-justify xl:w-2/3">
-            The panel daemon automatically updates itself to the latest version.
-            Sometimes, you may need to manually update the panel daemon. Click
-            the button below to check for new versions and eventually update the
-            panel daemon.
-          </p>
-          <div className="mt-auto flex gap-2">
-            <Button role="primary">Check new version</Button>
-            <Button role="secondary">v 1.0</Button>
-          </div>
-        </div>
+        <ServerUpdater server={params.server} />
+
         <div className="card lg:w-1/2 xl:w-2/5">
           <h1 className="text-3xl font-extrabold">Notifications</h1>
           <div className="flex flex-col gap-4">
@@ -72,9 +62,7 @@ export default async function SettingsPage({
         </div>
       </div>
 
-      <Button role="secondary" className="mt-auto w-full uppercase">
-        Remove server
-      </Button>
+      <RemoveButton server={params.server} />
     </div>
   );
 }

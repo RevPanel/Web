@@ -30,9 +30,11 @@ export default function ServerContainer({
       }
       className="flex min-h-[5.25rem] flex-row items-center justify-between gap-6 overflow-x-auto rounded-xl bg-background-secondary px-6 py-4 text-white md:gap-2"
     >
-      <FontAwesomeIcon icon={faServer} className="text-4xl" />
-      <h1 className="w-fit text-xl font-bold">{server.name}</h1>
-      <p className="min-w-fit">{server.description}</p>
+      <div className="flex items-center gap-4 mr-6">
+        <FontAwesomeIcon icon={faServer} className="text-4xl" />
+        <h1 className="w-fit text-xl font-bold">{server.name}</h1>
+        <p className="min-w-fit">{server.description}</p>
+      </div>
       <div className="ml-4 flex items-center gap-14 md:gap-10">
         <div className="flex gap-2">
           <span>CPU: </span>

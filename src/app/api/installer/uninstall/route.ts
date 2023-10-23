@@ -1,38 +1,20 @@
 import octokit from "@/lib/github";
-import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(
-  req: Request,
-  {
-    params: { token },
-  }: {
-    params: {
-      token: string;
-    };
-  }
-) {
+export async function GET(req: Request) {
   const script = await octokit.request(
     "GET /repos/{owner}/{repo}/contents/{path}",
     {
       owner: "RevPanel",
       repo: "Daemon",
-      path: "scripts/install.sh",
+      path: "scripts/uninstall.sh",
     }
   );
 
-  const server = await prisma.server.findFirst({
-    where: {
-      key: token,
-    },
-  });
-
   const { content } = script.data as any;
-  const cleanContent = atob(content)
-    .replace("${TOKEN}", token)
-    .replace("${DOMAIN}", server?.ip || "127.0.0.1");
+  const cleanContent = atob(content);
 
   return new NextResponse(cleanContent, {
     headers: {
