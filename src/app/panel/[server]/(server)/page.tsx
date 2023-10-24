@@ -76,7 +76,7 @@ export default function ServicesHome() {
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="mb-4 flex flex-wrap justify-center gap-2 lg:gap-6 xl:justify-between xl:gap-2">
+      <div className="mb-4 flex flex-wrap justify-center gap-2 lg:gap-6 3xl:justify-between 3xl:gap-2">
         <ServerChart
           label="CPU"
           total={stats?.cpu.cores || 0}

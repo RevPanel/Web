@@ -40,6 +40,7 @@ export async function POST(
   }
 
   if (
+    !session.user.admin &&
     server.ownerId !== session.user.userId &&
     !server.members[0]?.permissions
   ) {

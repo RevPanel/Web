@@ -11,20 +11,22 @@ async function getServerList(): Promise<ServerWithoutKey[]> {
   if (!session) return [];
 
   const servers = await prisma.server.findMany({
-    where: {
-      OR: [
-        {
-          ownerId: session.user.userId,
-        },
-        {
-          members: {
-            some: {
-              userId: session.user.userId,
+    where: session.user.admin
+      ? undefined
+      : {
+          OR: [
+            {
+              ownerId: session.user.userId,
             },
-          },
+            {
+              members: {
+                some: {
+                  userId: session.user.userId,
+                },
+              },
+            },
+          ],
         },
-      ],
-    },
   });
 
   return removeKeys(servers);

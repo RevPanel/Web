@@ -25,7 +25,9 @@ export function Device({
     <div
       className={
         "flex h-32 flex-col rounded-xl p-4 " +
-        (full ? "bg-background" : "w-[31.5%] bg-background-secondary")
+        (full
+          ? "bg-background"
+          : "w-full bg-background-secondary lg:w-[45%] 2xl:w-[31.5%]")
       }
     >
       <div className="flex">

@@ -36,6 +36,8 @@ export const auth = lucia({
       plan: data.plan,
       serverCreated: data.serverCreated,
       stripeId: data.stripeId,
+      admin: data.admin,
+      twoFactorEnabled: data.twoFactorSecret ? true : false,
     };
   },
 });

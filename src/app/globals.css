@@ -8,7 +8,7 @@
   }
 
   .modal {
-    @apply mx-auto max-w-[90vw] rounded-lg bg-background-secondary p-4 md:min-w-[25rem] md:max-w-max;
+    @apply mx-auto min-w-[80vw] max-w-[90vw] rounded-lg bg-background-secondary p-4 md:min-w-[25rem] md:max-w-max;
   }
 
   .modal-close {

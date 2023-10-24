@@ -44,6 +44,7 @@ async function handler(
     }
 
     userId = session.user.userId;
+    admin = session.user.admin || false;
   }
 
   const { id } = params;

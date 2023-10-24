@@ -36,7 +36,7 @@ export default async function Page(props: {
           name="newPassword"
           id="newPassword"
           placeholder="New password"
-          className="w-full !p-4 !pl-6"
+          className="w-full !p-4 !pl-6 !min-w-0"
         />
         <Button role="primary" type="submit" className="w-full">
           Change password

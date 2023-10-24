@@ -1,9 +1,6 @@
-import { Button, LinkButton } from "@/components/button";
-import Form from "@/components/form";
-import FormInput from "@/components/input";
+import LoginForm from "@/components/login-form";
 import { auth } from "@/lib/lucia";
 import * as context from "next/headers";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
@@ -17,65 +14,7 @@ export default async function Page() {
       <p className="text-tertiary">
         Insert your credentials and get back to your panel
       </p>
-      <Form
-        className="mx-auto mt-4 flex w-full flex-col gap-2 md:w-1/2 lg:w-1/3 2xl:w-1/5"
-        action="/api/auth/login"
-      >
-        <FormInput
-          required
-          name="username"
-          id="username"
-          placeholder="Username"
-          className="w-full !p-4 !pl-6"
-        />
-        <FormInput
-          required
-          name="password"
-          id="password"
-          type="password"
-          placeholder="Password"
-          className="w-full !p-4 !pl-6"
-        />
-        <div className="flex w-full justify-between">
-          <Link href="/register" className="text-tertiary">
-            Register
-          </Link>
-          <Link href="/password/reset" className="text-tertiary">
-            Forgot Password?
-          </Link>
-        </div>
-        <Button role="primary" type="submit" className="w-full">
-          Login
-        </Button>
-        <div className="flex items-center gap-2">
-          <span className="h-px w-full bg-tertiary"></span>
-          <span className="w-full text-tertiary">Or login with</span>
-          <span className="h-px w-full bg-tertiary"></span>
-        </div>
-        <div className="flex gap-2">
-          <LinkButton
-            href="/api/auth/login/discord"
-            role="secondary"
-            className="w-full flex-1"
-          >
-            Discord
-          </LinkButton>
-          <LinkButton
-            href="/api/auth/login/github"
-            role="secondary"
-            className="w-full flex-1"
-          >
-            GitHub
-          </LinkButton>
-        </div>
-        <LinkButton
-          href="/api/auth/login/google"
-          role="secondary"
-          className="w-full flex-1"
-        >
-          Google
-        </LinkButton>
-      </Form>
+      <LoginForm />
     </div>
   );
 }

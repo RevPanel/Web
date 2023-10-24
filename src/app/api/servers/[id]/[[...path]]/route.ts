@@ -17,6 +17,7 @@ async function handler(
   }
 ) {
   let userId;
+  let admin = false;
 
   if (req.headers.has("Authorization")) {
     const key = req.headers.get("Authorization")?.split(" ")[1];
@@ -25,6 +26,14 @@ async function handler(
       where: {
         key,
       },
+      select: {
+        ownerId: true,
+        owner: {
+          select: {
+            admin: true,
+          },
+        },
+      },
     });
 
     if (!k) {
@@ -32,6 +41,7 @@ async function handler(
     }
 
     userId = k.ownerId;
+    admin = k.owner.admin;
   } else {
     const authRequest = auth.handleRequest(req.method, context);
     const session = await authRequest.validate();
@@ -41,6 +51,7 @@ async function handler(
     }
 
     userId = session.user.userId;
+    admin = session.user.admin || false;
   }
 
   const { id, path } = params;
@@ -68,7 +79,7 @@ async function handler(
   }
 
   let permissions = ["*", "owner"];
-  if (server.ownerId !== userId) {
+  if (server.ownerId !== userId && !admin) {
     if (server.members.length === 0) return error("Unauthorized", 403);
 
     const member = server.members[0];

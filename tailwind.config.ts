@@ -15,6 +15,9 @@ const config: Config = {
         secondary: "#7967FF",
         tertiary: "#A1A1AA",
       },
+      screens: {
+        "3xl": "1920px",
+      },
     },
   },
   daisyui: {

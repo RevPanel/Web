@@ -6,7 +6,7 @@ import Modal from "@/components/modal";
 import useDisclosure from "@/hooks/disclosure";
 import { useFetcher } from "@/hooks/fetcher";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Ports({
   params: { server, service },
@@ -20,6 +20,10 @@ export default function Ports({
     `/api/servers/${server}/containers/${service}`
   );
   const { onOpen, isOpen, onClose } = useDisclosure();
+  const [editing, setEditing] = useState<{
+    key: string;
+    value: string;
+  } | null>(null);
 
   return (
     <div className="flex w-full flex-col gap-8">
@@ -41,6 +45,10 @@ export default function Ports({
               key={env.id}
               name={env.key}
               value={env.value}
+              edit={() => {
+                setEditing(env);
+                onOpen();
+              }}
             />
           ))}
         </div>
@@ -57,6 +65,7 @@ export default function Ports({
             })
             .then(() => mutate());
         }}
+        defaultEnv={editing}
       />
     </div>
   );
@@ -66,13 +75,20 @@ function NewEnvModal({
   isOpen,
   onClose,
   submit,
+  defaultEnv,
 }: {
   isOpen: boolean;
   onClose: () => void;
   submit: (key: string, value: string) => void;
+  defaultEnv: { key: string; value: string } | null;
 }) {
-  const [key, setKey] = useState("");
-  const [value, setValue] = useState("");
+  const [key, setKey] = useState(defaultEnv?.key || "");
+  const [value, setValue] = useState(defaultEnv?.value || "");
+
+  useEffect(() => {
+    setKey(defaultEnv?.key || "");
+    setValue(defaultEnv?.value || "");
+  }, [defaultEnv]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Create a new port">
@@ -113,15 +129,18 @@ function Env({
   className,
   name,
   value,
+  edit,
 }: {
   className?: string;
   name: string;
   value: string;
+  edit: () => void;
 }) {
   return (
     <div
+      onClick={() => edit()}
       className={
-        "flex min-h-[5.25rem] items-center gap-4 rounded-xl bg-background p-4 text-tertiary " +
+        "flex min-h-[5.25rem] cursor-pointer items-center gap-4 rounded-xl bg-background p-4 text-tertiary " +
         (className || "")
       }
     >

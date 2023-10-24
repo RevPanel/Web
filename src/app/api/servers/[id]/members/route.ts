@@ -37,7 +37,7 @@ export async function GET(
     return error("Server not found", 404);
   }
 
-  if (server.ownerId !== session.user.userId) {
+  if (!session.user.admin && server.ownerId !== session.user.userId) {
     return error("Unauthorized", 403);
   }
 
@@ -90,7 +90,7 @@ export async function POST(
     return error("Server not found", 404);
   }
 
-  if (server.ownerId !== session.user.userId) {
+  if (!session.user.admin && server.ownerId !== session.user.userId) {
     return error("Unauthorized", 403);
   }
 
@@ -200,7 +200,7 @@ export async function DELETE(
     return error("Server not found", 404);
   }
 
-  if (server.ownerId !== session.user.userId) {
+  if (!session.user.admin && server.ownerId !== session.user.userId) {
     return error("Unauthorized", 403);
   }
 

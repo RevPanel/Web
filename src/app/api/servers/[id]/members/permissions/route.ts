@@ -38,8 +38,8 @@ export async function GET(
     return error("Server not found", 404);
   }
 
-  if (server.ownerId === session.user.userId) {
-    return new NextResponse(JSON.stringify(["*","owner"]), {
+  if (session.user.admin || server.ownerId === session.user.userId) {
+    return new NextResponse(JSON.stringify(["*", "owner"]), {
       headers: {
         "Content-Type": "application/json",
         "Cache-Control": "public, max-age=60",

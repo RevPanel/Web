@@ -99,6 +99,11 @@ export default function EditServer(server: {
       <div className="card lg:w-1/2 xl:w-3/5">
         <h1 className="text-2xl font-extrabold">Manage Collaborators</h1>
         <div className="flex max-h-[12rem] flex-col gap-2 overflow-y-auto">
+          {!server.members.length && (
+            <p className="m-auto text-tertiary">
+              You didn&apos;t add any collaborator yet.
+            </p>
+          )}
           {server.members.map((member) => (
             <div key={member.user.username} className="flex items-center gap-4">
               <button

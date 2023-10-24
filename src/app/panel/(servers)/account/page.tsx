@@ -12,7 +12,7 @@ import {
   faGoogle,
 } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faLock, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -84,13 +84,13 @@ export default async function Page() {
           icon={faEnvelope}
           complete={session?.user.emailVerified}
         />
-        {/* <Drawer
+        <Drawer
           title="Setup 2fa authentication"
           content="Your account should be secure and you should not worry about hackers who wants to rob your account. Setup a two factor authentication to stay safe"
           icon={faLock}
           link="/panel/account/2fa"
           complete={session?.user.twoFactorEnabled}
-        /> */}
+        />
         <Drawer
           title="Add a new machine to the panel"
           content="Add your first machine to the panel and enjoy all our features"
