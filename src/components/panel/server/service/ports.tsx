@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/button";
+import { Button, LinkButton } from "@/components/button";
 import { useFetcher } from "@/hooks/fetcher";
 import { ServiceProps } from "@/types/service";
 import Port from "../network/port";
@@ -20,9 +20,13 @@ export default function OpenPorts(props: ServiceProps) {
           <Port key={port.id} name={port.name} port={port.publicPort} />
         ))}
       </div>
-      <Button role="primary" className="mt-auto font-extrabold uppercase">
+      <LinkButton
+        href={`/panel/${props.serverId}/${props.id}/ports`}
+        role="primary"
+        className="mt-auto font-extrabold uppercase"
+      >
         Manage Ports
-      </Button>
+      </LinkButton>
     </div>
   );
 }

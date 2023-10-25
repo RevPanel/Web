@@ -23,52 +23,53 @@ export default function QuickActions(props: ServiceProps & SessionProps) {
   }, [message]);
 
   return (
-    <div className="card">
+    <>
       {message && (
-        <div className="card fixed bottom-4 right-4 z-10 flex h-20 w-96 flex-col justify-center p-0">
-          <p className="m-auto mt-6 text-center text-xl">{message}</p>
-          <span className="bg-gradient mt-auto block h-2 w-full rounded-xl"></span>
+        <div className="card flex h-10 w-full flex-col justify-center bg-primary p-0">
+          <p className="m-auto text-center text-xl">{message}</p>
         </div>
       )}
 
-      <h1 className="font-light uppercase">Quick Actions</h1>
-      <div className="flex w-full flex-col justify-between gap-4 lg:flex-row">
-        <div>
-          <h1 className="text-xl font-bold">
-            Hey, {props.session?.user?.name}!
-          </h1>
-          <p className="font-light">What do you want to do now?</p>
-        </div>
-        <div className="flex gap-4">
-          <button
-            onClick={() => {
-              run("start", props);
-              setMessage("Server started successfully!");
-            }}
-            className="flex h-14 w-14 items-center justify-center rounded-xl bg-background p-4"
-          >
-            <StartIcon gradient="true" />
-          </button>
-          <button
-            onClick={() => {
-              run("stop", props);
-              setMessage("Server stopped successfully!");
-            }}
-            className="flex h-14 w-14 items-center justify-center rounded-xl bg-background p-4"
-          >
-            <StopIcon gradient="true" />
-          </button>
-          <button
-            onClick={() => {
-              run("restart", props);
-              setMessage("Server restarted successfully!");
-            }}
-            className="flex h-14 w-14 items-center justify-center rounded-xl bg-background p-4"
-          >
-            <RestartIcon gradient="true" />
-          </button>
+      <div className="card">
+        <h1 className="font-light uppercase">Quick Actions</h1>
+        <div className="flex w-full flex-col justify-between gap-4 lg:flex-row">
+          <div>
+            <h1 className="text-xl font-bold">
+              Hey, {props.session?.user?.name}!
+            </h1>
+            <p className="font-light">What do you want to do now?</p>
+          </div>
+          <div className="flex gap-4">
+            <button
+              onClick={() => {
+                run("start", props);
+                setMessage("Server started successfully!");
+              }}
+              className="flex h-14 w-14 items-center justify-center rounded-xl bg-background p-4"
+            >
+              <StartIcon gradient="true" />
+            </button>
+            <button
+              onClick={() => {
+                run("stop", props);
+                setMessage("Server stopped successfully!");
+              }}
+              className="flex h-14 w-14 items-center justify-center rounded-xl bg-background p-4"
+            >
+              <StopIcon gradient="true" />
+            </button>
+            <button
+              onClick={() => {
+                run("restart", props);
+                setMessage("Server restarted successfully!");
+              }}
+              className="flex h-14 w-14 items-center justify-center rounded-xl bg-background p-4"
+            >
+              <RestartIcon gradient="true" />
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

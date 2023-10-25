@@ -1,3 +1,5 @@
+"use client";
+
 import type { ReactNode } from "react";
 
 type ModalProps = {
@@ -14,8 +16,11 @@ export default function Modal({
   onClose,
 }: ModalProps) {
   return (
-    <div className={"modal-container" + (isOpen ? "" : " modal-close")}>
-      <div className="modal">
+    <dialog
+      open={isOpen}
+      className={"daisy-modal daisy-modal-bottom sm:daisy-modal-middle"}
+    >
+      <div className="daisy-modal-box z-20 flex flex-col gap-2 bg-background-secondary">
         <div className="flex w-full justify-between">
           {title && <h1 className="text-2xl font-bold">{title}</h1>}
           <button className="modal-close-button" onClick={onClose}>
@@ -38,6 +43,16 @@ export default function Modal({
 
         {children}
       </div>
-    </div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onClose();
+        }}
+        className="daisy-modal-backdrop z-10 bg-background/70"
+        method="dialog"
+      >
+        <button>close</button>
+      </form>
+    </dialog>
   );
 }

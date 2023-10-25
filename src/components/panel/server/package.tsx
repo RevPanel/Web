@@ -28,28 +28,26 @@ export default function PackageCard(props: ImageInfo) {
       </div>
 
       <Modal isOpen={isOpen} onClose={onClose}>
-        <div className="card w-96">
-          <h1 className="text-2xl font-bold">
-            {props.name}{" "}
-            <Link href={props.homepage || "#"}>[{props.version}]</Link>
-          </h1>
-          <p className="text-justify">{props.description}</p>
-          <p className="text-left text-xl font-bold">Ports:</p>
-          <ul className="list-inside list-disc text-left">
-            {props.ports.map((port) => (
-              <li key={port.id}>
-                {port.containerPort}: {port.name}
-              </li>
-            ))}
-          </ul>
-          <LinkButton
-            href={`./add?image=${props.id}`}
-            role="primary"
-            className="mt-auto w-full"
-          >
-            Create
-          </LinkButton>
-        </div>
+        <h1 className="text-2xl font-bold">
+          {props.name}{" "}
+          <Link href={props.homepage || "#"}>[{props.version}]</Link>
+        </h1>
+        <p className="text-justify">{props.description}</p>
+        <p className="text-left text-xl font-bold">Ports:</p>
+        <ul className="list-inside list-disc text-left">
+          {props.ports.map((port) => (
+            <li key={port.id}>
+              {port.containerPort}: {port.name}
+            </li>
+          ))}
+        </ul>
+        <LinkButton
+          href={`./add?image=${props.id}`}
+          role="primary"
+          className="mt-auto w-full"
+        >
+          Create
+        </LinkButton>
       </Modal>
     </div>
   );

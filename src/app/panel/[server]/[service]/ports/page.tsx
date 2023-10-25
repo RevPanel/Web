@@ -25,13 +25,17 @@ export default function Ports({
   return (
     <div className="flex w-full flex-col gap-8">
       <div className="flex w-full flex-col gap-4">
-        <div className="flex w-full items-center justify-between">
-          <div>
+        <div className="flex w-full flex-col items-center justify-between gap-2 md:flex-row md:gap-0">
+          <div className="w-full">
             <h1 className="text-3xl font-extrabold">Open Ports</h1>
             <p>Click a port to manage it</p>
           </div>
 
-          <Button onClick={onOpen} role="primary" className="!px-16 uppercase">
+          <Button
+            onClick={onOpen}
+            role="primary"
+            className="w-full !px-16 uppercase md:w-auto"
+          >
             Create new
           </Button>
         </div>
