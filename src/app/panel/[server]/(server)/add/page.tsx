@@ -4,12 +4,12 @@ import { Button } from "@/components/button";
 import FormInput from "@/components/input";
 import { PlausibleEvents } from "@/types/plausible";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { faDocker, faNode } from "@fortawesome/free-brands-svg-icons";
+import { faJava, faNode } from "@fortawesome/free-brands-svg-icons";
 import {
   faAnglesLeft,
-  faCode,
+  faCube,
   faDatabase,
-  faShoppingBag,
+  faShoppingBag
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
@@ -17,8 +17,6 @@ import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-
-// TODO: Use correct image ids
 
 function Range({
   name,
@@ -101,13 +99,17 @@ export default function Page({
       <div className="flex h-full w-full flex-col items-center justify-center gap-4">
         <h1 className="text-4xl font-extrabold">Select the service type</h1>
         <div className="flex flex-wrap items-center justify-center gap-10">
-          <ServiceType name="Static Website" icon={faCode} image="static" />
-          <ServiceType name="Docker Image" icon={faDocker} image="docker" />
-          <ServiceType name="Node App" icon={faNode} image="node" />
           <ServiceType
-            name="Database Server"
+            name="Minecraft Server"
+            icon={faCube}
+            image="minecraft"
+          />
+          <ServiceType name="Java App" icon={faJava} image="java" />
+          <ServiceType name="Node App" icon={faNode} image="nodejs" />
+          <ServiceType
+            name="MariaDB Server"
             icon={faDatabase}
-            image="database"
+            image="mariadb"
           />
           <ServiceType
             name="Open Marketplace"
@@ -133,7 +135,7 @@ export default function Page({
               image: search.get("image") || "",
             },
           });
-          
+
           axios
             .post(`/api/servers/${params.server}/containers/create`, {
               name,
