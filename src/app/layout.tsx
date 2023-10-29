@@ -1,6 +1,6 @@
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import ProgressWrapper from "@/components/progress-wrapper";
@@ -14,11 +14,8 @@ export const metadata: Metadata = {
   title: "RevPanel",
   description:
     "RevPanel is a dashboard that allows users to easily manage their servers without any system administration knowledge.",
-};
-
-export const viewport: Viewport = {
   themeColor: "#C082FF",
-}
+};
 
 export default function RootLayout({
   children,
