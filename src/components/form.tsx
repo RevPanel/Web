@@ -8,11 +8,13 @@ const Form = ({
   action,
   className,
   redirect,
+  type = "form",
 }: {
   children: React.ReactNode;
   action: string;
   className?: string;
   redirect?: string;
+  type?: "form" | "json";
 }) => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -25,10 +27,24 @@ const Form = ({
       className={className}
       onSubmit={async (e) => {
         e.preventDefault();
-        const formData = new FormData(e.currentTarget);
+        let body;
+
+        if (type === "json") {
+          const formData = new FormData(e.target as HTMLFormElement);
+          body = Object.fromEntries(formData.entries());
+        } else {
+          body = new FormData(e.currentTarget);
+        }
+
         const response = await fetch(action, {
           method: "POST",
-          body: formData,
+          body: type === "json" ? JSON.stringify(body) : (body as FormData),
+          headers:
+            type === "json"
+              ? {
+                  "Content-Type": "application/json",
+                }
+              : undefined,
           redirect: "manual",
         });
 

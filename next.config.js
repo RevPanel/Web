@@ -1,11 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "localhost",
-      "ui-avatars.com",
-      "cdn.revpanel.io",
-      "chart.googleapis.com",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "ui-avatars.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.revpanel.io",
+      },
+      {
+        protocol: "https",
+        hostname: "chart.googleapis.com",
+      },
     ],
     dangerouslyAllowSVG: true,
   },

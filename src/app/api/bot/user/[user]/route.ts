@@ -41,6 +41,6 @@ export async function GET(
 
   return NextResponse.json({
     plan: user.plan,
-    paid: user.plan !== "free",
+    paid: user.plan && user.plan !== "free",
   });
 }

@@ -4,12 +4,12 @@ import { Button } from "@/components/button";
 import FormInput from "@/components/input";
 import { PlausibleEvents } from "@/types/plausible";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { faJava, faNode } from "@fortawesome/free-brands-svg-icons";
+import { faGithub, faJava, faNode } from "@fortawesome/free-brands-svg-icons";
 import {
   faAnglesLeft,
   faCube,
   faDatabase,
-  faShoppingBag
+  faShoppingBag,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
@@ -18,26 +18,31 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-function Range({
+export function Range({
   name,
   bind,
   options,
+  id,
+  full,
 }: {
   name: string;
-  bind: [number, (value: number) => void];
+  bind?: [number, (value: number) => void];
   options: number[];
+  id?: string;
+  full?: boolean;
 }) {
   return (
-    <div className="flex w-1/3 flex-col gap-2">
+    <div className={"flex flex-col gap-2 " + (full ? "w-1/2" : "w-1/3")}>
       <label className="text-xs">{name}</label>
 
       <input
         type="range"
         min={0}
         max={options[options.length - 1]}
-        value={bind[0]}
-        onChange={(e) => bind[1](parseInt(e.target.value))}
+        value={bind ? bind[0] : undefined}
+        onChange={bind ? (e) => bind[1](parseInt(e.target.value)) : undefined}
         className="daisy-range daisy-range-primary daisy-range-xs"
+        id={id}
       />
       <div className="flex w-full justify-between px-2 text-xs">
         {options.map((option) => (
@@ -65,6 +70,11 @@ function ServiceType({
       onClick={() => {
         if (image === "marketplace") {
           router.push(`${pathname.split("/").slice(0, -1).join("/")}/packages`);
+          return;
+        }
+
+        if (image === "import") {
+          router.push(`${pathname.split("/").slice(0, -1).join("/")}/import`);
           return;
         }
 
@@ -111,6 +121,7 @@ export default function Page({
             icon={faDatabase}
             image="mariadb"
           />
+          <ServiceType name="Import..." icon={faGithub} image="import" />
           <ServiceType
             name="Open Marketplace"
             icon={faShoppingBag}
@@ -151,7 +162,7 @@ export default function Page({
         className="m-auto flex w-3/4 flex-col gap-4"
       >
         <h1 className="text-center text-4xl font-extrabold">
-          Select the service type
+          Some additional configuration
         </h1>
         {error && <p className="text-center font-bold text-red-500">{error}</p>}
         <div className="card flex w-full flex-row items-center justify-between">
