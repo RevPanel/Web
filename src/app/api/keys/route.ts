@@ -3,6 +3,7 @@ import * as context from "next/headers";
 import { auth } from "@/lib/lucia";
 import { error } from "@/utils/responses";
 import prisma from "@/lib/prisma";
+import { createId } from "@paralleldrive/cuid2";
 
 export const GET = async (req: NextRequest) => {
   const authRequest = auth.handleRequest(req.method, context);
@@ -46,6 +47,7 @@ export const POST = async (req: NextRequest) => {
 
   const key = await prisma.apiKey.create({
     data: {
+      key: createId(),
       description,
       ownerId: session.user.userId,
       ips: ipList,
