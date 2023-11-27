@@ -77,28 +77,32 @@ export default async function Page() {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-col gap-3">
-        <Drawer
-          title="Verify your email address"
-          content="We have sent you a link to verify your email address"
-          icon={faEnvelope}
-          complete={session?.user.emailVerified}
-        />
-        <Drawer
-          title="Setup 2fa authentication"
-          content="Your account should be secure and you should not worry about hackers who wants to rob your account. Setup a two factor authentication to stay safe"
-          icon={faLock}
-          link="/panel/account/2fa"
-          complete={session?.user.twoFactorEnabled}
-        />
-        <Drawer
-          title="Add a new machine to the panel"
-          content="Add your first machine to the panel and enjoy all our features"
-          icon={faPlus}
-          link="/panel"
-          complete={session?.user.serverCreated}
-        />
-      </div>
+      {(!session?.user.emailVerified ||
+        !session?.user.twoFactorEnabled ||
+        !session?.user.serverCreated) && (
+        <div className="flex flex-col gap-3">
+          <Drawer
+            title="Verify your email address"
+            content="We have sent you a link to verify your email address"
+            icon={faEnvelope}
+            complete={session?.user.emailVerified}
+          />
+          <Drawer
+            title="Setup 2fa authentication"
+            content="Your account should be secure and you should not worry about hackers who wants to rob your account. Setup a two factor authentication to stay safe"
+            icon={faLock}
+            link="/panel/account/2fa"
+            complete={session?.user.twoFactorEnabled}
+          />
+          <Drawer
+            title="Add a new machine to the panel"
+            content="Add your first machine to the panel and enjoy all our features"
+            icon={faPlus}
+            link="/panel"
+            complete={session?.user.serverCreated}
+          />
+        </div>
+      )}
       <div className="flex flex-col gap-6 xl:flex-row">
         <div className="xl:w-3/4">
           <h1 className="w-fit text-3xl font-extrabold uppercase">

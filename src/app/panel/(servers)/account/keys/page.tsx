@@ -3,6 +3,7 @@
 import { Button } from "@/components/button";
 import FormInput from "@/components/input";
 import { useFetcher } from "@/hooks/fetcher";
+import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import { faKey, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { ApiKey } from "@prisma/client";
@@ -41,7 +42,9 @@ function CreateKey({ mutate }: { mutate: any }) {
           className="w-full rounded-xl bg-background"
         >
           <p className="p-4 font-medium">
-            The key has been created successfully: {key}
+            The key has been created successfully:
+            <br /> {key}
+            <FontAwesomeIcon className="ml-2" icon={faCopy} />
           </p>
         </button>
       )}

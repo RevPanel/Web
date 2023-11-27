@@ -1,12 +1,13 @@
+import { keyOwner } from "@/lib/keys";
 import { auth } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import { error } from "@/utils/responses";
 import axios from "axios";
 import * as context from "next/headers";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
 async function handler(
-  req: Request,
+  req: NextRequest,
   {
     params,
   }: {
@@ -21,27 +22,15 @@ async function handler(
 
   if (req.headers.has("Authorization")) {
     const key = req.headers.get("Authorization")?.split(" ")[1];
-
-    const k = await prisma.apiKey.findUnique({
-      where: {
-        key,
-      },
-      select: {
-        ownerId: true,
-        owner: {
-          select: {
-            admin: true,
-          },
-        },
-      },
-    });
+    const address = req.headers.get("x-real-ip") || req.ip;
+    const k = await keyOwner(key, address);
 
     if (!k) {
       return error("Unauthorized", 403);
     }
 
-    userId = k.ownerId;
-    admin = k.owner.admin;
+    userId = k.id;
+    admin = k.admin;
   } else {
     const authRequest = auth.handleRequest(req.method, context);
     const session = await authRequest.validate();
