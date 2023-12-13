@@ -68,6 +68,18 @@ export default function Page() {
           </Link>
         </p>
 
+        <p>
+          The Company also used Stripe as a third party. “Stripe” is a
+          payment provider that allows the Company to get paid for services and products.
+          The information “Stripe” collects is billing information,
+          such as your full name, email address, and the last 3 digits of your credit card.
+          Please note that Stripe only collects this and shares it with confidentiality with the Company. 
+          Please read more about “Stripe” in their privacy policy:{" "}
+          <Link href="https://stripe.com/en-no/privacy">
+            https://stripe.com/en-no/privacy
+          </Link>
+        </p>
+
         <h2 className="mt-4 text-lg font-bold">8. CONTACT INFORMATION</h2>
         <p>
           If you have any questions or concerns about our Privacy Policy or data
