@@ -1,5 +1,5 @@
-import { auth } from "@/lib/lucia";
-import * as context from "next/headers";
+import { getUser } from "@/components/auth";
+import prisma from "@/lib/prisma";
 
 export async function GET(
   req: Request,
@@ -11,8 +11,7 @@ export async function GET(
     };
   }
 ) {
-  const authRequest = auth.handleRequest(req.method, context);
-  const session = await authRequest.validate();
+  const session = await getUser();
 
   if (!session) {
     return new Response(null, {
@@ -20,11 +19,22 @@ export async function GET(
     });
   }
 
+  const user = await prisma.user.findUnique({
+    where: {
+      id: session.user.id,
+    },
+  });
+
   const { code } = params;
-  if (session.user.emailToken === code) {
-    await auth.updateUserAttributes(session.user.userId, {
-      emailVerified: true,
-      emailToken: null,
+  if (user?.emailToken === code) {
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        emailVerified: true,
+        emailToken: null,
+      },
     });
 
     return new Response(null, {

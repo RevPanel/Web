@@ -50,7 +50,7 @@ export const RevPanelRegisterEmail = ({
           Visit our site and check all these feataures by yourself!
         </Text>
         <Section style={btnContainer}>
-          <Button pX={12} pY={12} style={button} href={link}>
+          <Button style={button} href={link}>
             Visit RevPanel
           </Button>
         </Section>
@@ -60,7 +60,7 @@ export const RevPanelRegisterEmail = ({
           The RevPanel team
         </Text>
         <Hr style={hr} />
-        <Text style={footer}>Copyright &copy; RevPanel - 2023</Text>
+        <Text style={footer}>Copyright &copy; RevPanel - 2024</Text>
       </Container>
     </Body>
   </Html>

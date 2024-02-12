@@ -1,8 +1,10 @@
-import { auth, validateCallback } from "@/lib/lucia";
+import { getUser } from "@/components/auth";
+import { lucia, validateCallback } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
-import { OAuthRequestError } from "@lucia-auth/oauth";
-import { UserAction } from "@prisma/client";
+import { User, UserAction } from "@prisma/client";
+import { generateId } from "lucia";
 import * as context from "next/headers";
+import { cookies } from "next/headers";
 
 import type { NextRequest } from "next/server";
 
@@ -22,8 +24,7 @@ export const GET = async (
     });
   }
 
-  const authRequest = auth.handleRequest(request.method, context);
-  const currentSession = await authRequest.validate();
+  const currentSession = await getUser();
 
   const storedState = context
     .cookies()
@@ -40,102 +41,109 @@ export const GET = async (
   }
 
   try {
-    const res = await validateCallback(params.method, code);
-    if (!res) {
-      console.error("Invalid response");
+    const data = await validateCallback(params.method, code);
+    if (!data) {
       return new Response(null, {
         status: 400,
       });
     }
 
-    const { getExistingUser, platformUser, createUser, createKey } = res;
-    const getUser = async () => {
-      let existingUser = await getExistingUser();
-      if (existingUser) return existingUser;
+    const oauthAccount = await prisma.oauthAccount.findFirst({
+      where: {
+        providerId: params.method.toLowerCase(),
+        providerUserId: data.id,
+      },
+    });
 
-      if (!platformUser.emailVerified) {
-        throw new Error("Email not verified");
-      }
+    if (oauthAccount) {
+      return handleLogin(request, oauthAccount.userId);
+    }
 
-      if (currentSession) {
-        await createKey(currentSession.user.userId);
-        return currentSession.user;
-      }
+    const existingEmail = await prisma.user.findFirst({
+      where: {
+        email: data.email,
+      },
+    });
 
-      const prismaUser = await prisma.user.findFirst({
-        where: {
-          email: platformUser.email!,
+    if (currentSession || existingEmail) {
+      const userId = existingEmail ? existingEmail.id : currentSession!.user.id;
+
+      await prisma.oauthAccount.create({
+        data: {
+          providerId: params.method.toLowerCase(),
+          providerUserId: data.id,
+          userId: userId,
         },
       });
 
-      let user;
+      return handleLogin(request, userId);
+    }
 
-      if (prismaUser) {
-        await createKey(prismaUser.id);
-
-        user = auth.transformDatabaseUser(prismaUser);
-      } else {
-        let username;
-        let name;
-
-        if ("global_name" in platformUser && "username" in platformUser) {
-          name = platformUser.global_name || platformUser.username;
-          username = platformUser.username.toLowerCase();
-        } else if ("login" in platformUser) {
-          name = platformUser.name;
-          username = platformUser.login.toLowerCase();
-        }
-
-        user = await createUser({
-          attributes: {
-            username: username!,
-            email: platformUser.email!,
-            name: name!,
-            emailVerified: true,
-            serverCreated: false,
-          },
-        });
-      }
-
-      return user;
-    };
-
-    const user = await getUser();
-    const address = request.headers.get("x-real-ip") || request.ip;
-    const session = await auth.createSession({
-      userId: user.userId,
-      attributes: {
-        address: address || "N/A",
-        user_agent: request.headers.get("user-agent") || "N/A",
+    const existingUsername = await prisma.user.findFirst({
+      where: {
+        username: data.username,
       },
     });
 
-    const authRequest = auth.handleRequest(request.method, context);
-    authRequest.setSession(session);
+    const username = existingUsername
+      ? `${data.username}${generateId(5)}`
+      : data.username;
 
-    await prisma.userLogs.create({
+    const userId = generateId(15);
+    const user = await prisma.user.create({
       data: {
-        userId: user.userId,
-        action: UserAction.LOGIN,
+        id: userId,
+        username: username,
+        name: data.name,
+        email: data.email,
+        emailVerified: true,
+        avatarUrl: data.avatarUrl,
+        oauthAccounts: {
+          create: {
+            providerId: params.method.toLowerCase(),
+            providerUserId: data.id,
+          },
+        },
       },
     });
 
-    return new Response(null, {
-      status: 302,
-      headers: {
-        Location: "/panel",
-      },
-    });
+    return handleLogin(request, user.id);
   } catch (e) {
     console.error(e);
-    if (e instanceof OAuthRequestError) {
-      return new Response(null, {
-        status: 400,
-      });
-    }
 
     return new Response(null, {
       status: 500,
     });
   }
 };
+
+async function handleLogin(request: NextRequest, userId: string) {
+  const address = request.headers.get("x-real-ip") || request.ip || "N/A";
+  const user_agent = request.headers.get("user-agent") || "N/A";
+
+  await prisma.userLogs.create({
+    data: {
+      userId: userId,
+      action: UserAction.LOGIN,
+    },
+  });
+
+  const session = await lucia.createSession(userId, {
+    address,
+    user_agent,
+  });
+  const sessionCookie = lucia.createSessionCookie(session.id);
+
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes
+  );
+
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: "/panel",
+    },
+  });
+}

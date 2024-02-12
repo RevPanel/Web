@@ -35,7 +35,7 @@ export const ResetPasswordEmail = ({
           below to create a new one
         </Text>
         <Section style={btnContainer}>
-          <Button pX={12} pY={12} style={button} href={link}>
+          <Button style={button} href={link}>
             Change Password
           </Button>
         </Section>
@@ -49,7 +49,7 @@ export const ResetPasswordEmail = ({
           The RevPanel team
         </Text>
         <Hr style={hr} />
-        <Text style={footer}>Copyright &copy; RevPanel - 2023</Text>
+        <Text style={footer}>Copyright &copy; RevPanel - 2024</Text>
       </Container>
     </Body>
   </Html>

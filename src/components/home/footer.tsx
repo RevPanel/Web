@@ -54,7 +54,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="flex w-full flex-col justify-between border-t border-t-gray-900 pt-4 text-center text-tertiary md:flex-row">
-        <p>Copyright &copy; RevPanel - 2023</p>
+        <p>Copyright &copy; RevPanel - 2024</p>
         <Link className="text-tertiary" href="mailto:contact@revpanel.io">
           contact@revpanel.io
         </Link>

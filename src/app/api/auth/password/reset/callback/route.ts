@@ -1,9 +1,9 @@
-import { auth } from "@/lib/lucia";
 import prisma from "@/lib/prisma";
 import { error } from "@/utils/responses";
 import { NextResponse } from "next/server";
 
 import type { NextRequest } from "next/server";
+import { Argon2id } from "oslo/password";
 
 export const POST = async (request: NextRequest) => {
   const formData = await request.formData();
@@ -41,13 +41,15 @@ export const POST = async (request: NextRequest) => {
   }
 
   try {
-    await auth.updateKeyPassword("username", user.username, newPassword);
+    const hashedPassword = await new Argon2id().hash(newPassword);
+
     await prisma.user.update({
       where: {
         id: user.id,
       },
       data: {
         resetToken: null,
+        hashed_password: hashedPassword,
       },
     });
 

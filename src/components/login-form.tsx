@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { Button, LinkButton } from "./button";
 import FormInput from "./input";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginForm() {
   const router = useRouter();
+  const query = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [twoFactor, setTwoFactor] = useState<boolean>(false);
@@ -49,7 +50,11 @@ export default function LoginForm() {
           setSuccess(json.message);
         }
 
-        router.push("/panel");
+        router.push(
+          query.has("redirect")
+            ? decodeURIComponent(query.get("redirect") as string)
+            : "/panel"
+        );
       }}
     >
       {error && <p className="text-left text-red-500">{error}</p>}

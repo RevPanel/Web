@@ -1,11 +1,9 @@
+import { getUser } from "@/components/auth";
 import LoginForm from "@/components/login-form";
-import { auth } from "@/lib/lucia";
-import * as context from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
-  const authRequest = auth.handleRequest("GET", context);
-  const session = await authRequest.validate();
+  const session = await getUser();
   if (session) redirect("/");
 
   return (

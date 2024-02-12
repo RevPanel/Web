@@ -1,8 +1,19 @@
 import prisma from "@/lib/prisma";
 import { error } from "@/utils/responses";
 import { NextRequest, NextResponse } from "next/server";
-import * as context from "next/headers";
-import { auth } from "@/lib/lucia";
+import { getUser } from "@/components/auth";
+
+export const dynamic = "force-dynamic";
+
+export async function OPTIONS(req: NextRequest) {
+  return new NextResponse(null, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type",
+    },
+  });
+}
 
 export async function GET(req: NextRequest) {
   const query = new URL(req.nextUrl).searchParams;
@@ -23,23 +34,23 @@ export async function GET(req: NextRequest) {
       name: "asc",
     },
     take: 10,
-    select: {
-      name: true,
-      id: true,
+    include: {
+      ports: true,
     },
   });
 
-  return new NextResponse(JSON.stringify(images), {
+  return NextResponse.json(images, {
     headers: {
-      "content-type": "application/json",
       "cache-control": "public, max-age=3600",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET",
+      "Access-Control-Allow-Headers": "Content-Type",
     },
   });
 }
 
 export async function POST(req: NextRequest) {
-  const authRequest = auth.handleRequest(req.method, context);
-  const session = await authRequest.validate();
+  const session = await getUser();
 
   if (!session || !session.user.admin) {
     return error("Unauthorized", 401);

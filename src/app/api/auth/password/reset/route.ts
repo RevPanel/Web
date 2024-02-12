@@ -50,7 +50,7 @@ export const POST = async (request: NextRequest) => {
     },
   });
 
-  const mailStatus = await resend.sendEmail({
+  const mailStatus = await resend.emails.send({
     from: "RevPanel <noreply@revpanel.io>",
     to: [user.email],
     subject: "Reset your password",

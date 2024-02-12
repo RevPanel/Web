@@ -1,11 +1,10 @@
-import { auth } from "@/lib/lucia";
-import * as context from "next/headers";
-
+import { getUser } from "@/components/auth";
+import { lucia } from "@/lib/lucia";
+import { cookies } from "next/headers";
 import type { NextRequest } from "next/server";
 
 async function handler(request: NextRequest) {
-  const authRequest = auth.handleRequest(request.method, context);
-  const session = await authRequest.validate();
+  const session = await getUser();
 
   if (!session) {
     return new Response(null, {
@@ -13,8 +12,13 @@ async function handler(request: NextRequest) {
     });
   }
 
-  await auth.invalidateSession(session.sessionId);
-  authRequest.setSession(null);
+  await lucia.invalidateSession(session.session.id);
+  const sessionCookie = lucia.createBlankSessionCookie();
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes
+  );
 
   return new Response(null, {
     status: 302,

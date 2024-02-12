@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as context from "next/headers";
-import { auth } from "@/lib/lucia";
 import { error } from "@/utils/responses";
-import { verifyToken } from "node-2fa";
 import prisma from "@/lib/prisma";
+import { getUser } from "@/components/auth";
+import { decodeHex } from "oslo/encoding";
+import { TOTPController } from "oslo/otp";
 
 export async function POST(req: NextRequest) {
-  const authRequest = auth.handleRequest(req.method, context);
-  const session = await authRequest.validate();
+  const session = await getUser();
 
   if (!session) {
     return error("Not logged in", 403);
@@ -18,7 +17,7 @@ export async function POST(req: NextRequest) {
 
   const user = await prisma.user.findUnique({
     where: {
-      id: session.user.userId,
+      id: session.user.id,
     },
 
     select: {
@@ -30,10 +29,18 @@ export async function POST(req: NextRequest) {
     return error("Missing code", 400);
   }
 
-  const verified = verifyToken(user.twoFactorSecret, code);
-  if (!verified || verified.delta !== 0) {
+  const verified = await new TOTPController().verify(
+    code,
+    decodeHex(user.twoFactorSecret)
+  );
+  if (!verified) {
     return error("Invalid code", 400);
   }
 
-  return NextResponse.redirect("/panel");
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: "/panel",
+    },
+  });
 }

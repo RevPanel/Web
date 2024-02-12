@@ -14,8 +14,20 @@ const nextConfig = {
         protocol: "https",
         hostname: "chart.googleapis.com",
       },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.discordapp.com",
+      },
     ],
     dangerouslyAllowSVG: true,
+  },
+  webpack: (config) => {
+    config.externals.push("@node-rs/argon2", "@node-rs/bcrypt");
+    return config;
   },
   output: "standalone",
 };

@@ -1,13 +1,11 @@
-import { auth } from "@/lib/lucia";
+import { getUser } from "@/components/auth";
 import prisma from "@/lib/prisma";
 import stripe from "@/lib/stripe";
 import { error } from "@/utils/responses";
-import * as context from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-  const authRequest = auth.handleRequest(req.method, context);
-  const session = await authRequest.validate();
+  const session = await getUser();
 
   if (!session) {
     return error("Unauthorized", 401);
@@ -19,12 +17,12 @@ export async function GET(req: Request) {
       email: session.user.email,
       name: session.user.name,
       metadata: {
-        userId: session.user.userId,
+        userId: session.user.id,
       },
     });
 
     await prisma.user.update({
-      where: { id: session.user.userId },
+      where: { id: session.user.id },
       data: { stripeId: customer.id },
     });
 

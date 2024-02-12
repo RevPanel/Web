@@ -1,28 +1,26 @@
-import { auth } from "@/lib/lucia";
+import { getUser } from "@/components/auth";
+import { lucia } from "@/lib/lucia";
 import { error } from "@/utils/responses";
-import * as context from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 import UAParser from "ua-parser-js";
 
 export const GET = async (req: NextRequest) => {
-  const authRequest = auth.handleRequest(req.method, context);
-  const session = await authRequest.validate();
+  const session = await getUser();
 
   if (!session) {
     return error("Not logged in", 403);
   }
 
-  const sessions = await auth.getAllUserSessions(session.user.userId);
+  const sessions = await lucia.getUserSessions(session.user.id);
   const mapped = sessions.map((s) => {
     const ua = new UAParser(s.user_agent);
     const mapped = {
-      sessionId: s.sessionId,
+      sessionId: s.id,
       address: s.address,
       name: ua.getBrowser().name,
-      state: s.state,
     };
 
-    if (s.sessionId === session.sessionId) {
+    if (s.id === session.session.id) {
       return {
         current: true,
         ...mapped,
@@ -36,8 +34,7 @@ export const GET = async (req: NextRequest) => {
 };
 
 export async function DELETE(req: NextRequest) {
-  const authRequest = auth.handleRequest(req.method, context);
-  const session = await authRequest.validate();
+  const session = await getUser();
 
   if (!session) {
     return error("Not logged in", 403);
@@ -50,14 +47,14 @@ export async function DELETE(req: NextRequest) {
     return error("Missing session id", 400);
   }
 
-  const sessions = await auth.getAllUserSessions(session.user.userId);
-  const found = sessions.find((s) => s.sessionId === id);
+  const sessions = await lucia.getUserSessions(session.user.id);
+  const found = sessions.find((s) => s.id === id);
 
   if (!found) {
     return error("Session not found", 404);
   }
 
-  await auth.invalidateSession(id);
+  await lucia.invalidateSession(id);
 
   return NextResponse.json({
     success: true,

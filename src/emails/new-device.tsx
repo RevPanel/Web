@@ -57,7 +57,7 @@ export const RevPanelNewDeviceEmail = ({
           and then change your password
         </Text>
         <Section style={btnContainer}>
-          <Button pX={12} pY={12} style={button} href={link}>
+          <Button style={button} href={link}>
             Check devices
           </Button>
         </Section>
@@ -67,7 +67,7 @@ export const RevPanelNewDeviceEmail = ({
           The RevPanel team
         </Text>
         <Hr style={hr} />
-        <Text style={footer}>Copyright &copy; RevPanel - 2023</Text>
+        <Text style={footer}>Copyright &copy; RevPanel - 2024</Text>
       </Container>
     </Body>
   </Html>

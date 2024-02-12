@@ -21,76 +21,31 @@ model User {
   serverCreated   Boolean @default(false)
   admin           Boolean @default(false)
   twoFactorSecret String?
+  hashed_password String?
 
-  auth_session Session[]
-  key          Key[]
-  apiKeys      ApiKey[]
-  servers      Server[]
-  logs         UserLogs[]
-  serverMember ServerMember[]
+  sessions      Session[]
+  oauthAccounts OauthAccount[]
+  logs          UserLogs[]
+  servers       Server[]
+}
+
+model OauthAccount {
+  providerId     String
+  providerUserId String
+  userId         String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([providerId, providerUserId])
 }
 
 model Session {
-  id             String @id @unique
-  user_id        String
-  active_expires BigInt
-  idle_expires   BigInt
-  address        String
-  user_agent     String
-  user           User   @relation(references: [id], fields: [user_id], onDelete: Cascade)
-
-  @@index([user_id])
-}
-
-model Key {
-  id              String  @id @unique
-  hashed_password String?
-  user_id         String
-  user            User    @relation(references: [id], fields: [user_id], onDelete: Cascade)
-
-  @@index([user_id])
-}
-
-model ApiKey {
-  id          Int      @id @default(autoincrement())
-  key         String   @unique @default(cuid())
-  description String
-  ips         String[]
-  createdAt   DateTime @default(now())
-
-  owner   User   @relation(references: [id], fields: [ownerId], onDelete: Cascade)
-  ownerId String
-}
-
-enum InstallStatus {
-  STARTED
-  SUCCESS
-  FAILED
-}
-
-model Server {
-  id          String         @id @default(cuid())
-  name        String
-  description String?
-  ip          String
-  key         String
-  owner       User           @relation(references: [id], fields: [ownerId], onDelete: Cascade)
-  ownerId     String
-  status      InstallStatus  @default(STARTED)
-  createdAt   DateTime       @default(now())
-  members     ServerMember[]
-}
-
-model ServerMember {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-
-  permissions String[]
-
-  server   Server @relation(references: [id], fields: [serverId], onDelete: Cascade)
-  serverId String
-  user     User   @relation(references: [id], fields: [userId], onDelete: Cascade)
-  userId   String
+  id         String   @id @unique
+  userId     String
+  expiresAt  DateTime
+  address    String
+  user_agent String
+  user       User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
 model UserLogs {
@@ -132,4 +87,15 @@ enum UserAction {
   LOGIN
   REGISTER
   CREATE_SEVRER
+}
+
+model Server {
+  id        String   @id @default(cuid())
+  ownerId   String
+  name      String
+  createdAt DateTime @default(now())
+  url       String @unique
+  token     String @unique
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }

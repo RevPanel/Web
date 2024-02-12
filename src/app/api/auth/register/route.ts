@@ -1,11 +1,10 @@
-import RegisterEmail from "@/emails/register";
-import { auth } from "@/lib/lucia";
-import prisma from "@/lib/prisma";
-import resend from "@/lib/resend";
-import { UserAction } from "@prisma/client";
-import * as context from "next/headers";
+import { lucia } from "@/lib/lucia";
+import { generateId } from "lucia";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { Argon2id } from "oslo/password";
 
+import prisma from "@/lib/prisma";
 import type { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
@@ -34,6 +33,32 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
+  if (
+    username.length < 3 ||
+    username.length > 31 ||
+    !/^[a-z0-9_-]+$/.test(username)
+  ) {
+    return NextResponse.json(
+      {
+        error: "Invalid username",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+
+  if (password.length < 6 || password.length > 255) {
+    return NextResponse.json(
+      {
+        error: "Invalid password",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+
   if (password !== confirmPassword) {
     return NextResponse.json(
       {
@@ -46,69 +71,29 @@ export const POST = async (request: NextRequest) => {
   }
 
   try {
-    const user = await auth.createUser({
-      key: {
-        providerId: "username",
-        providerUserId: username.toLowerCase(),
-        password,
-      },
-      attributes: {
-        email,
-        username: username.toLowerCase(),
-        name,
-        emailVerified: false,
-        serverCreated: false,
-      },
-    });
+    const hashedPassword = await new Argon2id().hash(password);
+    const userId = generateId(15);
 
-    const address = request.headers.get("x-real-ip") || request.ip;
-    const session = await auth.createSession({
-      userId: user.userId,
-      attributes: {
-        address: address || "N/A",
-        user_agent: request.headers.get("user-agent") || "N/A",
-      },
-    });
-
-    const authRequest = auth.handleRequest(request.method, context);
-    authRequest.setSession(session);
-
-    await prisma.userLogs.create({
+    await prisma.user.create({
       data: {
-        userId: user.userId,
-        action: UserAction.REGISTER,
+        id: userId,
+        username: username.toLowerCase(),
+        email,
+        name,
+        hashed_password: hashedPassword,
       },
     });
 
-    const { emailToken } = (await prisma.user.findUnique({
-      where: {
-        id: user.userId,
-      },
-      select: {
-        emailToken: true,
-      },
-    })) || { emailToken: null };
-
-    const mailStatus = await resend.sendEmail({
-      from: "RevPanel <noreply@revpanel.io>",
-      to: [user.email],
-      subject: "Thanks for creating an account!",
-      text: "",
-      react: RegisterEmail({
-        name: user.name,
-        link: `${process.env.APP_URL}/api/auth/verify/${emailToken}`,
-      }),
-      tags: [
-        {
-          name: "category",
-          value: "register",
-        },
-      ],
+    const session = await lucia.createSession(userId, {
+      address: request.headers.get("x-real-ip") || request.ip || "N/A",
+      user_agent: request.headers.get("user-agent") || "N/A",
     });
-
-    if ("message" in mailStatus) {
-      console.error(mailStatus);
-    }
+    const sessionCookie = lucia.createSessionCookie(session.id);
+    cookies().set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes
+    );
 
     return new Response(null, {
       status: 302,

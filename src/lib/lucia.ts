@@ -1,24 +1,17 @@
-import prismadb from "@/lib/prisma";
-import { prisma } from "@lucia-auth/adapter-prisma";
-import {
-  DiscordUser,
-  GithubUser,
-  GoogleUser,
-  discord,
-  github,
-  google,
-} from "@lucia-auth/oauth/providers";
+import prisma from "@/lib/prisma";
+import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
+import { Discord, GitHub, Google } from "arctic";
 import { Octokit } from "@octokit/core";
-import { lucia } from "lucia";
-import { nextjs_future } from "lucia/middleware";
+import { Lucia } from "lucia";
+import DiscordOauth2 from "discord-oauth2";
 
-export const auth = lucia({
-  env: process.env.NODE_ENV === "development" ? "DEV" : "PROD",
-  middleware: nextjs_future(),
+export const lucia = new Lucia(new PrismaAdapter(prisma.session, prisma.user), {
   sessionCookie: {
     expires: false,
+    attributes: {
+      secure: process.env.NODE_ENV === "production",
+    },
   },
-  adapter: prisma(prismadb),
   getSessionAttributes: (data) => {
     return {
       address: data.address,
@@ -31,7 +24,6 @@ export const auth = lucia({
       name: data.name,
       email: data.email,
       emailVerified: data.emailVerified,
-      emailToken: data.emailToken,
       avatarUrl: data.avatarUrl,
       plan: data.plan,
       serverCreated: data.serverCreated,
@@ -42,99 +34,111 @@ export const auth = lucia({
   },
 });
 
-export const discordAuth = discord(auth, {
-  clientId: process.env.DISCORD_CLIENT_ID!,
-  clientSecret: process.env.DISCORD_CLIENT_SECRET!,
-  redirectUri: `${
-    process.env.APP_URL || process.env.VERCEL_URL
-  }/api/auth/callback/discord`,
-  scope: ["email"],
-});
+export const github = new GitHub(
+  process.env.GITHUB_CLIENT_ID!,
+  process.env.GITHUB_CLIENT_SECRET!
+);
+export const discord = new Discord(
+  process.env.DISCORD_CLIENT_ID!,
+  process.env.DISCORD_CLIENT_SECRET!,
+  process.env.APP_URL + "/api/auth/callback/discord"
+);
+export const google = new Google(
+  process.env.GOOGLE_CLIENT_ID!,
+  process.env.GOOGLE_CLIENT_SECRET!,
+  process.env.APP_URL + "/api/auth/callback/google"
+);
 
-export const githubAuth = github(auth, {
-  clientId: process.env.GITHUB_CLIENT_ID!,
-  clientSecret: process.env.GITHUB_CLIENT_SECRET!,
-  redirectUri: `${
-    process.env.APP_URL || process.env.VERCEL_URL
-  }/api/auth/callback/github`,
-  scope: ["user:email", "read:user"],
-});
-
-export const googleAuth = google(auth, {
-  clientId: process.env.GOOGLE_CLIENT_ID!,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-  redirectUri: `${
-    process.env.APP_URL || process.env.VERCEL_URL
-  }/api/auth/callback/google`,
-  scope: ["email"],
-});
-
-export type Auth = typeof auth;
-
-export const getAuthUrl = async (method: string) => {
+export const getAuthUrl = async (state: string, method: string) => {
   switch (method) {
     case "discord":
-      return await discordAuth.getAuthorizationUrl();
+      return await discord.createAuthorizationURL(state, {
+        scopes: ["identify", "email"],
+      });
     case "github":
-      return await githubAuth.getAuthorizationUrl();
-    case "google":
-      return await googleAuth.getAuthorizationUrl();
+      return await github.createAuthorizationURL(state, {
+        scopes: ["read:user", "user:email"],
+      });
+
     default:
       return null;
   }
 };
 
 export const validateCallback = async (method: string, code: string) => {
-  let data;
+  let tokens;
 
   switch (method) {
-    case "discord":
-      data = await discordAuth.validateCallback(code);
-      break;
     case "github":
-      data = await githubAuth.validateCallback(code);
-      break;
-    case "google":
-      data = await googleAuth.validateCallback(code);
-      break;
-    default:
-      data = null;
-      break;
-  }
+      tokens = await github.validateAuthorizationCode(code);
 
-  if (!data) return null;
-
-  const { getExistingUser, createUser, createKey } = data;
-  let platformUser: (GithubUser | DiscordUser | GoogleUser) & {
-    emailVerified?: boolean;
-  };
-
-  if ("discordUser" in data) {
-    platformUser = data.discordUser;
-    platformUser.emailVerified = data.discordUser.verified;
-  } else if ("githubUser" in data) {
-    platformUser = data.githubUser;
-
-    if (!platformUser.email) {
-      const octokit = new Octokit({ auth: data.githubTokens.accessToken });
-      const emails = await octokit.request("GET /user/emails");
-      const primaryEmail = emails.data.find((email) => email.primary);
-      if (primaryEmail) {
-        platformUser.email = primaryEmail.email;
-        platformUser.emailVerified = primaryEmail.verified;
+      const octokit = new Octokit({ auth: tokens.accessToken });
+      const githubUser = await octokit.request("GET /user");
+      let email = githubUser.data.email;
+      if (!email) {
+        const emails = await octokit.request("GET /user/emails");
+        const primaryEmail = emails.data.find((email) => email.primary);
+        if (primaryEmail) {
+          email = primaryEmail.email;
+        }
       }
-    } else {
-      platformUser.emailVerified = true;
-    }
-  } else if ("googleUser" in data) {
-    platformUser = data.googleUser;
-    platformUser.emailVerified = data.googleUser.email_verified;
-  }
 
-  return {
-    getExistingUser,
-    createUser,
-    platformUser: platformUser!,
-    createKey,
-  };
+      if (!email) {
+        return null;
+      }
+
+      return {
+        id: githubUser.data.id.toString(),
+        email,
+        name: githubUser.data.name || githubUser.data.login,
+        avatarUrl: githubUser.data.avatar_url,
+        username: githubUser.data.login,
+      };
+    case "discord":
+      tokens = await discord.validateAuthorizationCode(code);
+
+      const oauth = new DiscordOauth2();
+      const discordUser = await oauth.getUser(tokens.accessToken);
+
+      if (!discordUser || !discordUser.id || !discordUser.email) {
+        return null;
+      }
+
+      return {
+        id: discordUser.id,
+        email: discordUser.email,
+        name: discordUser.global_name || discordUser.username,
+        avatarUrl: `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`,
+        username: discordUser.username,
+      };
+    default:
+      return null;
+  }
 };
+
+declare module "lucia" {
+  interface Register {
+    Lucia: typeof lucia;
+    DatabaseSessionAttributes: DatabaseSessionAttributes;
+    DatabaseUserAttributes: DatabaseUserAttributes;
+  }
+}
+
+interface DatabaseUserAttributes {
+  email: string;
+  username: string;
+  name: string;
+  emailVerified: boolean;
+  plan?: string | null;
+  emailToken?: string | null;
+  avatarUrl?: string | null;
+  serverCreated: boolean;
+  stripeId?: string | null;
+  admin?: boolean | null;
+  twoFactorSecret?: string | null;
+}
+
+interface DatabaseSessionAttributes {
+  address: string;
+  user_agent: string;
+}

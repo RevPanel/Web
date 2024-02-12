@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import * as context from "next/headers";
-import { auth } from "@/lib/lucia";
 import { error } from "@/utils/responses";
-import { verifyToken } from "node-2fa";
 import prisma from "@/lib/prisma";
+import { getUser } from "@/components/auth";
+import { decodeHex } from "oslo/encoding";
+import { TOTPController } from "oslo/otp";
 
 export async function POST(req: NextRequest) {
-  const authRequest = auth.handleRequest(req.method, context);
-  const session = await authRequest.validate();
+  const session = await getUser();
 
   if (!session) {
     return error("Not logged in", 403);
@@ -21,19 +20,24 @@ export async function POST(req: NextRequest) {
     return error("Missing secret or code", 400);
   }
 
-  const verified = verifyToken(secret, code);
+  const verified = await new TOTPController().verify(code, decodeHex(secret));
   if (!verified) {
     return error("Invalid code", 400);
   }
 
   await prisma.user.update({
     where: {
-      id: session.user.userId,
+      id: session.user.id,
     },
     data: {
       twoFactorSecret: secret,
     },
   });
 
-  return NextResponse.redirect("/panel/account");
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: "/panel/account",
+    },
+  });
 }

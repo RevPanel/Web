@@ -1,4 +1,5 @@
 import { getAuthUrl } from "@/lib/lucia";
+import { generateState } from "arctic";
 import { cookies } from "next/headers";
 import type { NextRequest } from "next/server";
 
@@ -12,20 +13,20 @@ export const GET = async (
     };
   }
 ) => {
-  const authUrl = await getAuthUrl(params.method);
-  if (!authUrl) {
+  const state = generateState();
+  const url = await getAuthUrl(state, params.method);
+  if (!url) {
     return new Response(null, {
       status: 400,
     });
   }
 
-  const [url, state] = authUrl;
-
   cookies().set(`${params.method.toLowerCase()}_oauth_state`, state, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
     path: "/",
-    maxAge: 60 * 60,
+    secure: process.env.NODE_ENV === "production",
+    httpOnly: true,
+    maxAge: 60 * 10,
+    sameSite: "lax",
   });
 
   return new Response(null, {

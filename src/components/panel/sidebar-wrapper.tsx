@@ -2,12 +2,9 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import SidebarTemplate, { accountSection } from "./sidebar-template";
 
-export default function SidebarWrapper({
-  sidebar,
-}: {
-  sidebar: React.ReactNode;
-}) {
+export default function SidebarWrapper() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -23,7 +20,7 @@ export default function SidebarWrapper({
         transition: "left 0.5s ease-in-out",
       }}
     >
-      {sidebar}
+      <SidebarTemplate sections={[accountSection]} />
       <button
         onClick={() => setOpen((prev) => !prev)}
         className="bg-gradient fixed bottom-6 left-6 flex h-14 w-14 items-center justify-center rounded-xl p-4 text-3xl md:hidden"

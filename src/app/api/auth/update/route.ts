@@ -1,14 +1,13 @@
+import { getUser } from "@/components/auth";
 import RegisterEmail from "@/emails/register";
-import { auth } from "@/lib/lucia";
+import prisma from "@/lib/prisma";
 import resend from "@/lib/resend";
 import { error } from "@/utils/responses";
 import { createId } from "@paralleldrive/cuid2";
-import * as context from "next/headers";
 import { NextResponse, type NextRequest } from "next/server";
 
 export const POST = async (req: NextRequest) => {
-  const authRequest = auth.handleRequest(req.method, context);
-  const session = await authRequest.validate();
+  const session = await getUser();
 
   if (!session) {
     return error("Not logged in", 403);
@@ -16,19 +15,29 @@ export const POST = async (req: NextRequest) => {
 
   const { email, name } = await req.json();
   try {
-    await auth.updateUserAttributes(session.user.userId, {
-      name: name,
-      email: email,
+    await prisma.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        name: name,
+        email: email,
+      },
     });
 
     if (email !== session.user.email) {
       const newToken = createId();
-      await auth.updateUserAttributes(session.user.userId, {
-        emailVerified: false,
-        emailToken: newToken,
+      await prisma.user.update({
+        where: {
+          id: session.user.id,
+        },
+        data: {
+          emailToken: newToken,
+          emailVerified: false,
+        },
       });
 
-      const mailStatus = await resend.sendEmail({
+      const mailStatus = await resend.emails.send({
         from: "RevPanel <noreply@revpanel.io>",
         to: [session.user.email],
         subject: "Thanks for creating an account!",
@@ -49,10 +58,6 @@ export const POST = async (req: NextRequest) => {
         console.error(mailStatus);
       }
     }
-
-    authRequest.invalidate();
-
-    await authRequest.validate();
 
     return NextResponse.json({
       message: "User updated successfully",
