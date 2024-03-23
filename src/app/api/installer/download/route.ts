@@ -1,7 +1,7 @@
 import octokit from "@/lib/github";
 import { error } from "@/utils/responses";
 
-export const runtime = "edge";
+export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
   try {
