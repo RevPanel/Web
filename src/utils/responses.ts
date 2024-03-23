@@ -1,4 +1,3 @@
-import type { Server } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export function error(message: string, status: number) {
@@ -9,14 +8,3 @@ export function error(message: string, status: number) {
     },
   });
 }
-
-export function removeKey(server: Server): ServerWithoutKey {
-  const { key, ...rest } = server;
-  return { ...rest };
-}
-
-export function removeKeys(server: Server[]): ServerWithoutKey[] {
-  return server.map(removeKey);
-}
-
-export type ServerWithoutKey = Omit<Server, "key">;

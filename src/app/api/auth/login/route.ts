@@ -62,7 +62,7 @@ export const POST = async (request: NextRequest) => {
       },
     });
 
-    if (!user) {
+    if (!user || !user.hashed_password) {
       return NextResponse.json(
         {
           error: "Incorrect username or password",

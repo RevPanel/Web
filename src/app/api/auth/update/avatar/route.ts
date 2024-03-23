@@ -1,12 +1,11 @@
-import { auth } from "@/lib/lucia";
+import { getUser } from "@/components/auth";
+import prisma from "@/lib/prisma";
 import { error } from "@/utils/responses";
 import axios from "axios";
-import * as context from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const authRequest = auth.handleRequest(req.method, context);
-  const session = await authRequest.validate();
+  const session = await getUser();
 
   if (!session) {
     return error("Not logged in", 403);
@@ -45,8 +44,13 @@ export async function POST(req: NextRequest) {
   const image = imageData.images[0];
   const url = `${process.env.NEXT_PUBLIC_IMAGECDN_URL}${image.id}`;
 
-  await auth.updateUserAttributes(session.user.userId, {
-    avatarUrl: url,
+  await prisma.user.update({
+    where: {
+      id: session.user.id,
+    },
+    data: {
+      avatarUrl: url,
+    },
   });
 
   return NextResponse.json({

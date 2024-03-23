@@ -26,9 +26,10 @@ export async function GET(
 
   const user = await prisma.user.findFirst({
     where: {
-      key: {
+      oauthAccounts: {
         some: {
-          id: `discord:${userId}`,
+          providerId: "discord",
+          providerUserId: userId,
         },
       },
     },

@@ -1,4 +1,3 @@
-import { getSession } from "@/components/auth";
 import Banner from "@/components/home/banner";
 import Footer from "@/components/home/footer";
 import Hero from "@/components/home/hero";
