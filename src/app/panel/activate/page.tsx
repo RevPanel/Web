@@ -50,14 +50,14 @@ export default async function ActivatePage({
         className="m-auto flex flex-col gap-4"
       >
         <FormInput
-          className="!bg-background-secondary"
+          className="!bg-background-secondary w-full"
           placeholder="Friendly Name"
           required
           name="name"
         />
         <div>
           <FormInput
-            className="!bg-background-secondary"
+            className="!bg-background-secondary w-full"
             placeholder="Server URL"
             value={appUrl}
             readOnly
