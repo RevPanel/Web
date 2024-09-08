@@ -8,8 +8,8 @@ export async function GET(req: Request) {
     "GET /repos/{owner}/{repo}/contents/{path}",
     {
       owner: "RevPanel",
-      repo: "Daemon",
-      path: "scripts/uninstall.sh",
+      repo: "Scripts",
+      path: "uninstall.sh",
     }
   );
 
