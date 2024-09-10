@@ -12,7 +12,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "chart.googleapis.com",
+        hostname: "quickchart.io",
       },
       {
         protocol: "https",
