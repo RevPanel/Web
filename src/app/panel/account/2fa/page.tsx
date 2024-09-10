@@ -16,7 +16,7 @@ async function generate(user: User) {
   return {
     secret: encodeHex(twoFactorSecret),
     uri,
-    qr: `https://chart.googleapis.com/chart?cht=qr&choe=UTF-8&chl=${encodeURIComponent(uri)}&chs=200x200`,
+    qr: `https://quickchart.io/qr?text=${encodeURIComponent(uri)}`,
   };
 }
 
