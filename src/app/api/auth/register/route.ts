@@ -1,11 +1,13 @@
+import RegisterEmail from "@/emails/register";
 import { lucia } from "@/lib/lucia";
+import prisma from "@/lib/prisma";
+import { sendEmail } from "@/lib/resend";
+import { createId } from "@paralleldrive/cuid2";
 import { generateId } from "lucia";
 import { cookies } from "next/headers";
+import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { Argon2id } from "oslo/password";
-
-import prisma from "@/lib/prisma";
-import type { NextRequest } from "next/server";
 
 export const POST = async (request: NextRequest) => {
   const formData = await request.formData();
@@ -73,6 +75,7 @@ export const POST = async (request: NextRequest) => {
   try {
     const hashedPassword = await new Argon2id().hash(password);
     const userId = generateId(15);
+    const emailToken = createId();
 
     await prisma.user.create({
       data: {
@@ -81,6 +84,7 @@ export const POST = async (request: NextRequest) => {
         email,
         name,
         hashed_password: hashedPassword,
+        emailToken,
       },
     });
 
@@ -93,6 +97,15 @@ export const POST = async (request: NextRequest) => {
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes
+    );
+
+    await sendEmail(
+      email,
+      "Welcome to RevPanel",
+      RegisterEmail({
+        name,
+        link: `${process.env.APP_URL}/auth/verify/${emailToken}`,
+      })
     );
 
     return new Response(null, {
