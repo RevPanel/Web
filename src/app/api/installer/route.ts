@@ -1,24 +1,17 @@
-import octokit from "@/lib/github";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
-  const script = await octokit.request(
-    "GET /repos/{owner}/{repo}/contents/{path}",
-    {
-      owner: "RevPanel",
-      repo: "Scripts",
-      path: "install.sh",
-    }
+  const script = await fetch(
+    "https://raw.githubusercontent.com/RevPanel/Scripts/main/install.sh"
   );
 
-  const { content } = script.data as any;
-  const cleanContent = atob(content);
+  const content = await script.text();
 
-  return new NextResponse(cleanContent, {
+  return new NextResponse(content, {
     headers: {
-      "content-type": "text/plain",
+      "content-type": "text/plain; charset=utf-8",
     },
   });
 }

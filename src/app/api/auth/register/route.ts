@@ -104,7 +104,7 @@ export const POST = async (request: NextRequest) => {
       "Welcome to RevPanel",
       RegisterEmail({
         name,
-        link: `${process.env.APP_URL}/auth/verify/${emailToken}`,
+        link: `${process.env.APP_URL}/api/auth/verify/${emailToken}`,
       })
     );
 

@@ -1,4 +1,5 @@
 import { getUser } from "@/components/auth";
+import AddServer from "@/components/panel/add-server";
 import prisma from "@/lib/prisma";
 import { faServer } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -25,6 +26,8 @@ export default async function ServersHome() {
 
   return (
     <div className="flex w-full flex-col gap-4">
+      <AddServer />
+
       {servers.map((server) => (
         <Link
           key={server.id}

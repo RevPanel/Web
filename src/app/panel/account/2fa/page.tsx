@@ -51,7 +51,7 @@ export default async function Page() {
           [Click to open]
         </Link>
       </div>
-      <Form action="/api/auth/2fa/setup">
+      <Form action="/api/auth/2fa/setup" redirect="/panel/account">
         <input
           type="password"
           name="secret"

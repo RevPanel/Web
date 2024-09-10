@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { error } from "@/utils/responses";
-import prisma from "@/lib/prisma";
 import { getUser } from "@/components/auth";
+import prisma from "@/lib/prisma";
+import { error } from "@/utils/responses";
+import { NextRequest, NextResponse } from "next/server";
 import { decodeHex } from "oslo/encoding";
 import { TOTPController } from "oslo/otp";
 
@@ -34,10 +34,7 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return new Response(null, {
-    status: 302,
-    headers: {
-      Location: "/panel/account",
-    },
+  return NextResponse.json({
+    success: true,
   });
 }
